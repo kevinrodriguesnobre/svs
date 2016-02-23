@@ -12,6 +12,6 @@ public class AndroidLauncher extends AndroidApplication {
 		super.onCreate(savedInstanceState);
 		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
 		initialize(new kytesvs(), config);
-		System.out.print("Hallo");
+		System.out.print("Yanneck ist dumm");
 	}
 }
