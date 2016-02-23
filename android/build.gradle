@@ -15,7 +15,7 @@ android {
         instrumentTest.setRoot('tests')
     }
     defaultConfig {
-        applicationId "com.kyte.svs"
+        applicationId "com.kyte_svs.game"
         minSdkVersion 8
         targetSdkVersion 23
     }
@@ -68,7 +68,7 @@ task run(type: Exec) {
     }
 
     def adb = path + "/platform-tools/adb"
-    commandLine "$adb", 'shell', 'am', 'start', '-n', 'com.kyte.svs/com.kyte.svs.AndroidLauncher'
+    commandLine "$adb", 'shell', 'am', 'start', '-n', 'com.kyte_svs.game/com.kyte_svs.game.AndroidLauncher'
 }
 
 // sets up the Android Eclipse project, using the old Ant based build.
