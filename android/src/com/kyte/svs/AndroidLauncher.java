@@ -4,14 +4,14 @@ import android.os.Bundle;
 
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
-import com.kyte.svs.kytesvs;
+import com.kyte_svs.game.KYTE_SVS;
 
 public class AndroidLauncher extends AndroidApplication {
 	@Override
 	protected void onCreate (Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
-		initialize(new kytesvs(), config);
-		System.out.print("Yanneck ist dumm");
+		initialize(new KYTE_SVS(), config);
+		System.out.print("Evgenij stinkt des todes #ih");
 	}
 }
