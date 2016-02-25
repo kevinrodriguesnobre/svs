@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 
@@ -18,11 +19,11 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
  */
 public class KYTE_SVS implements ApplicationListener {
 
-
     private OrthographicCamera camera;
     private Stage stage;
     private SpriteBatch batch;
     private Touchpad touchpad;
+    private Touchpad touchpad2;
     private Touchpad.TouchpadStyle touchpadStyle;
     private Skin touchpadSkin;
     private Drawable touchBackground;
@@ -57,22 +58,25 @@ public class KYTE_SVS implements ApplicationListener {
         //Create new TouchPad with the created style
         touchpad = new Touchpad(10, touchpadStyle);
         //setBounds(x,y,width,height)
-        touchpad.setBounds(15, 15, 400, 400);
+        touchpad.setBounds(15, 15, 100, 100);
+
+        touchpad2 = new Touchpad(0, touchpadStyle);
+        touchpad2.setBounds(600, 15, 200, 200);
 
         //Create a Stage and add TouchPad
         stage = new Stage();
         stage.addActor(touchpad);
+        stage.addActor(touchpad2);
+        //stage.addActor(touchpad2);
         Gdx.input.setInputProcessor(stage);
 
         //Create block sprite
-        blockTexture = new Texture(Gdx.files.internal("data/block.png"));
+        blockTexture = new Texture(Gdx.files.internal("data/Player.png"));
         blockSprite = new Sprite(blockTexture);
         //Set position to centre of the screen
         blockSprite.setPosition(Gdx.graphics.getWidth() / 2 - blockSprite.getWidth() / 2, Gdx.graphics.getHeight() / 2 - blockSprite.getHeight() / 2);
 
         blockSpeed = 10;
-
-
     }
 
 
@@ -96,6 +100,8 @@ public class KYTE_SVS implements ApplicationListener {
         blockSprite.setX(blockSprite.getX() + touchpad.getKnobPercentX() * blockSpeed);
         blockSprite.setY(blockSprite.getY() + touchpad.getKnobPercentY() * blockSpeed);
 
+        blockSprite.setRotation((touchpad2.getKnobPercentX()  * -90) + ((touchpad2.getKnobPercentY() * 90) - 90));
+        System.out.println(blockSprite.getRotation());
         //Draw
         batch.begin();
         blockSprite.draw(batch);
