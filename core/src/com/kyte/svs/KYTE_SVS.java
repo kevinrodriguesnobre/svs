@@ -1,4 +1,4 @@
-package com.kyte_svs.game;
+package com.kyte.svs;
 
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.ApplicationListener;
@@ -74,7 +74,7 @@ public class KYTE_SVS implements ApplicationListener {
         //Create new TouchPad with the created style
         touchpad = new Touchpad(10, touchpadStyle);
         //setBounds(x,y,width,height)
-        touchpad.setBounds(15, 15, 200, 200);
+        touchpad.setBounds(15, 15, 400, 400);
 
         //Create a Stage and add TouchPad
         stage = new Stage();
