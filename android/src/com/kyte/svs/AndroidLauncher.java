@@ -4,7 +4,7 @@ import android.os.Bundle;
 
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
-import com.kyte_svs.game.KYTE_SVS;
+
 
 public class AndroidLauncher extends AndroidApplication {
 	@Override
