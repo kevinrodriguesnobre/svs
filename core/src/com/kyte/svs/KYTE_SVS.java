@@ -67,7 +67,7 @@ public class KYTE_SVS implements ApplicationListener {
         stage = new Stage();
         stage.addActor(touchpad);
         stage.addActor(touchpad2);
-        //stage.addActor(touchpad2);
+
         Gdx.input.setInputProcessor(stage);
 
         //Create block sprite
@@ -100,8 +100,23 @@ public class KYTE_SVS implements ApplicationListener {
         blockSprite.setX(blockSprite.getX() + touchpad.getKnobPercentX() * blockSpeed);
         blockSprite.setY(blockSprite.getY() + touchpad.getKnobPercentY() * blockSpeed);
 
-        blockSprite.setRotation((touchpad2.getKnobPercentX()  * -90) + ((touchpad2.getKnobPercentY() * 90) - 90));
-        System.out.println(blockSprite.getRotation());
+        float rotation = 0f;
+        if(touchpad2.getKnobPercentX() > 0){
+            if(touchpad2.getKnobPercentY() > 0){
+                rotation =(float) (-Math.atan(touchpad2.getKnobPercentX() / touchpad2.getKnobPercentY()) * 180 / Math.PI);
+            }else if(touchpad2.getKnobPercentY() < 0){
+                rotation =(float) -(-180 + Math.atan(touchpad2.getKnobPercentX() / touchpad2.getKnobPercentY()) * 180 / Math.PI);
+            }
+        }else if(touchpad2.getKnobPercentX() < 0){
+            if(touchpad2.getKnobPercentY() > 0){
+                rotation =(float) -(Math.atan(touchpad2.getKnobPercentX() / touchpad2.getKnobPercentY()) * 180 / Math.PI);
+            }else if(touchpad2.getKnobPercentY() < 0){
+                rotation =(float) -(-180 + Math.atan(touchpad2.getKnobPercentX() / touchpad2.getKnobPercentY()) * 180 / Math.PI);
+
+            }
+        }
+        blockSprite.setRotation(rotation);
+        
         //Draw
         batch.begin();
         blockSprite.draw(batch);
