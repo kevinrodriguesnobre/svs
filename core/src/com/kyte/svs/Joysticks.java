@@ -101,12 +101,8 @@ public class Joysticks {
     /**
      * Zeichnet die beiden Joysticks
      */
-    public void renderJoysticks() {
-        Gdx.gl.glClearColor(0.294f, 0.294f, 0.294f, 1f);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        camera.update();
-
-
+    public void renderJoysticks()
+    {
         camera.update();
         Gdx.gl.glClearColor(0.294f, 0.294f, 0.294f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -144,7 +140,7 @@ public class Joysticks {
 
 
 
-    public float getNewRotation(Sprite sprite)
+    public float getNewRotation(float rot)
     {
         return 0;
     }

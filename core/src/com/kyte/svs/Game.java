@@ -6,37 +6,26 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 
+
 /**
- * Created by Yanneck on 29.02.2016.
+ * Haupt-Spielklasse
  */
 public class Game implements ApplicationListener {
 
 
-
-
-
-
-
-
-
     private Sprite _playerSprite;
-    World _world;
-    Player _player;
-    Joysticks _joysticks;
+    private World _world;
+    private Joysticks _joysticks;
+
+    public Game() {
+        _world = new World();
+        _joysticks = new Joysticks();
+    }
 
     @Override
     public void create()
     {
-        Texture texture = new Texture(Gdx.files.internal("data/Player.png"));
-        _playerSprite = new Sprite(texture, 20, 20, 50, 50);
 
-        _world = new World();
-        TiledMapTileLayer collisionLayer = (TiledMapTileLayer)_world.getCollisionLayer();
-
-        _player = new Player(_playerSprite,collisionLayer);
-        _world.set_player(_player);
-
-        _joysticks = new Joysticks();
     }
 
     @Override
@@ -47,7 +36,8 @@ public class Game implements ApplicationListener {
     @Override
     public void render()
     {
-        _world.getPlayer().setRotation(_world.getPlayer().getRotation());
+        float tmpRot = _world.getPlayer().getRotation();
+        _world.getPlayer().setRotation(_joysticks.getNewRotation(tmpRot));
 
 
         _joysticks.renderJoysticks();

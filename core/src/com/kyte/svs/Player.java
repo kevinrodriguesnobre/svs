@@ -13,15 +13,21 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
  */
 public class Player extends Character
 {
-    TiledMapTileLayer collisionLayer;
+    private float _rotation;
 
-    public Player(Sprite sprite, TiledMapTileLayer collisionLayer)
+    public Player(Sprite sprite)
     {
         super(sprite);
+        _rotation = 0;
     }
 
     public void setRotation()
     {
 
+    }
+
+    public float getRotation()
+    {
+        return _rotation;
     }
 }
