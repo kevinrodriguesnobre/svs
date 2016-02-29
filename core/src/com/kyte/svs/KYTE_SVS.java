@@ -4,6 +4,7 @@ import com.badlogic.gdx.*;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -12,6 +13,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.badlogic.gdx.utils.Scaling;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.ScalingViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 
 
 /**
@@ -20,6 +25,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 public class KYTE_SVS implements ApplicationListener {
 
     private OrthographicCamera camera;
+    private Viewport viewport;
     private Stage stage;
     private SpriteBatch batch;
     private Touchpad touchpad;
@@ -37,9 +43,12 @@ public class KYTE_SVS implements ApplicationListener {
 
         batch = new SpriteBatch();
         //Create camera
-        float aspectRatio = (float) Gdx.graphics.getWidth() / (float) Gdx.graphics.getHeight();
+        /*float aspectRatio = (float) Gdx.graphics.getWidth() / (float) ;
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, 10f * aspectRatio, 10f);
+        camera.setToOrtho(false, 10f * aspectRatio, 10f); */
+        camera = new OrthographicCamera();
+        //viewport = new FitViewport(800, 480, camera);
+        viewport = new ScalingViewport(Scaling.fill, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), camera);
 
         //Create a touchpad skin
         touchpadSkin = new Skin();
@@ -61,8 +70,7 @@ public class KYTE_SVS implements ApplicationListener {
         touchpad.setBounds(15, 15, 100, 100);
 
         touchpad2 = new Touchpad(0, touchpadStyle);
-        touchpad2.setBounds(600, 15, 200, 200);
-
+        touchpad2.setBounds(viewport.getWorldWidth()-viewport.getWorldHeight()/3, 15, viewport.getWorldHeight()/3, viewport.getWorldHeight()/3);
         //Create a Stage and add TouchPad
         stage = new Stage();
         stage.addActor(touchpad);
@@ -100,7 +108,7 @@ public class KYTE_SVS implements ApplicationListener {
         blockSprite.setX(blockSprite.getX() + touchpad.getKnobPercentX() * blockSpeed);
         blockSprite.setY(blockSprite.getY() + touchpad.getKnobPercentY() * blockSpeed);
 
-        float rotation = 0f;
+        float rotation = blockSprite.getRotation();
         if(touchpad2.getKnobPercentX() > 0){
             if(touchpad2.getKnobPercentY() > 0){
                 rotation =(float) (-Math.atan(touchpad2.getKnobPercentX() / touchpad2.getKnobPercentY()) * 180 / Math.PI);
