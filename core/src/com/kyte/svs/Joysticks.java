@@ -22,7 +22,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 /**
  * Created by Yanneck dem Chef 24.02.2016 17:17 Uhr
  */
-public class KYTE_SVS implements ApplicationListener {
+public class Joysticks {
 
     private OrthographicCamera camera;
     private Viewport viewport;
@@ -38,9 +38,9 @@ public class KYTE_SVS implements ApplicationListener {
     private Sprite blockSprite;
     private float blockSpeed;
 
-    @Override
-    public void create() {
 
+    public Joysticks()
+    {
         batch = new SpriteBatch();
         //Create camera
         /*float aspectRatio = (float) Gdx.graphics.getWidth() / (float) ;
@@ -87,23 +87,13 @@ public class KYTE_SVS implements ApplicationListener {
         blockSpeed = 10;
     }
 
-
-    @Override
-    public void dispose() {
-
-
-    }
-
-    @Override
-    public void render() {
+    /**
+     * Zeichnet die beiden Joysticks
+     */
+    public void renderJoysticks() {
         Gdx.gl.glClearColor(0.294f, 0.294f, 0.294f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         camera.update();
-
-        //Move blockSprite with TouchPad
-        double d = Math.atan2(touchpad.getKnobY(), touchpad.getKnobX());
-        float degree = (float) d;
-
 
         blockSprite.setX(blockSprite.getX() + touchpad.getKnobPercentX() * blockSpeed);
         blockSprite.setY(blockSprite.getY() + touchpad.getKnobPercentY() * blockSpeed);
@@ -135,16 +125,9 @@ public class KYTE_SVS implements ApplicationListener {
 
     }
 
-    @Override
-    public void resize(int width, int height) {
-
+    public float getNewRotation(Sprite sprite)
+    {
+        return 0;
     }
 
-    @Override
-    public void pause() {
-    }
-
-    @Override
-    public void resume() {
-    }
 }

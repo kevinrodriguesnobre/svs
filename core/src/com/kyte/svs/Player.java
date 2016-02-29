@@ -1,6 +1,7 @@
 package com.kyte.svs;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 
 /**
  * Created by Yanneck on 29.02.2016.
@@ -10,10 +11,17 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
  * o.ä..
  *
  */
-public class Player extends Sprite
+public class Player extends Character
 {
-    public Player(Sprite sprite)
+    TiledMapTileLayer collisionLayer;
+
+    public Player(Sprite sprite, TiledMapTileLayer collisionLayer)
     {
         super(sprite);
+    }
+
+    public void setRotation()
+    {
+
     }
 }
