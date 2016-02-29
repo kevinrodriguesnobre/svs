@@ -10,7 +10,7 @@ public class AndroidLauncher extends AndroidApplication {
 	protected void onCreate (Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
-		initialize(new KYTE_SVS(), config);
+		initialize(new Game(), config);
 		System.out.print("Evgenij stinkt des todes #ih");
 	}
 }
