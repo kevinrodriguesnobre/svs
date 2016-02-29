@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="32" height="32" tilewidth="32" tileheight="32" nextobjectid="1">
+ <tileset firstgid="1" name="tileset" tilewidth="32" tileheight="32" tilecount="256" columns="16">
+  <image source="tileset.png" width="512" height="512"/>
+ </tileset>
+ <layer name="Kachelebene 2" width="32" height="32">
+  <data encoding="base64" compression="zlib">
+   eJxbxsDAsIxKeAcQ76SieaTiE0B8cgTbP9LDf9T/I9v/Q9F+WJxRA5MT/zA3UwMPdPgPdPoftX/U/lH7R+0fKPsHuvwdxaN4FA8tDAAX+qC3
+  </data>
+ </layer>
+ <objectgroup name="objects"/>
+ <layer name="Gegenstände" width="32" height="32">
+  <data encoding="base64" compression="zlib">
+   eJzt1b9OwlAUx3EKwg4CO393FdhBYFf+7IDwBvgG8gg+g4HdQWZgkRFYcBQnIws46peVUHLb294Qcn/JZ2l6zrlNm1OPRzwGvPDhAn4ELNTLJogQLhFGBFG8KJofQxwJJJFC2oU5Zs9zhWvcIIMsci7MN0seBdyiiBLKCuff4R4VVFFDXeH8Bppo4QFtdBzoO8IYkyP3HPvGP/AuMMesxwxzLAR6HMo3ljZrd/nECl82aqfo4lFi/gZb/Nqsf0LvwHWRvfTqoD4G+MFa8OzPDnrDEH+7xobgAXSUR9X/0m5O/XxWIrLb3Yzsbt+P1Xcjs9udiOxu19HR0TnX/APziEcG
+  </data>
+ </layer>
+</map>
