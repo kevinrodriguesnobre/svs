@@ -45,7 +45,7 @@ public class Joysticks {
     public Joysticks()
     {
         touchpadSkin = new Skin();
-        touchpadSkin.add("Erste", new Texture(Gdx.files.internal("badlogic.jpg")));
+        touchpadSkin.add("Erste", new Texture(Gdx.files.internal("data/touchBackground.png")));
 
         touchpadSkin.add("Zweite", new Texture(Gdx.files.internal("data/touchKnob.png")));
 
@@ -83,8 +83,7 @@ public class Joysticks {
      * @return  neue Rotation
      */
     public float getRotation(float rot)
-    {return 0;
-    /*
+    {
         float rotation = rot;
         if (touchpad2.getKnobPercentX() > 0) {
             if (touchpad2.getKnobPercentY() > 0) {
@@ -100,7 +99,7 @@ public class Joysticks {
 
             }
         }
-        return rotation;*/
+        return rotation;
     }
 
 
@@ -110,7 +109,7 @@ public class Joysticks {
      */
     public Vector2 getPositionVector()
     {
-        return new Vector2(0,0);//return new Vector2(touchpad.getKnobPercentX(),touchpad.getKnobPercentY());
+        return new Vector2(touchpad.getKnobPercentX(),touchpad.getKnobPercentY());
     }
 
 }

@@ -16,19 +16,18 @@ import com.badlogic.gdx.math.Vector2;
  */
 public class Player extends Character
 {
-   // Texture texture = new Texture(Gdx.files.internal("data/Player.png"));
-    //Sprite _playerSprite = new Sprite(texture, 20, 20, 50, 50);
-    int speed = 10;
+    float speed = 0.0000003f;
 
-    public Player()
+    public Player(Sprite sprite)
     {
-        super(new Sprite());
-        //this.set(_playerSprite);
+        super(sprite);
     }
 
-    public void move(Vector2 direction)
+    public void move(Vector2 direction, float delta)
     {
-        super.setPosition(direction.x * speed+ this.getX(),direction.y * speed + this.getY());
+        float x = delta * speed * direction.x;
+        float y = delta * speed * direction.y;
+        super.setPosition(x + this.getX(),y + this.getY());
     }
 
 
