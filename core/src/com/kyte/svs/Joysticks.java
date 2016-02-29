@@ -25,77 +25,46 @@ import com.badlogic.gdx.utils.viewport.ScalingViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
+import sun.rmi.runtime.Log;
 
 /**
  * Created by Yanneck dem Chef 24.02.2016 17:17 Uhr
  */
 public class Joysticks {
 
-    private OrthographicCamera camera;
     private Stage stage;
-    private SpriteBatch batch;
     private Touchpad touchpad;
     private Touchpad touchpad2;
     private Touchpad.TouchpadStyle touchpadStyle;
     private Skin touchpadSkin;
     private Drawable touchBackground;
     private Drawable touchKnob;
-    private Texture blockTexture;
-    private Sprite blockSprite;
-    private float blockSpeed;
-    private Rectangle viewport;
-    private static final int VIRTUAL_WIDTH = 480;
-    private static final int VIRTUAL_HEIGHT = 320;
-    private static final float ASPECT_RATIO =
-            (float) VIRTUAL_WIDTH / (float) VIRTUAL_HEIGHT;
 
 
-    public Joysticks() {
-        batch = new SpriteBatch();
-        batch.getProjectionMatrix().setToOrtho2D(0, 0, 400, 300);
 
-        //Create camera
-        /*float aspectRatio = (float) Gdx.graphics.getWidth() / (float) ;
-        camera = new OrthographicCamera();
-        camera.setToOrtho(false, 10f * aspectRatio, 10f); */
-        camera = new OrthographicCamera(VIRTUAL_WIDTH, VIRTUAL_HEIGHT);
-
-        //Create a touchpad skin
+    public Joysticks()
+    {
         touchpadSkin = new Skin();
-        //Set background image
-        touchpadSkin.add("touchBackground", new Texture("data/touchBackground.png"));
-        //Set knob image
-        touchpadSkin.add("touchKnob", new Texture("data/touchKnob.png"));
-        //Create TouchPad Style
+        touchpadSkin.add("Erste", new Texture(Gdx.files.internal("badlogic.jpg")));
+
+        touchpadSkin.add("Zweite", new Texture(Gdx.files.internal("data/touchKnob.png")));
+
         touchpadStyle = new Touchpad.TouchpadStyle();
-        //Create Drawable's from TouchPad skin
-        touchBackground = touchpadSkin.getDrawable("touchBackground");
-        touchKnob = touchpadSkin.getDrawable("touchKnob");
-        //Apply the Drawables to the TouchPad Style
+        touchBackground = touchpadSkin.getDrawable("Erste");
+        touchKnob = touchpadSkin.getDrawable("Zweite");
         touchpadStyle.background = touchBackground;
         touchpadStyle.knob = touchKnob;
-        //Create new TouchPad with the created style
         touchpad = new Touchpad(10, touchpadStyle);
-        //setBounds(x,y,width,height)
         touchpad.setBounds(15, 15, 100, 100);
 
         touchpad2 = new Touchpad(0, touchpadStyle);
         touchpad2.setBounds(480, 15, 100, 100);
-        //Create a Stage and add TouchPad
         stage = new Stage();
-        //stage.setViewport(new ExtendViewport(800, 800));
         stage.addActor(touchpad);
         stage.addActor(touchpad2);
 
         Gdx.input.setInputProcessor(stage);
 
-        //Create block sprite
-        blockTexture = new Texture(Gdx.files.internal("data/Player.png"));
-        blockSprite = new Sprite(blockTexture);
-        //Set position to centre of the screen
-        blockSprite.setPosition(1, 1);
-
-        blockSpeed = 10;
     }
 
     /**
@@ -103,14 +72,20 @@ public class Joysticks {
      */
     public void renderJoysticks()
     {
-        camera.update();
-        Gdx.gl.glClearColor(0.294f, 0.294f, 0.294f, 1f);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        stage.act(Gdx.graphics.getDeltaTime());
+        stage.draw();
+    }
 
-        blockSprite.setX(blockSprite.getX() + touchpad.getKnobPercentX() * blockSpeed);
-        blockSprite.setY(blockSprite.getY() + touchpad.getKnobPercentY() * blockSpeed);
 
-        float rotation = blockSprite.getRotation();
+    /**
+     * Gibt die neue Rotation zurück
+     * @param rot   aktuelle Rotation
+     * @return  neue Rotation
+     */
+    public float getRotation(float rot)
+    {return 0;
+    /*
+        float rotation = rot;
         if (touchpad2.getKnobPercentX() > 0) {
             if (touchpad2.getKnobPercentY() > 0) {
                 rotation = (float) (-Math.atan(touchpad2.getKnobPercentX() / touchpad2.getKnobPercentY()) * 180 / Math.PI);
@@ -125,24 +100,17 @@ public class Joysticks {
 
             }
         }
-        blockSprite.setRotation(rotation);
-
-        //Draw
-        batch.begin();
-        blockSprite.draw(batch);
-        batch.end();
-        stage.act(Gdx.graphics.getDeltaTime());
-        stage.draw();
+        return rotation;*/
     }
 
 
-
-
-
-
-    public float getNewRotation(float rot)
+    /**
+     * Gibt einen Vector mit X und Y zurück
+     * @return
+     */
+    public Vector2 getPositionVector()
     {
-        return 0;
+        return new Vector2(0,0);//return new Vector2(touchpad.getKnobPercentX(),touchpad.getKnobPercentY());
     }
 
 }

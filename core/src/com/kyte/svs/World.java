@@ -27,29 +27,10 @@ public class World {
 
 
     public World() {
-        set_player();
-        createMap();
+        //createMap();
     }
 
 
-
-    public void set_player() {
-
-        Texture texture = new Texture(Gdx.files.internal("data/Player.png"));
-        Sprite _playerSprite = new Sprite(texture, 20, 20, 50, 50);
-
-        _player = new Player(_playerSprite);
-
-        // Setzt übergebenen Spieler zu Spieler auf der Map
-        // FEHLT
-        Vector3 clickCoordinates = new Vector3(10, 10, 0);
-        Vector3 position = camera.unproject(clickCoordinates);
-
-        // Hier fehlt getCollisionLayer
-        // TextureMapObject character = (TextureMapObject) getCollisionLayer().getObjects().get(0);
-        _player.setX(position.x);
-        _player.setY(position.y);
-    }
 
 
     public void createMap() {
