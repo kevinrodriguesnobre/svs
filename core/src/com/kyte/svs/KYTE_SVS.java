@@ -2,8 +2,11 @@ package com.kyte.svs;
 
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.ApplicationListener;
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Mesh;
 import com.badlogic.gdx.graphics.GL20;
+
 import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -50,13 +53,13 @@ public class KYTE_SVS implements ApplicationListener {
     public void create() {
 
         batch = new SpriteBatch();
+        batch.getProjectionMatrix().setToOrtho2D(0, 0, 400, 300);
+
         //Create camera
         /*float aspectRatio = (float) Gdx.graphics.getWidth() / (float) ;
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 10f * aspectRatio, 10f); */
-        camera = new OrthographicCamera();
-        //viewport = new FitViewport(800, 480, camera);
-        //viewport = new ScalingViewport(Scaling.fill, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), camera);
+        camera = new OrthographicCamera(VIRTUAL_WIDTH, VIRTUAL_HEIGHT);
 
         //Create a touchpad skin
         touchpadSkin = new Skin();
@@ -91,7 +94,7 @@ public class KYTE_SVS implements ApplicationListener {
         blockTexture = new Texture(Gdx.files.internal("data/Player.png"));
         blockSprite = new Sprite(blockTexture);
         //Set position to centre of the screen
-        blockSprite.setPosition(Gdx.graphics.getWidth() / 2 - blockSprite.getWidth() / 2, Gdx.graphics.getHeight() / 2 - blockSprite.getHeight() / 2);
+        blockSprite.setPosition(1, 1);
 
         blockSpeed = 10;
     }
@@ -105,17 +108,9 @@ public class KYTE_SVS implements ApplicationListener {
 
     @Override
     public void render() {
+        camera.update();
         Gdx.gl.glClearColor(0.294f, 0.294f, 0.294f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        camera.update();
-        // set viewport
-        Gdx.gl.glViewport((int) viewport.x, (int) viewport.y,
-                (int) viewport.width, (int) viewport.height);
-
-        //Move blockSprite with TouchPad
-        double d = Math.atan2(touchpad.getKnobY(), touchpad.getKnobX());
-        float degree = (float) d;
-
 
         blockSprite.setX(blockSprite.getX() + touchpad.getKnobPercentX() * blockSpeed);
         blockSprite.setY(blockSprite.getY() + touchpad.getKnobPercentY() * blockSpeed);
@@ -149,29 +144,7 @@ public class KYTE_SVS implements ApplicationListener {
 
     @Override
     public void resize(int width, int height) {
-        // calculate new viewport
-        float aspectRatio = (float) width / (float) height;
-        float scale = 1f;
-        Vector2 crop = new Vector2(0f, 0f);
 
-        if(aspectRatio > ASPECT_RATIO)
-        {
-            scale = (float)height/(float)VIRTUAL_HEIGHT;
-            crop.x = (width - VIRTUAL_WIDTH*scale)/2f;
-        }
-        else if(aspectRatio < ASPECT_RATIO)
-        {
-            scale = (float)width/(float)VIRTUAL_WIDTH;
-            crop.y = (height - VIRTUAL_HEIGHT*scale)/2f;
-        }
-        else
-        {
-            scale = (float)width/(float)VIRTUAL_WIDTH;
-        }
-
-        float w = (float)VIRTUAL_WIDTH*scale;
-        float h = (float)VIRTUAL_HEIGHT*scale;
-        viewport = new Rectangle(crop.x, crop.y, w, h);
     }
 
     @Override
