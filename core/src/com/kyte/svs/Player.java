@@ -16,7 +16,7 @@ import com.badlogic.gdx.math.Vector2;
  */
 public class Player extends Character
 {
-    float speed = 0.0000003f;
+    float speed = 120;
 
     public Player(Sprite sprite)
     {

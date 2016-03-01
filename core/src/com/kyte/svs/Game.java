@@ -13,6 +13,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+
 import java.util.Vector;
 
 
@@ -31,13 +32,13 @@ public class Game extends ScreenAdapter {
     private static final int VIRTUAL_WIDTH = 480;
     private static final int VIRTUAL_HEIGHT = 320;
     private START game;
-   private Rectangle backBounds;
-  private Vector3 touchPoint;
+    private Rectangle backBounds;
+    private Vector3 touchPoint;
 
 
-    public Game(START game){
+    public Game(START game) {
         this.game = game;
-        backBounds = new Rectangle(0, VIRTUAL_HEIGHT/3, 50, 50);
+        backBounds = new Rectangle(0, VIRTUAL_HEIGHT / 3, 50, 50);
         touchPoint = new Vector3();
         sr = new ShapeRenderer();
         sr.setColor(0, 1, 0, 1);
@@ -45,9 +46,8 @@ public class Game extends ScreenAdapter {
         Texture texture = new Texture(Gdx.files.internal("data/Player.png"));
         Sprite _playerSprite = new Sprite(texture, 32, 32);
         _camera = new OrthographicCamera(VIRTUAL_WIDTH, VIRTUAL_HEIGHT);
-        _camera.position.set(VIRTUAL_WIDTH / 2, VIRTUAL_HEIGHT / 2, 0);
         _player = new Player(_playerSprite);
-        _player.setPosition(VIRTUAL_WIDTH/2, VIRTUAL_HEIGHT/2);
+        _player.setPosition(VIRTUAL_WIDTH, VIRTUAL_HEIGHT);
         _camera.position.set(_player.getX() + VIRTUAL_WIDTH / 2, _player.getY() + VIRTUAL_HEIGHT / 2, 1);
         _camera.update();
         _world = new World(_player, _camera);
@@ -62,8 +62,7 @@ public class Game extends ScreenAdapter {
     }
 
     @Override
-    public void render(float deltax)
-    {
+    public void render(float deltax) {
         batch.setProjectionMatrix(_camera.combined);
         sr.setProjectionMatrix(_camera.combined);
 
@@ -75,15 +74,17 @@ public class Game extends ScreenAdapter {
         float tmpRot = _player.getRotation();
         _player.setRotation(_joysticks.getRotation(tmpRot));
 
-        _player.move(_joysticks.getPositionVector(), 1E7f);//, delta);
+        _player.move(_joysticks.getPositionVector(), deltax);//, delta);
 
         update();
         draw();
 
         //_world.renderMap();
-        if (_player.getX() - VIRTUAL_WIDTH/2>= 0 && _player.getY() - VIRTUAL_HEIGHT/2 + 50>= 0){
-            _camera.position.set(_player.getX(), _player.getY(), 1);
+        if (_player.getX() - VIRTUAL_WIDTH / 2 >= 0) {
+            _camera.position.set(_player.getX(), _camera.position.y, 1);
         }
+        if (_player.getY() - VIRTUAL_HEIGHT / 2 >= 0)
+            _camera.position.set(_camera.position.x, _player.getY(), 1);
         _camera.update();
         sr.begin(ShapeRenderer.ShapeType.Filled);
         //sr.circle(_player.getX(), _player.getY(), 30);
@@ -104,15 +105,15 @@ public class Game extends ScreenAdapter {
             if (backBounds.contains(touchPoint.x, touchPoint.y)) {
                 game.setScreen(new MainMenu(game));
                 return;
-            }}
+            }
+        }
     }
 
-    public void draw(){
+    public void draw() {
         batch.begin();
-        batch.draw(new Texture(Gdx.files.internal("data/backbutton.png")), 0, VIRTUAL_HEIGHT /3, 50, 50);
+        batch.draw(new Texture(Gdx.files.internal("data/backbutton.png")), 0, VIRTUAL_HEIGHT / 3, 50, 50);
         batch.end();
     }
-
 
 
     @Override
