@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
@@ -38,7 +39,9 @@ public class Game extends ApplicationAdapter {
         Sprite _playerSprite = new Sprite(texture, 32, 32);
         _camera = new CameraManager(VIRTUAL_WIDTH, VIRTUAL_HEIGHT);
         _player = new Player(_playerSprite);
-        _player.setPosition(1, 1);
+        _player.setPosition(VIRTUAL_WIDTH/2, VIRTUAL_HEIGHT/2);
+        _camera.position.set(_player.getX() + VIRTUAL_WIDTH / 2, _player.getY() + VIRTUAL_HEIGHT / 2, 1);
+        _camera.update();
         _world = new World(_player, _camera);
         batch = new SpriteBatch();
         batch.getProjectionMatrix().setToOrtho2D(0, 0, VIRTUAL_WIDTH, VIRTUAL_HEIGHT);
@@ -64,14 +67,17 @@ public class Game extends ApplicationAdapter {
         float tmpRot = _player.getRotation();
         _player.setRotation(_joysticks.getRotation(tmpRot));
 
-        _player.move(_joysticks.getPositionVector(), delta);
-        _camera.position.set(_player.getX(), _player.getY(), 1);
+        _player.move(_joysticks.getPositionVector(), 1E7f);//, delta);
+
+        if (_player.getX() - VIRTUAL_WIDTH/2>= 0 && _player.getY() - VIRTUAL_HEIGHT/2 + 50>= 0){
+            _camera.position.set(_player.getX(), _player.getY(), 1);
+        }
         _camera.update();
         sr.begin(ShapeRenderer.ShapeType.Filled);
         //sr.circle(_player.getX(), _player.getY(), 30);
         sr.circle(10, 10, 30);
+
         sr.end();
-        System.out.println(_camera.position.x);
 
         // Zeichnen der grafischen Oberfläche
         _world.renderMap();

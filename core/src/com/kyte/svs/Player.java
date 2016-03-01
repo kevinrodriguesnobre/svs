@@ -27,8 +27,9 @@ public class Player extends Character
     {
         float x = delta * speed * direction.x;
         float y = delta * speed * direction.y;
+        if(getX() + x < 0 || getY() + y < 0)
+            return;
         super.setPosition(x + this.getX(),y + this.getY());
-
     }
 
 
