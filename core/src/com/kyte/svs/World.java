@@ -4,68 +4,85 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.MapLayer;
+import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.TextureMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
-import com.badlogic.gdx.math.Vector3;
 
 /**
  * Enthält die Karte, Spieler, Mobs usw.
  */
 public class World {
-    TiledMap tiledMap;
-    OrthographicCamera camera;
-    TiledMapRenderer tiledMapRenderer;
-    Texture texture;
-    MapLayer objectLayer;
+    TiledMap _tiledMap;
+    OrthographicCamera _camera;
+    TiledMapRenderer _tiledMapRenderer;
+    Texture _texture;
+    MapLayer _objectLayer;
     TextureRegion textureRegion;
     Player _player;
+    TextureMapObject _playerTMO;
 
-
-    public World() {
-        //createMap();
+    public World(Player player, OrthographicCamera camera)
+    {
+        _player = player;
+        _camera = camera;
+        createMap();
     }
 
 
 
 
-    public void createMap() {
-        float w = Gdx.graphics.getWidth() / 3;
-        float h = Gdx.graphics.getHeight() / 4;
+    public void createMap()
+    {
+        _tiledMap = new TmxMapLoader().load("ersteMap.tmx");
+        _tiledMapRenderer = new OrthogonalTiledMapRendererWithSprites(_tiledMap);
 
-        camera = new OrthographicCamera();
-        camera.setToOrtho(false, w, h);
-        camera.update();
-        tiledMap = new TmxMapLoader().load("ersteMap.tmx");
-        tiledMapRenderer = new OrthogonalTiledMapRendererWithSprites(tiledMap);
+        _texture = _player.getTexture();
 
-        texture = new Texture(Gdx.files.internal("data/Player.png"));
+        _objectLayer = _tiledMap.getLayers().get("objects");
+        textureRegion = new TextureRegion(_texture, 32, 32);
 
-        objectLayer = tiledMap.getLayers().get("objects");
-        textureRegion = new TextureRegion(texture, 64, 64);
+        TextureMapObject _playerTMO = new TextureMapObject(textureRegion);
+        _playerTMO.setName("Player");
+        _playerTMO.setX(_player.getX());
+        _playerTMO.setY(_player.getY());
+        _playerTMO.setRotation(3.49f);
+        _objectLayer.getObjects().add(_playerTMO);
 
-        TextureMapObject tmo = new TextureMapObject(textureRegion);
-        tmo.setX(0);
-        tmo.setY(0);
-        objectLayer.getObjects().add(tmo);
+
     }
 
-    public void renderMap() {
+    public void renderMap()
+    {
         Gdx.gl.glClearColor(1, 0, 0, 1);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        camera.update();
-        tiledMapRenderer.setView(camera);
-        tiledMapRenderer.render();
+        //_camera.update();
+
+        updatePlayer();
+        _tiledMapRenderer.setView(_camera);
+        _tiledMapRenderer.render();
     }
 
+    /**
+     * Zieht das TextureMapObjekt für den Spieler aus dem ObjectLayer und updatet seine
+     * Position und Rotation
+     */
+    private void updatePlayer()
+    {
+        TextureMapObject tmpTMO = (TextureMapObject) _objectLayer.getObjects().get("Player");
 
-    public Player getPlayer() {
-        return _player;
+        tmpTMO.setX(_player.getX());
+        tmpTMO.setY(_player.getY());
+
+       // float radian = _player.getRotation() * (float)(Math.PI / 180);
+
+       float radian = _player.getRotation();
+
+        tmpTMO.setRotation(radian);
     }
 }
 

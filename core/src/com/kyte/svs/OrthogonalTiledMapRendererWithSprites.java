@@ -7,9 +7,6 @@ import com.badlogic.gdx.maps.objects.TextureMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 
-/**
- * Created by Yanneck on 25.02.2016.
- */
 public class OrthogonalTiledMapRendererWithSprites extends OrthogonalTiledMapRenderer {
 
     public OrthogonalTiledMapRendererWithSprites(TiledMap map)
@@ -21,7 +18,9 @@ public class OrthogonalTiledMapRendererWithSprites extends OrthogonalTiledMapRen
     public void renderObject(MapObject object) {
         if(object instanceof TextureMapObject) {
             TextureMapObject textureObj = (TextureMapObject) object;
-            this.getBatch().draw(textureObj.getTextureRegion(), textureObj.getX(), textureObj.getY());
+            //this.getBatch().draw(textureObj.getTextureRegion(), textureObj.getX(), textureObj.getY());
+            this.getBatch().draw(textureObj.getTextureRegion(), textureObj.getX(), textureObj.getY(), textureObj.getOriginX(), textureObj.getOriginY(),
+                    32f, 32f, textureObj.getScaleX(), textureObj.getScaleY(), textureObj.getRotation());
         }
     }
 }

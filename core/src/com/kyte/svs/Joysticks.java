@@ -78,6 +78,7 @@ public class Joysticks {
      */
     public void renderJoysticks()
     {
+
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
     }
@@ -111,7 +112,7 @@ public class Joysticks {
 
     /**
      * Gibt einen Vector mit X und Y zurück
-     * @return
+     * @return Vector mit X und Y Wert
      */
     public Vector2 getPositionVector()
     {

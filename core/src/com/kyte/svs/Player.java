@@ -28,6 +28,7 @@ public class Player extends Character
         float x = delta * speed * direction.x;
         float y = delta * speed * direction.y;
         super.setPosition(x + this.getX(),y + this.getY());
+
     }
 
 

@@ -22,7 +22,7 @@ public class Game extends ApplicationAdapter {
     private Joysticks _joysticks;
     private Player _player;
     private OrthographicCamera _camera;
-    private SpriteBatch batch;
+    // private SpriteBatch batch;
     private static final int VIRTUAL_WIDTH = 480;
     private static final int VIRTUAL_HEIGHT = 320;
 
@@ -35,9 +35,9 @@ public class Game extends ApplicationAdapter {
         _camera = new CameraManager(VIRTUAL_WIDTH, VIRTUAL_HEIGHT);
         _player = new Player(_playerSprite);
         _player.setPosition(1, 1);
-        _world = new World();
-        batch = new SpriteBatch();
-        batch.getProjectionMatrix().setToOrtho2D(0, 0, VIRTUAL_WIDTH, VIRTUAL_HEIGHT);
+        _world = new World(_player, _camera);
+        //batch = new SpriteBatch();
+        //batch.getProjectionMatrix().setToOrtho2D(0, 0, VIRTUAL_WIDTH, VIRTUAL_HEIGHT);
         _joysticks = new Joysticks();
     }
 
@@ -51,19 +51,20 @@ public class Game extends ApplicationAdapter {
     {
         float delta = System.nanoTime() - endTime;
         _camera.update();
-        Gdx.gl.glClearColor(1, 0, 0, 1);
+        Gdx.gl.glClearColor(0, 0, 1, 0);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        // Rotation des Spielers wird aktualisiert
         float tmpRot = _player.getRotation();
         _player.setRotation(_joysticks.getRotation(tmpRot));
 
+        // Position des Spielers wird aktualisiert
         _player.move(_joysticks.getPositionVector(), delta);
 
-        //_world.renderMap();
+        // Zeichnen der grafischen Oberfläche
+        _world.renderMap();
         _joysticks.renderJoysticks();
-        batch.begin();
-        //batch.draw(img, 0, 0);
-        _player.draw(batch);
-        batch.end();
+
         endTime = System.nanoTime();
     }
 
