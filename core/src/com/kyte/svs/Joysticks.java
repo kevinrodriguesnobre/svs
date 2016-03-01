@@ -44,6 +44,9 @@ public class Joysticks {
 
     public Joysticks()
     {
+        float width = Gdx.graphics.getHeight();
+        float touchpadSize = width / 3;
+        float height = Gdx.graphics.getWidth();
         touchpadSkin = new Skin();
         touchpadSkin.add("Erste", new Texture(Gdx.files.internal("data/touchBackground.png")));
 
@@ -53,12 +56,15 @@ public class Joysticks {
         touchBackground = touchpadSkin.getDrawable("Erste");
         touchKnob = touchpadSkin.getDrawable("Zweite");
         touchpadStyle.background = touchBackground;
+        touchKnob.setMinHeight(touchpadSize / 4);
+        touchKnob.setMinWidth(touchpadSize/4);
         touchpadStyle.knob = touchKnob;
-        touchpad = new Touchpad(10, touchpadStyle);
-        touchpad.setBounds(15, 15, 100, 100);
+
+        touchpad = new Touchpad(0, touchpadStyle);
+        touchpad.setBounds(0.2f * touchpadSize, touchpadSize/5, touchpadSize, touchpadSize);
 
         touchpad2 = new Touchpad(0, touchpadStyle);
-        touchpad2.setBounds(480, 15, 100, 100);
+        touchpad2.setBounds(height - 1.2f * touchpadSize, touchpadSize/5, touchpadSize, touchpadSize);
         stage = new Stage();
         stage.addActor(touchpad);
         stage.addActor(touchpad2);
