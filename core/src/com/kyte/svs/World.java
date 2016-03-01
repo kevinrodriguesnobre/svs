@@ -78,6 +78,8 @@ public class World {
         tmpTMO.setX(_player.getX());
         tmpTMO.setY(_player.getY());
 
+        tmpTMO.setOriginX(_player.getOriginX());
+        tmpTMO.setOriginY(_player.getOriginY());
        // float radian = _player.getRotation() * (float)(Math.PI / 180);
 
        float radian = _player.getRotation();
