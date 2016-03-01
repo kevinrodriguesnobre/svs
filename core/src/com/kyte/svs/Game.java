@@ -1,7 +1,5 @@
 package com.kyte.svs;
 
-import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
@@ -9,12 +7,8 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-
-import java.util.Vector;
+import com.badlogic.gdx.math.Vector3;
 
 
 /**
@@ -22,13 +16,11 @@ import java.util.Vector;
  */
 public class Game extends ScreenAdapter {
 
-    float endTime;
     private World _world;
     private Joysticks _joysticks;
     private Player _player;
     private OrthographicCamera _camera;
     private SpriteBatch batch;
-    private ShapeRenderer sr;
     private static final int VIRTUAL_WIDTH = 480;
     private static final int VIRTUAL_HEIGHT = 320;
     private START game;
@@ -40,9 +32,6 @@ public class Game extends ScreenAdapter {
         this.game = game;
         backBounds = new Rectangle(0, VIRTUAL_HEIGHT / 3, 50, 50);
         touchPoint = new Vector3();
-        sr = new ShapeRenderer();
-        sr.setColor(0, 1, 0, 1);
-        endTime = System.nanoTime();
         Texture texture = new Texture(Gdx.files.internal("data/Player.png"));
         Sprite _playerSprite = new Sprite(texture, 32, 32);
         _camera = new OrthographicCamera(VIRTUAL_WIDTH, VIRTUAL_HEIGHT);
@@ -51,6 +40,7 @@ public class Game extends ScreenAdapter {
         _camera.position.set(_player.getX() + VIRTUAL_WIDTH / 2, _player.getY() + VIRTUAL_HEIGHT / 2, 1);
         _camera.update();
         _world = new World(_player, _camera);
+        _player.setCollisionLayer(_world.getCollisonLayer());
         batch = new SpriteBatch();
         batch.getProjectionMatrix().setToOrtho2D(0, 0, VIRTUAL_WIDTH, VIRTUAL_HEIGHT);
         _joysticks = new Joysticks();
@@ -64,9 +54,7 @@ public class Game extends ScreenAdapter {
     @Override
     public void render(float deltax) {
         batch.setProjectionMatrix(_camera.combined);
-        sr.setProjectionMatrix(_camera.combined);
 
-        float delta = System.nanoTime() - endTime;
         Gdx.gl.glClearColor(1, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -76,27 +64,19 @@ public class Game extends ScreenAdapter {
 
         _player.move(_joysticks.getPositionVector(), deltax);//, delta);
 
-        update();
-        draw();
+        //update();
+        //draw();
 
-        //_world.renderMap();
         if (_player.getX() - VIRTUAL_WIDTH / 2 >= 0) {
             _camera.position.set(_player.getX(), _camera.position.y, 1);
         }
         if (_player.getY() - VIRTUAL_HEIGHT / 2 >= 0)
             _camera.position.set(_camera.position.x, _player.getY(), 1);
         _camera.update();
-        sr.begin(ShapeRenderer.ShapeType.Filled);
-        //sr.circle(_player.getX(), _player.getY(), 30);
-        sr.circle(10, 10, 30);
-
-        sr.end();
 
         // Zeichnen der grafischen Oberfläche
         _world.renderMap();
         _joysticks.renderJoysticks();
-
-        endTime = System.nanoTime();
     }
 
     public void update() {

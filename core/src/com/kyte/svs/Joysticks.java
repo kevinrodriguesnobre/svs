@@ -55,6 +55,8 @@ public class Joysticks {
         touchpadStyle = new Touchpad.TouchpadStyle();
         touchBackground = touchpadSkin.getDrawable("Erste");
         touchKnob = touchpadSkin.getDrawable("Zweite");
+
+
         touchpadStyle.background = touchBackground;
         touchKnob.setMinHeight(touchpadSize / 4);
         touchKnob.setMinWidth(touchpadSize/4);
