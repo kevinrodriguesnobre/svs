@@ -2,13 +2,17 @@ package com.kyte.svs;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.ai.steer.SteeringAcceleration;
+import com.badlogic.gdx.ai.steer.SteeringBehavior;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -23,7 +27,8 @@ public class Game extends ScreenAdapter {
     private World _world;
     private Joysticks _joysticks;
     private Player _player;
-    private List<Enemy> _enemyList;
+    private ArrayList<Enemy> _enemyList;
+    private int _enemyAmount = 10;
     private OrthographicCamera _camera;
     private SpriteBatch batch;
     private static final int VIRTUAL_WIDTH = 480;
@@ -37,126 +42,11 @@ public class Game extends ScreenAdapter {
 
         _game = game;
 
-        _enemyList = new List<Enemy>() {
-            @Override
-            public int size() {
-                return 0;
-            }
-
-            @Override
-            public boolean isEmpty() {
-                return false;
-            }
-
-            @Override
-            public boolean contains(Object o) {
-                return false;
-            }
-
-            @Override
-            public Iterator<Enemy> iterator() {
-                return null;
-            }
-
-            @Override
-            public Object[] toArray() {
-                return new Object[0];
-            }
-
-            @Override
-            public <T> T[] toArray(T[] a) {
-                return null;
-            }
-
-            @Override
-            public boolean add(Enemy enemy) {
-                return false;
-            }
-
-            @Override
-            public boolean remove(Object o) {
-                return false;
-            }
-
-            @Override
-            public boolean containsAll(Collection<?> c) {
-                return false;
-            }
-
-            @Override
-            public boolean addAll(Collection<? extends Enemy> c) {
-                return false;
-            }
-
-            @Override
-            public boolean addAll(int index, Collection<? extends Enemy> c) {
-                return false;
-            }
-
-            @Override
-            public boolean removeAll(Collection<?> c) {
-                return false;
-            }
-
-            @Override
-            public boolean retainAll(Collection<?> c) {
-                return false;
-            }
-
-            @Override
-            public void clear() {
-
-            }
-
-            @Override
-            public Enemy get(int index) {
-                return null;
-            }
-
-            @Override
-            public Enemy set(int index, Enemy element) {
-                return null;
-            }
-
-            @Override
-            public void add(int index, Enemy element) {
-
-            }
-
-            @Override
-            public Enemy remove(int index) {
-                return null;
-            }
-
-            @Override
-            public int indexOf(Object o) {
-                return 0;
-            }
-
-            @Override
-            public int lastIndexOf(Object o) {
-                return 0;
-            }
-
-            @Override
-            public ListIterator<Enemy> listIterator() {
-                return null;
-            }
-
-            @Override
-            public ListIterator<Enemy> listIterator(int index) {
-                return null;
-            }
-
-            @Override
-            public List<Enemy> subList(int fromIndex, int toIndex) {
-                return null;
-            }
-        };
-        Enemy enemy = new Enemy();
-        enemy.setX(VIRTUAL_WIDTH-32);
-        enemy.setY(VIRTUAL_HEIGHT-32);
-        _enemyList.add(enemy);
+        _enemyList = new ArrayList<Enemy>();
+        for (int i = 0; i < _enemyAmount; i++) {
+            Enemy enemy = new Enemy();
+            _enemyList.add(enemy);
+        }
 
         _player = new Player();
         _player.setX(VIRTUAL_WIDTH);
@@ -169,7 +59,11 @@ public class Game extends ScreenAdapter {
         _camera.position.set(_player.getX() + VIRTUAL_WIDTH / 2, _player.getY() + VIRTUAL_HEIGHT / 2, 1);
         _camera.update();
 
-        _world = new World(_player, _camera, enemy);
+        _world = new World(_player, _camera, _enemyList);
+        for(Enemy enemy : _enemyList){
+            enemy.setX(_world.getMapLayer().getTileWidth()*32 - (float)Math.random() * _world.getMapLayer().getTileWidth()*32);
+            enemy.setY(_world.getMapLayer().getTileHeight()*32 - (float)Math.random() * _world.getMapLayer().getTileHeight()*32);
+        }
         _player.setCollisionLayer(_world.getCollisonLayer());
 
         batch = new SpriteBatch();
@@ -194,6 +88,13 @@ public class Game extends ScreenAdapter {
         _player.setRotation(_joysticks.getRotation(tmpRot));
         _player.move(_joysticks.getPositionVector(), deltax, _world.getMapLayer());
         _player.setOrigin();
+
+        for(int i=0; i < _enemyList.size();i++){
+            _enemyList.get(i).move(_player);
+        }
+
+        //Enemy enemy = new Enemy();
+        //enemy.move();
 
         //update();
         //draw();

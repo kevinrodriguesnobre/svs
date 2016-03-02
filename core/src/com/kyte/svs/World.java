@@ -12,6 +12,8 @@ import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 
+import java.util.ArrayList;
+
 /**
  * Enthält die Karte, Spieler, Mobs usw.
  */
@@ -24,11 +26,11 @@ public class World {
     TiledMapTileLayer _mapLayer;
     TextureRegion textureRegion;
     Player _player;
-    Enemy _enemy;
+    ArrayList<Enemy> _enemyList;
 
-    public World(Player player, OrthographicCamera camera, Enemy enemy)
+    public World(Player player, OrthographicCamera camera, ArrayList<Enemy> enemyList)
     {
-        _enemy = enemy;
+        _enemyList = enemyList;
         _player = player;
         _camera = camera;
         createMap();
@@ -83,10 +85,12 @@ public class World {
         _playerLayer = _tiledMap.getLayers().get("PlayerLayer");
 
         // stellt die Startposition des Players ein und fügt ihn der Objektebene hinzu
-        _enemy.setName("Enemy");
-        _enemy.setX(_enemy.getX());
-        _enemy.setY(_enemy.getY());
-        _playerLayer.getObjects().add(_enemy);
+        for (Enemy enemy : _enemyList) {
+            enemy.setName("Enemy");
+            enemy.setX(enemy.getX());
+            enemy.setY(enemy.getY());
+            _playerLayer.getObjects().add(enemy);
+        }
     }
 }
 

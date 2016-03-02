@@ -12,4 +12,5 @@ public class Character extends TextureMapObject
     {
         super(textureRegion);
     }
+
 }
