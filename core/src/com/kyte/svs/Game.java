@@ -5,7 +5,6 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
@@ -26,26 +25,24 @@ public class Game extends ScreenAdapter {
     private SpriteBatch batch;
     private static final int VIRTUAL_WIDTH = 480;
     private static final int VIRTUAL_HEIGHT = 320;
-    private START game;
+    private START _game;
     private Rectangle backBounds;
     private Vector3 touchPoint;
 
 
     public Game(START game) {
 
-        this.game = game;
+        _game = game;
 
-        Texture texture = new Texture(Gdx.files.internal("Gegner/Gegner.Alien.png"));
+        /*Texture texture; = new Texture(Gdx.files.internal("Gegner/Gegner.Alien.png"));
         Sprite _enemySprite = new Sprite(texture, 32, 32);
         Enemy enemy = new Enemy(_enemySprite);
         enemy.setPosition(VIRTUAL_WIDTH - 32, VIRTUAL_HEIGHT - 32);
-        _enemyList.add(enemy);
+        _enemyList.add(enemy);*/
 
-
-        texture = new Texture(Gdx.files.internal("data/Player.png"));
-        Sprite _playerSprite = new Sprite(texture, 32, 32);
-        _player = new Player(_playerSprite);
-        _player.setPosition(VIRTUAL_WIDTH, VIRTUAL_HEIGHT);
+        _player = new Player();
+        _player.setX(VIRTUAL_WIDTH);
+        _player.setY(VIRTUAL_HEIGHT);
 
         backBounds = new Rectangle(0, VIRTUAL_HEIGHT / 3, 50, 50);
         touchPoint = new Vector3();
@@ -77,8 +74,8 @@ public class Game extends ScreenAdapter {
         // Rotation des Spielers wird aktualisiert
         float tmpRot = _player.getRotation();
         _player.setRotation(_joysticks.getRotation(tmpRot));
-
         _player.move(_joysticks.getPositionVector(), deltax, _world.getMapLayer());
+        _player.setOrigin();
 
         //update();
         //draw();
@@ -100,7 +97,7 @@ public class Game extends ScreenAdapter {
         if (Gdx.input.justTouched()) {
             _camera.unproject(touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0));
             if (backBounds.contains(touchPoint.x, touchPoint.y)) {
-                game.setScreen(new MainMenu(game));
+                _game.setScreen(new MainMenu(_game));
             }
         }
     }

@@ -1,9 +1,8 @@
 package com.kyte.svs;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.maps.tiled.TiledMapTile;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.maps.objects.TextureMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Vector2;
 
@@ -16,15 +15,17 @@ import com.badlogic.gdx.math.Vector2;
  * o.ä..
  *
  */
-public class Player extends Character
+public class Player extends TextureMapObject
 {
     float speed = 120;
     TiledMapTileLayer _collisionLayer;
 
-    public Player(Sprite sprite)
+    public Player()
     {
-        super(sprite);
+        super(new TextureRegion(new Texture("data/Player.png"), 32, 32));
+
         _collisionLayer = new TiledMapTileLayer(100,100,100,100);
+
     }
 
     public void move(Vector2 direction, float delta, TiledMapTileLayer mapLayer)
@@ -45,8 +46,17 @@ public class Player extends Character
             return;
 
         // Kachel ist begehbar und Spielerposition wird dorthin verschoben
-        super.setPosition(newX, newY);
+        super.setX(newX);
+        super.setY(newY);
 
+    }
+
+
+    // setzt den Origin neu
+    public void setOrigin()
+    {
+        setOriginY(16);
+        setOriginX(16);
     }
 
     /**

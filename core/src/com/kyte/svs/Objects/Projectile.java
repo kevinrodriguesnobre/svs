@@ -1,7 +1,12 @@
 package com.kyte.svs.Objects;
 
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.maps.objects.TextureMapObject;
+
 /**
- * Created by Yanneck on 02.03.2016.
+ * Oberklasse für sämtliche Projektile
  */
-public class Projectile {
+public class Projectile extends TextureMapObject
+{
+
 }
