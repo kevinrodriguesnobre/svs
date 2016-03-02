@@ -18,12 +18,13 @@ import com.badlogic.gdx.math.Vector2;
 public class Player extends Character
 {
     float speed = 120;
+    Weapon _weapon;
     TiledMapTileLayer _collisionLayer;
 
     public Player()
     {
         super(new TextureRegion(new Texture("data/Player.png"), 32, 32));
-
+        _weapon = new Weapon();
     }
 
     public void move(Vector2 direction, float delta, TiledMapTileLayer mapLayer)
@@ -66,5 +67,14 @@ public class Player extends Character
         _collisionLayer = collisionLayer;
     }
 
+    public void setWeapon(int weaponID)
+    {
+        _weapon.setWeapon(weaponID);
+    }
+
+    public Weapon getWeapon()
+    {
+        return _weapon;
+    }
 
 }

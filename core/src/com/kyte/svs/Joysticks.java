@@ -120,4 +120,14 @@ public class Joysticks {
         return new Vector2(touchpad.getKnobPercentX(),touchpad.getKnobPercentY());
     }
 
+    public Vector2 getRotationVector()
+    {
+        return new Vector2(touchpad2.getKnobPercentX(),touchpad2.getKnobPercentY());
+    }
+
+    public boolean touched()
+    {
+        return touchpad2.isTouched();
+    }
+
 }

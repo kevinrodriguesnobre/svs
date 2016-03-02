@@ -6,11 +6,14 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.MapLayer;
+import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.TextureMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+
+import com.badlogic.gdx.math.Rectangle;
 
 import java.util.ArrayList;
 
@@ -27,7 +30,8 @@ public class World {
     TextureRegion textureRegion;
     Player _player;
     ArrayList<Enemy> _enemyList;
-
+    Rectangle _mapRectangle;
+    
     public World(Player player, OrthographicCamera camera, ArrayList<Enemy> enemyList)
     {
         _enemyList = enemyList;
@@ -54,6 +58,8 @@ public class World {
         // Ebene mit Kollisionsobjekten wird initialisiert
         _mapLayer = (TiledMapTileLayer) _tiledMap.getLayers().get("MapLayer");
 
+        // Speichert die Map als Rechteck um Positionen abzufragen
+        _mapRectangle = new Rectangle(0,0,_mapLayer.getWidth()*32,_mapLayer.getHeight()*32);
 
         // stellt die Startposition des Players ein und fügt ihn der Playerebene hinzu
         _playerLayer.getObjects().add(_player);
@@ -75,8 +81,14 @@ public class World {
         return _mapLayer;
     }
 
-    public TiledMapTileLayer getMapLayer(){
+    public TiledMapTileLayer getMapLayer()
+    {
         return (TiledMapTileLayer) _tiledMap.getLayers().get("MapLayer");
+    }
+
+    public MapLayer getPlayerLayer()
+    {
+        return _playerLayer;
     }
 
     void addEnemy(){
@@ -91,6 +103,11 @@ public class World {
             enemy.setY(enemy.getY());
             _playerLayer.getObjects().add(enemy);
         }
+    }
+
+    public Rectangle getMapRectangle()
+    {
+        return _mapRectangle;
     }
 }
 

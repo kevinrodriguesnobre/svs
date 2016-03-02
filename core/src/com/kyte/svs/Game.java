@@ -2,21 +2,17 @@ package com.kyte.svs;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
-import com.badlogic.gdx.ai.steer.SteeringAcceleration;
-import com.badlogic.gdx.ai.steer.SteeringBehavior;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.kyte.svs.Objects.PistolBullet;
+import com.kyte.svs.Objects.Projectile;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 
 
 /**
@@ -27,6 +23,7 @@ public class Game extends ScreenAdapter {
     private World _world;
     private Joysticks _joysticks;
     private Player _player;
+    private List<Projectile> _projectileSet;
     private ArrayList<Enemy> _enemyList;
     private int _enemyAmount = 10;
     private OrthographicCamera _camera;
@@ -36,11 +33,14 @@ public class Game extends ScreenAdapter {
     private START _game;
     private Rectangle backBounds;
     private Vector3 touchPoint;
+    private long _lastShot;
 
 
     public Game(START game) {
 
         _game = game;
+
+        _projectileSet =  new ArrayList<Projectile>();
 
         _enemyList = new ArrayList<Enemy>();
         for (int i = 0; i < _enemyAmount; i++) {
@@ -60,9 +60,9 @@ public class Game extends ScreenAdapter {
         _camera.update();
 
         _world = new World(_player, _camera, _enemyList);
-        for(Enemy enemy : _enemyList){
-            enemy.setX(_world.getMapLayer().getTileWidth()*31 - (float)Math.random() * _world.getMapLayer().getTileWidth()*32);
-            enemy.setY(_world.getMapLayer().getTileHeight()*31 - (float)Math.random() * _world.getMapLayer().getTileHeight()*32);
+        for(Enemy enemy : _enemyList) {
+            enemy.setX(_world.getMapLayer().getTileWidth() * 31 - (float) Math.random() * _world.getMapLayer().getTileWidth() * 32);
+            enemy.setY(_world.getMapLayer().getTileHeight() * 31 - (float) Math.random() * _world.getMapLayer().getTileHeight() * 32);
             enemy.setCollisionLayer(_world.getCollisonLayer());
         }
         _player.setCollisionLayer(_world.getCollisonLayer());
@@ -70,6 +70,7 @@ public class Game extends ScreenAdapter {
         batch = new SpriteBatch();
         batch.getProjectionMatrix().setToOrtho2D(0, 0, VIRTUAL_WIDTH, VIRTUAL_HEIGHT);
         _joysticks = new Joysticks();
+        _lastShot = 0;
     }
 
     @Override
@@ -89,16 +90,12 @@ public class Game extends ScreenAdapter {
         _player.setRotation(_joysticks.getRotation(tmpRot));
         _player.move(_joysticks.getPositionVector(), deltax, _world.getMapLayer());
         _player.setOrigin();
-
+        
+        shoot(deltax);
+        
         for(int i=0; i < _enemyList.size();i++){
             _enemyList.get(i).move(_player, _enemyList);
         }
-
-        //Enemy enemy = new Enemy();
-        //enemy.move();
-
-        //update();
-        //draw();
 
         //Auslagern
         if (_player.getX() - VIRTUAL_WIDTH / 2 >= 0 && _player.getX() + VIRTUAL_WIDTH / 2 <= _world.getMapLayer().getTileWidth() * 32) {
@@ -142,5 +139,40 @@ public class Game extends ScreenAdapter {
     @Override
     public void dispose() {
         batch.dispose();
+    }
+
+    private void shoot(float delta)
+    {
+        float xandy = Math.abs(_joysticks.getRotationVector().x) + Math.abs(_joysticks.getRotationVector().y);
+        if(_joysticks.touched() && ((System.currentTimeMillis() - _lastShot) >_player._weapon.getCurrentWeapon().getShootingFrequenz()) && (xandy > 0.999999f))
+        {
+            switch (_player.getWeapon().getCurrentWeaponID()){
+                case 0: PistolBullet pBullet = new PistolBullet(_player.getX(),_player.getY(),_player.getRotation(),_joysticks.getRotationVector());
+                    _projectileSet.add(pBullet);
+                    System.out.println("Die Größe des Projektilsets ist: " + _projectileSet.size());
+                    _world.getPlayerLayer().getObjects().add(pBullet);
+                    _lastShot = System.currentTimeMillis();
+                    break;
+                case 1:
+                    break;
+                default: break;
+
+            }
+        }
+
+        for(Projectile pj: _projectileSet)
+        {
+            if(!_world.getMapRectangle().contains(pj.getX(),pj.getY()))
+            {
+                _world.getPlayerLayer().getObjects().remove(pj);
+                //_projectileSet.remove(pj);
+            }
+            else
+            {
+                pj.update(delta);
+            }
+
+        }
+
     }
 }

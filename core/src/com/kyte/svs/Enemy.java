@@ -32,9 +32,6 @@ public class Enemy extends Character{
         float newX;
         float newY;
 
-        int layerWidth = _collisionLayer.getWidth() * 31;
-        int layerHeight = _collisionLayer.getHeight() * 31;
-
         if(getX() < target.getX()){
             newX = getX() + 1;
         }else{
