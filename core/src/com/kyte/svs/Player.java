@@ -27,7 +27,7 @@ public class Player extends Character
         _collisionLayer = new TiledMapTileLayer(100,100,100,100);
     }
 
-    public void move(Vector2 direction, float delta)
+    public void move(Vector2 direction, float delta, TiledMapTileLayer mapLayer)
     {
         float newX = delta * speed * direction.x + this.getX();
         float newY = delta * speed * direction.y + this.getY();
@@ -41,7 +41,7 @@ public class Player extends Character
             if (_collisionLayer.getCell((int) newX/_collisionLayer.getWidth(), (int) newY/_collisionLayer.getHeight()).getTile().getProperties().containsKey("blocked"))
                 return;
         }
-        if( newX < 0 || newY < 0)
+        if( newX < 0 || newY < 0 || newX > mapLayer.getTileWidth()*32 - 32 || newY > mapLayer.getTileHeight()*32 - 32)
             return;
 
         // Kachel ist begehbar und Spielerposition wird dorthin verschoben

@@ -96,6 +96,8 @@ public class World {
         return _collisionLayer;
     }
 
-
+    public TiledMapTileLayer getMapLayer(){
+        return (TiledMapTileLayer) _tiledMap.getLayers().get("MapLayer");
+    }
 }
 

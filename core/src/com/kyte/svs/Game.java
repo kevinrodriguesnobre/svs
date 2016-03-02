@@ -62,15 +62,16 @@ public class Game extends ScreenAdapter {
         float tmpRot = _player.getRotation();
         _player.setRotation(_joysticks.getRotation(tmpRot));
 
-        _player.move(_joysticks.getPositionVector(), deltax);//, delta);
+        _player.move(_joysticks.getPositionVector(), deltax, _world.getMapLayer());
 
         //update();
         //draw();
 
-        if (_player.getX() - VIRTUAL_WIDTH / 2 >= 0) {
+        //Auslagern
+        if (_player.getX() - VIRTUAL_WIDTH / 2 >= 0 && _player.getX() + VIRTUAL_WIDTH / 2 <= _world.getMapLayer().getTileWidth() * 32) {
             _camera.position.set(_player.getX(), _camera.position.y, 1);
         }
-        if (_player.getY() - VIRTUAL_HEIGHT / 2 >= 0)
+        if (_player.getY() - VIRTUAL_HEIGHT / 2 >= 0 && _player.getY() + VIRTUAL_HEIGHT / 2 <= _world.getMapLayer().getTileHeight() * 32)
             _camera.position.set(_camera.position.x, _player.getY(), 1);
         _camera.update();
 
@@ -84,7 +85,6 @@ public class Game extends ScreenAdapter {
             _camera.unproject(touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0));
             if (backBounds.contains(touchPoint.x, touchPoint.y)) {
                 game.setScreen(new MainMenu(game));
-                return;
             }
         }
     }
