@@ -1,5 +1,7 @@
 package com.kyte.svs;
 
+import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
@@ -7,8 +9,11 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import java.util.Vector;
 
 
 /**
@@ -16,31 +21,36 @@ import com.badlogic.gdx.math.Vector3;
  */
 public class Game extends ScreenAdapter {
 
+    float endTime;
     private World _world;
     private Joysticks _joysticks;
     private Player _player;
     private OrthographicCamera _camera;
     private SpriteBatch batch;
+    private ShapeRenderer sr;
     private static final int VIRTUAL_WIDTH = 480;
     private static final int VIRTUAL_HEIGHT = 320;
     private START game;
-    private Rectangle backBounds;
-    private Vector3 touchPoint;
+   private Rectangle backBounds;
+  private Vector3 touchPoint;
 
 
-    public Game(START game) {
+    public Game(START game){
         this.game = game;
-        backBounds = new Rectangle(0, VIRTUAL_HEIGHT / 3, 50, 50);
+        backBounds = new Rectangle(0, VIRTUAL_HEIGHT/3, 50, 50);
         touchPoint = new Vector3();
+        sr = new ShapeRenderer();
+        sr.setColor(0, 1, 0, 1);
+        endTime = System.nanoTime();
         Texture texture = new Texture(Gdx.files.internal("data/Player.png"));
         Sprite _playerSprite = new Sprite(texture, 32, 32);
         _camera = new OrthographicCamera(VIRTUAL_WIDTH, VIRTUAL_HEIGHT);
+        _camera.position.set(VIRTUAL_WIDTH / 2, VIRTUAL_HEIGHT / 2, 0);
         _player = new Player(_playerSprite);
-        _player.setPosition(VIRTUAL_WIDTH, VIRTUAL_HEIGHT);
+        _player.setPosition(VIRTUAL_WIDTH/2, VIRTUAL_HEIGHT/2);
         _camera.position.set(_player.getX() + VIRTUAL_WIDTH / 2, _player.getY() + VIRTUAL_HEIGHT / 2, 1);
         _camera.update();
         _world = new World(_player, _camera);
-        _player.setCollisionLayer(_world.getCollisonLayer());
         batch = new SpriteBatch();
         batch.getProjectionMatrix().setToOrtho2D(0, 0, VIRTUAL_WIDTH, VIRTUAL_HEIGHT);
         _joysticks = new Joysticks();
@@ -52,9 +62,12 @@ public class Game extends ScreenAdapter {
     }
 
     @Override
-    public void render(float deltax) {
+    public void render(float deltax)
+    {
         batch.setProjectionMatrix(_camera.combined);
+        sr.setProjectionMatrix(_camera.combined);
 
+        float delta = System.nanoTime() - endTime;
         Gdx.gl.glClearColor(1, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -62,22 +75,27 @@ public class Game extends ScreenAdapter {
         float tmpRot = _player.getRotation();
         _player.setRotation(_joysticks.getRotation(tmpRot));
 
-        _player.move(_joysticks.getPositionVector(), deltax, _world.getMapLayer());
+        _player.move(_joysticks.getPositionVector(), 1E7f);//, delta);
 
-        //update();
-        //draw();
+        update();
+        draw();
 
-        //Auslagern
-        if (_player.getX() - VIRTUAL_WIDTH / 2 >= 0 && _player.getX() + VIRTUAL_WIDTH / 2 <= _world.getMapLayer().getTileWidth() * 32) {
-            _camera.position.set(_player.getX(), _camera.position.y, 1);
+        //_world.renderMap();
+        if (_player.getX() - VIRTUAL_WIDTH/2>= 0 && _player.getY() - VIRTUAL_HEIGHT/2 + 50>= 0){
+            _camera.position.set(_player.getX(), _player.getY(), 1);
         }
-        if (_player.getY() - VIRTUAL_HEIGHT / 2 >= 0 && _player.getY() + VIRTUAL_HEIGHT / 2 <= _world.getMapLayer().getTileHeight() * 32)
-            _camera.position.set(_camera.position.x, _player.getY(), 1);
         _camera.update();
+        sr.begin(ShapeRenderer.ShapeType.Filled);
+        //sr.circle(_player.getX(), _player.getY(), 30);
+        sr.circle(10, 10, 30);
+
+        sr.end();
 
         // Zeichnen der grafischen Oberfläche
         _world.renderMap();
         _joysticks.renderJoysticks();
+
+        endTime = System.nanoTime();
     }
 
     public void update() {
@@ -85,16 +103,25 @@ public class Game extends ScreenAdapter {
             _camera.unproject(touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0));
             if (backBounds.contains(touchPoint.x, touchPoint.y)) {
                 game.setScreen(new MainMenu(game));
-            }
-        }
+                return;
+            }}
     }
 
-    public void draw() {
+    public void draw(){
         batch.begin();
-        batch.draw(new Texture(Gdx.files.internal("data/backbutton.png")), 0, VIRTUAL_HEIGHT / 3, 50, 50);
+        batch.draw(new Texture(Gdx.files.internal("data/backbutton.png")), 0, VIRTUAL_HEIGHT /3, 50, 50);
         batch.end();
     }
 
+    public void shoot(){
+        if(_joysticks.bothThouched()){
+
+        }
+    }
+
+public void shoot(float X, float Y,float radians){
+    Bullet bullet = new Bullet(X,Y,radians,new Sprite(new Texture(Gdx.files.internal("data/Player.png")),32, 32));
+}
 
     @Override
     public void pause() {
