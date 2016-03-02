@@ -1,6 +1,6 @@
 package com.kyte.svs.Objects;
 
-import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.objects.TextureMapObject;
 
 /**
@@ -8,5 +8,8 @@ import com.badlogic.gdx.maps.objects.TextureMapObject;
  */
 public class Projectile extends TextureMapObject
 {
-
+    public Projectile(TextureRegion textureRegion)
+    {
+        super(textureRegion);
+    }
 }
