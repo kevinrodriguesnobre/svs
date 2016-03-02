@@ -9,7 +9,10 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 
 
 /**
@@ -34,11 +37,127 @@ public class Game extends ScreenAdapter {
 
         _game = game;
 
-        /*Texture texture; = new Texture(Gdx.files.internal("Gegner/Gegner.Alien.png"));
-        Sprite _enemySprite = new Sprite(texture, 32, 32);
-        Enemy enemy = new Enemy(_enemySprite);
-        enemy.setPosition(VIRTUAL_WIDTH - 32, VIRTUAL_HEIGHT - 32);
-        _enemyList.add(enemy);*/
+        _enemyList = new List<Enemy>() {
+            @Override
+            public int size() {
+                return 0;
+            }
+
+            @Override
+            public boolean isEmpty() {
+                return false;
+            }
+
+            @Override
+            public boolean contains(Object o) {
+                return false;
+            }
+
+            @Override
+            public Iterator<Enemy> iterator() {
+                return null;
+            }
+
+            @Override
+            public Object[] toArray() {
+                return new Object[0];
+            }
+
+            @Override
+            public <T> T[] toArray(T[] a) {
+                return null;
+            }
+
+            @Override
+            public boolean add(Enemy enemy) {
+                return false;
+            }
+
+            @Override
+            public boolean remove(Object o) {
+                return false;
+            }
+
+            @Override
+            public boolean containsAll(Collection<?> c) {
+                return false;
+            }
+
+            @Override
+            public boolean addAll(Collection<? extends Enemy> c) {
+                return false;
+            }
+
+            @Override
+            public boolean addAll(int index, Collection<? extends Enemy> c) {
+                return false;
+            }
+
+            @Override
+            public boolean removeAll(Collection<?> c) {
+                return false;
+            }
+
+            @Override
+            public boolean retainAll(Collection<?> c) {
+                return false;
+            }
+
+            @Override
+            public void clear() {
+
+            }
+
+            @Override
+            public Enemy get(int index) {
+                return null;
+            }
+
+            @Override
+            public Enemy set(int index, Enemy element) {
+                return null;
+            }
+
+            @Override
+            public void add(int index, Enemy element) {
+
+            }
+
+            @Override
+            public Enemy remove(int index) {
+                return null;
+            }
+
+            @Override
+            public int indexOf(Object o) {
+                return 0;
+            }
+
+            @Override
+            public int lastIndexOf(Object o) {
+                return 0;
+            }
+
+            @Override
+            public ListIterator<Enemy> listIterator() {
+                return null;
+            }
+
+            @Override
+            public ListIterator<Enemy> listIterator(int index) {
+                return null;
+            }
+
+            @Override
+            public List<Enemy> subList(int fromIndex, int toIndex) {
+                return null;
+            }
+        };
+        Enemy enemy = new Enemy();
+        enemy.setX(VIRTUAL_WIDTH-32);
+        enemy.setY(VIRTUAL_HEIGHT-32);
+        //enemy.setPosition(VIRTUAL_WIDTH - 32, VIRTUAL_HEIGHT - 32);
+        _enemyList.add(enemy);
 
         _player = new Player();
         _player.setX(VIRTUAL_WIDTH);

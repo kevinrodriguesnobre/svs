@@ -78,22 +78,19 @@ public class World {
     }
 
     void addEnemy(){
-        _texture = _enemy.getTexture();
 
         // Die Objektebene aus der TiledMap wird der Variable Player Layer zugewiesen
         _playerLayer = _tiledMap.getLayers().get("PlayerLayer");
-        textureRegion = new TextureRegion(_texture, 32, 32);
 
         // Ebene mit Kollisionsobjekten wird initialisiert
         _mapLayer = (TiledMapTileLayer) _tiledMap.getLayers().get("MapLayer");
 
 
         // stellt die Startposition des Players ein und fügt ihn der Objektebene hinzu
-        TextureMapObject enemyObject = new TextureMapObject(textureRegion);
-        enemyObject.setName("Player");
-        enemyObject.setX(_enemy.getX());
-        enemyObject.setY(_enemy.getY());
-        _playerLayer.getObjects().add(enemyObject);
+        _enemy.setName("Enemy");
+        _enemy.setX(_enemy.getX());
+        _enemy.setY(_enemy.getY());
+        _playerLayer.getObjects().add(_enemy);
     }
 }
 

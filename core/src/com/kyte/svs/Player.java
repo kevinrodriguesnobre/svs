@@ -24,8 +24,6 @@ public class Player extends TextureMapObject
     {
         super(new TextureRegion(new Texture("data/Player.png"), 32, 32));
 
-        _collisionLayer = new TiledMapTileLayer(100,100,100,100);
-
     }
 
     public void move(Vector2 direction, float delta, TiledMapTileLayer mapLayer)
