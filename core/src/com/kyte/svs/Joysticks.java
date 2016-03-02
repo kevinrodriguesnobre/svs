@@ -121,11 +121,4 @@ public class Joysticks {
         return new Vector2(touchpad.getKnobPercentX(),touchpad.getKnobPercentY());
     }
 
-    public boolean bothThouched(){
-        if(touchpad.isTouched() && touchpad2.isTouched()){
-            return true;
-        }
-        return false;
-    }
-
 }

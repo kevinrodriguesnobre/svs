@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.objects.TextureMapObject;
@@ -22,10 +21,10 @@ public class World {
     TiledMapRenderer _tiledMapRenderer;
     Texture _texture;
     MapLayer _objectLayer;
+    TiledMapTileLayer _collisionLayer;
     TextureRegion textureRegion;
     Player _player;
     TextureMapObject _playerTMO;
-    Bullet bullet;
 
     public World(Player player, OrthographicCamera camera)
     {
@@ -39,22 +38,27 @@ public class World {
 
     public void createMap()
     {
-        _tiledMap = new TmxMapLoader().load("ersteMap.tmx");
+        // Läd die Tiled Map
+        _tiledMap = new TmxMapLoader().load("world1.tmx");
         _tiledMapRenderer = new OrthogonalTiledMapRendererWithSprites(_tiledMap);
 
+        // Bezieht die Textur vom Player-Objekt
         _texture = _player.getTexture();
 
-        _objectLayer = _tiledMap.getLayers().get("objects");
+        // Die Objektebene aus der TiledMap wird der Variable _objectLayer zugewiesen
+        _objectLayer = _tiledMap.getLayers().get("PlayerLayer");
         textureRegion = new TextureRegion(_texture, 32, 32);
 
+        // Ebene mit Kollisionsobjekten wird initialisiert
+        _collisionLayer = (TiledMapTileLayer) _tiledMap.getLayers().get("MapLayer");
+
+
+        // stellt die Startposition des Players ein und fügt ihn der Objektebene hinzu
         TextureMapObject _playerTMO = new TextureMapObject(textureRegion);
         _playerTMO.setName("Player");
         _playerTMO.setX(_player.getX());
         _playerTMO.setY(_player.getY());
-        _playerTMO.setRotation(3.49f);
         _objectLayer.getObjects().add(_playerTMO);
-
-
     }
 
     public void renderMap()
@@ -62,7 +66,6 @@ public class World {
         Gdx.gl.glClearColor(1, 0, 0, 1);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        //_camera.update();
 
         updatePlayer();
         _tiledMapRenderer.setView(_camera);
@@ -88,19 +91,13 @@ public class World {
         tmpTMO.setRotation(radian);
     }
 
-    private void updateBullet()
+    public TiledMapTileLayer getCollisonLayer()
     {
-        if(bullet.existiert){
-
-        }
-
+        return _collisionLayer;
     }
 
-    public void createBullet(){
-
-        bullet = new Bullet(_player.getX(),_player.getY(),_player.getRotation(),new Sprite(new Texture(Gdx.files.internal("data/Player.png")),5,5));
-
+    public TiledMapTileLayer getMapLayer(){
+        return (TiledMapTileLayer) _tiledMap.getLayers().get("MapLayer");
     }
-
 }
 
