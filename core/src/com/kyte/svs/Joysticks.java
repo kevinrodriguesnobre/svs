@@ -80,7 +80,6 @@ public class Joysticks {
      */
     public void renderJoysticks()
     {
-
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
     }
