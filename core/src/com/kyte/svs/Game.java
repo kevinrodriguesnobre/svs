@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
+import com.kyte.svs.Objects.EffectSounds;
 import com.kyte.svs.Objects.PistolBullet;
 import com.kyte.svs.Objects.Projectile;
 
@@ -34,13 +35,15 @@ public class Game extends ScreenAdapter {
     private Rectangle backBounds;
     private Vector3 touchPoint;
     private long _lastShot;
-
+    private EffectSounds _effectSounds;
 
     public Game(START game) {
 
         _game = game;
 
         _projectileSet =  new ArrayList<Projectile>();
+
+        _effectSounds = new EffectSounds();
 
         _enemyList = new ArrayList<Enemy>();
         for (int i = 0; i < _enemyAmount; i++) {
@@ -151,6 +154,7 @@ public class Game extends ScreenAdapter {
                     _projectileSet.add(pBullet);
                     System.out.println("Die Größe des Projektilsets ist: " + _projectileSet.size());
                     _world.getPlayerLayer().getObjects().add(pBullet);
+                    _effectSounds.getPistolSound().play(80f);
                     _lastShot = System.currentTimeMillis();
                     break;
                 case 1:
