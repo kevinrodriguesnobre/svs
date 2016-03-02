@@ -10,6 +10,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 
+import java.util.List;
+
 
 /**
  * Haupt-Spielklasse
@@ -19,6 +21,7 @@ public class Game extends ScreenAdapter {
     private World _world;
     private Joysticks _joysticks;
     private Player _player;
+    private List<Enemy> _enemyList;
     private OrthographicCamera _camera;
     private SpriteBatch batch;
     private static final int VIRTUAL_WIDTH = 480;
@@ -29,18 +32,31 @@ public class Game extends ScreenAdapter {
 
 
     public Game(START game) {
+
         this.game = game;
-        backBounds = new Rectangle(0, VIRTUAL_HEIGHT / 3, 50, 50);
-        touchPoint = new Vector3();
-        Texture texture = new Texture(Gdx.files.internal("data/Player.png"));
+
+        Texture texture = new Texture(Gdx.files.internal("Gegner/Gegner.Alien.png"));
+        Sprite _enemySprite = new Sprite(texture, 32, 32);
+        Enemy enemy = new Enemy(_enemySprite);
+        enemy.setPosition(VIRTUAL_WIDTH - 32, VIRTUAL_HEIGHT - 32);
+        _enemyList.add(enemy);
+
+
+        texture = new Texture(Gdx.files.internal("data/Player.png"));
         Sprite _playerSprite = new Sprite(texture, 32, 32);
-        _camera = new OrthographicCamera(VIRTUAL_WIDTH, VIRTUAL_HEIGHT);
         _player = new Player(_playerSprite);
         _player.setPosition(VIRTUAL_WIDTH, VIRTUAL_HEIGHT);
+
+        backBounds = new Rectangle(0, VIRTUAL_HEIGHT / 3, 50, 50);
+        touchPoint = new Vector3();
+
+        _camera = new OrthographicCamera(VIRTUAL_WIDTH, VIRTUAL_HEIGHT);
         _camera.position.set(_player.getX() + VIRTUAL_WIDTH / 2, _player.getY() + VIRTUAL_HEIGHT / 2, 1);
         _camera.update();
-        _world = new World(_player, _camera);
+
+        _world = new World(_player, _camera);//, enemy);
         _player.setCollisionLayer(_world.getCollisonLayer());
+
         batch = new SpriteBatch();
         batch.getProjectionMatrix().setToOrtho2D(0, 0, VIRTUAL_WIDTH, VIRTUAL_HEIGHT);
         _joysticks = new Joysticks();

@@ -24,10 +24,12 @@ public class World {
     TiledMapTileLayer _collisionLayer;
     TextureRegion textureRegion;
     Player _player;
+    Enemy _enemy;
     TextureMapObject _playerTMO;
 
-    public World(Player player, OrthographicCamera camera)
+    public World(Player player, OrthographicCamera camera)//, Enemy enemy)
     {
+        //_enemy = enemy;
         _player = player;
         _camera = camera;
         createMap();
@@ -38,6 +40,7 @@ public class World {
 
     public void createMap()
     {
+        //addEnemy();
         // Läd die Tiled Map
         _tiledMap = new TmxMapLoader().load("world1.tmx");
         _tiledMapRenderer = new OrthogonalTiledMapRendererWithSprites(_tiledMap);
@@ -98,6 +101,25 @@ public class World {
 
     public TiledMapTileLayer getMapLayer(){
         return (TiledMapTileLayer) _tiledMap.getLayers().get("MapLayer");
+    }
+
+    void addEnemy(){
+        _texture = _enemy.getTexture();
+
+        // Die Objektebene aus der TiledMap wird der Variable _objectLayer zugewiesen
+        _objectLayer = _tiledMap.getLayers().get("PlayerLayer");
+        textureRegion = new TextureRegion(_texture, 32, 32);
+
+        // Ebene mit Kollisionsobjekten wird initialisiert
+        _collisionLayer = (TiledMapTileLayer) _tiledMap.getLayers().get("MapLayer");
+
+
+        // stellt die Startposition des Players ein und fügt ihn der Objektebene hinzu
+        TextureMapObject enemyObject = new TextureMapObject(textureRegion);
+        enemyObject.setName("Player");
+        enemyObject.setX(_enemy.getX());
+        enemyObject.setY(_enemy.getY());
+        _objectLayer.getObjects().add(enemyObject);
     }
 }
 
