@@ -61,8 +61,9 @@ public class Game extends ScreenAdapter {
 
         _world = new World(_player, _camera, _enemyList);
         for(Enemy enemy : _enemyList){
-            enemy.setX(_world.getMapLayer().getTileWidth()*32 - (float)Math.random() * _world.getMapLayer().getTileWidth()*32);
-            enemy.setY(_world.getMapLayer().getTileHeight()*32 - (float)Math.random() * _world.getMapLayer().getTileHeight()*32);
+            enemy.setX(_world.getMapLayer().getTileWidth()*31 - (float)Math.random() * _world.getMapLayer().getTileWidth()*32);
+            enemy.setY(_world.getMapLayer().getTileHeight()*31 - (float)Math.random() * _world.getMapLayer().getTileHeight()*32);
+            enemy.setCollisionLayer(_world.getCollisonLayer());
         }
         _player.setCollisionLayer(_world.getCollisonLayer());
 
@@ -90,7 +91,7 @@ public class Game extends ScreenAdapter {
         _player.setOrigin();
 
         for(int i=0; i < _enemyList.size();i++){
-            _enemyList.get(i).move(_player);
+            _enemyList.get(i).move(_player, _enemyList);
         }
 
         //Enemy enemy = new Enemy();
