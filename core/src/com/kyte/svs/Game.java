@@ -156,7 +156,6 @@ public class Game extends ScreenAdapter {
         Enemy enemy = new Enemy();
         enemy.setX(VIRTUAL_WIDTH-32);
         enemy.setY(VIRTUAL_HEIGHT-32);
-        //enemy.setPosition(VIRTUAL_WIDTH - 32, VIRTUAL_HEIGHT - 32);
         _enemyList.add(enemy);
 
         _player = new Player();
@@ -170,7 +169,7 @@ public class Game extends ScreenAdapter {
         _camera.position.set(_player.getX() + VIRTUAL_WIDTH / 2, _player.getY() + VIRTUAL_HEIGHT / 2, 1);
         _camera.update();
 
-        _world = new World(_player, _camera);//, enemy);
+        _world = new World(_player, _camera, enemy);
         _player.setCollisionLayer(_world.getCollisonLayer());
 
         batch = new SpriteBatch();

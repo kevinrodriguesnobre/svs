@@ -26,9 +26,9 @@ public class World {
     Player _player;
     Enemy _enemy;
 
-    public World(Player player, OrthographicCamera camera)//, Enemy enemy)
+    public World(Player player, OrthographicCamera camera, Enemy enemy)
     {
-        //_enemy = enemy;
+        _enemy = enemy;
         _player = player;
         _camera = camera;
         createMap();
@@ -39,11 +39,11 @@ public class World {
 
     public void createMap()
     {
-        //addEnemy();
         // Läd die Tiled Map
         _tiledMap = new TmxMapLoader().load("world1.tmx");
         _tiledMapRenderer = new OrthogonalTiledMapRendererWithSprites(_tiledMap);
 
+        addEnemy();
 
         // Die Objektebene aus der TiledMap wird der Variable Player Layer zugewiesen
         _playerLayer = _tiledMap.getLayers().get("PlayerLayer");
@@ -81,10 +81,6 @@ public class World {
 
         // Die Objektebene aus der TiledMap wird der Variable Player Layer zugewiesen
         _playerLayer = _tiledMap.getLayers().get("PlayerLayer");
-
-        // Ebene mit Kollisionsobjekten wird initialisiert
-        _mapLayer = (TiledMapTileLayer) _tiledMap.getLayers().get("MapLayer");
-
 
         // stellt die Startposition des Players ein und fügt ihn der Objektebene hinzu
         _enemy.setName("Enemy");
