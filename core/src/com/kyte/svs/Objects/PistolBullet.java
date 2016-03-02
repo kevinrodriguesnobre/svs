@@ -15,7 +15,7 @@ public class PistolBullet extends Projectile
 
     public PistolBullet(float x, float y, float rotation,Vector2 directionVector)
     {
-        super(new TextureRegion(new Texture("Projektile/Projektil.Pistole.png"), 2, 2), 250, 350, directionVector);
+        super(new TextureRegion(new Texture("Projektile/Projektil.Pistole.png"), 5, 5), 250, 350, directionVector);
         setX(x);
         setY(y);
         setRotation(rotation);
