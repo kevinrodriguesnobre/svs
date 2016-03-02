@@ -1,16 +1,15 @@
 package com.kyte.svs;
 
-import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.maps.objects.TextureMapObject;
 
 /**
- * Created by Yanneck on 29.02.2016.
+ * Oberklasse für sämtliche Projektile
  */
-public class Character extends Sprite {
-
-    public Character(Sprite sprite)
+public class Character extends TextureMapObject
+{
+    public Character(TextureRegion textureRegion)
     {
-        super(sprite);
+        super(textureRegion);
     }
-
-
 }

@@ -1,16 +1,16 @@
 package com.kyte.svs.Objects;
 
-import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.objects.TextureMapObject;
 
 /**
- * Created by Yanneck on 02.03.2016.
+ * Kugel für Standardwaffe
  */
 public class Bullet extends Projectile
 {
-    public Bullet (Sprite sprite)
+    public Bullet ()
     {
-        TextureMapObject abc = new TextureMapObject();
-
+        super(new TextureRegion(new Texture("data/Player.png"), 32, 32));
     }
 }

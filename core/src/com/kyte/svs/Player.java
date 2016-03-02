@@ -15,7 +15,7 @@ import com.badlogic.gdx.math.Vector2;
  * o.ä..
  *
  */
-public class Player extends TextureMapObject
+public class Player extends Character
 {
     float speed = 120;
     TiledMapTileLayer _collisionLayer;
