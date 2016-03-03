@@ -43,6 +43,11 @@ public class Enemy extends Character {
         float newDeltaX = Math.abs(target.getX()) - Math.abs(getX());
         float newDeltaY = Math.abs(target.getY()) - Math.abs(getY());
         float newSum = Math.abs(newDeltaX + newDeltaY);
+
+        //Falls zu nah am Player stopen
+        if (sum < 32)
+            return;
+
         if (getX() < target.getX()) {
             differenceX = 1;
         } else {
@@ -116,11 +121,6 @@ public class Enemy extends Character {
         }
         if (!collided)
             setRotation(rotation);
-
-
-        //Falls zu nah am Player stopen
-        if (sum < 32)
-            return;
 
         setX(getX() + differenceX);
         setY(getY() + differenceY);
