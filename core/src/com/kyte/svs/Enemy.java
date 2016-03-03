@@ -22,6 +22,8 @@ import java.util.ArrayList;
  */
 public class Enemy extends Character {
     TiledMapTileLayer _collisionLayer;
+    int _life;
+
 
     public Enemy() {
         super(new TextureRegion(new Texture("Gegner/Gegner.Alien.png"), 32, 32));
@@ -126,5 +128,15 @@ public class Enemy extends Character {
 
     public void setCollisionLayer(TiledMapTileLayer collisionLayer) {
         _collisionLayer = collisionLayer;
+    }
+
+    public void setLife(int newLife)
+    {
+        _life = newLife;
+    }
+
+    public int getLife()
+    {
+        return _life;
     }
 }

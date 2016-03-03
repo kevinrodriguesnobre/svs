@@ -13,6 +13,8 @@ import com.kyte.svs.Objects.PistolBullet;
 import com.kyte.svs.Objects.Projectile;
 
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
 
@@ -36,12 +38,14 @@ public class Game extends ScreenAdapter {
     private Vector3 touchPoint;
     private long _lastShot;
     private EffectSounds _effectSounds;
+    private Projectile _removeP;
 
     public Game(START game) {
 
         _game = game;
 
-        _projectileSet =  new ArrayList<Projectile>();
+        _projectileSet = new LinkedList<Projectile>();
+
 
         _effectSounds = new EffectSounds();
 
@@ -63,7 +67,7 @@ public class Game extends ScreenAdapter {
         _camera.update();
 
         _world = new World(_player, _camera, _enemyList);
-        for(Enemy enemy : _enemyList) {
+        for (Enemy enemy : _enemyList) {
             enemy.setX(_world.getMapLayer().getTileWidth() * 31 - (float) Math.random() * _world.getMapLayer().getTileWidth() * 32);
             enemy.setY(_world.getMapLayer().getTileHeight() * 31 - (float) Math.random() * _world.getMapLayer().getTileHeight() * 32);
             enemy.setCollisionLayer(_world.getCollisonLayer());
@@ -93,10 +97,10 @@ public class Game extends ScreenAdapter {
         _player.setRotation(_joysticks.getRotation(tmpRot));
         _player.move(_joysticks.getPositionVector(), deltax, _world.getMapLayer());
         _player.setOrigin();
-        
+
         shoot(deltax);
-        
-        for(int i=0; i < _enemyList.size();i++){
+
+        for (int i = 0; i < _enemyList.size(); i++) {
             _enemyList.get(i).move(_player, _enemyList);
         }
 
@@ -144,13 +148,12 @@ public class Game extends ScreenAdapter {
         batch.dispose();
     }
 
-    private void shoot(float delta)
-    {
+    private void shoot(float delta) {
         float xandy = Math.abs(_joysticks.getRotationVector().x) + Math.abs(_joysticks.getRotationVector().y);
-        if(_joysticks.touched() && ((System.currentTimeMillis() - _lastShot) >_player._weapon.getCurrentWeapon().getShootingFrequenz()) && (xandy > 0.999999f))
-        {
-            switch (_player.getWeapon().getCurrentWeaponID()){
-                case 0: PistolBullet pBullet = new PistolBullet(_player.getX(),_player.getY(),_player.getRotation(),_joysticks.getRotationVector());
+        if (_joysticks.touched() && ((System.currentTimeMillis() - _lastShot) > _player._weapon.getCurrentWeapon().getShootingFrequenz()) && (xandy > 0.999999f)) {
+            switch (_player.getWeapon().getCurrentWeaponID()) {
+                case 0:
+                    PistolBullet pBullet = new PistolBullet(_player.getX(), _player.getY(), _player.getRotation(), _joysticks.getRotationVector());
                     _projectileSet.add(pBullet);
                     System.out.println("Die Größe des Projektilsets ist: " + _projectileSet.size());
                     _world.getPlayerLayer().getObjects().add(pBullet);
@@ -159,24 +162,37 @@ public class Game extends ScreenAdapter {
                     break;
                 case 1:
                     break;
-                default: break;
+                default:
+                    break;
 
             }
         }
 
-        for(Projectile pj: _projectileSet)
+        for(int i = 0;i < _projectileSet.size();i++)
         {
-            if(!_world.getMapRectangle().contains(pj.getX(),pj.getY()))
-            {
-                _world.getPlayerLayer().getObjects().remove(pj);
-                //_projectileSet.remove(pj);
-            }
-            else
-            {
-                pj.update(delta);
-            }
 
         }
 
+        Iterator<Projectile> iterator = _projectileSet.iterator();
+
+        // Schleife iteriert über die Liste von Projektilen, bis die Liste kein Element mehr hat
+        while(iterator.hasNext())
+        {
+            // Nächstes Element in der Liste
+            Projectile tmpProjectile = iterator.next();
+            // Wenn die Position des Projektils außerhalb der Kartengröße ist
+            if (!_world.getMapRectangle().contains(tmpProjectile.getX(), tmpProjectile.getY()))
+            {
+                // Entferne Projektil aus dem PlayerLayer
+                _world.getPlayerLayer().getObjects().remove(tmpProjectile);
+                // Entferne Projektil aus der Liste
+                iterator.remove();
+            } else
+            {
+                // Aktualisiere Position des Projektils, falls es sich auf der Karte befindet
+                tmpProjectile.update(delta);
+            }
+        }
+        System.out.println("Größe der Liste: "+_projectileSet.size());
     }
 }
