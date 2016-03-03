@@ -1,19 +1,8 @@
 package com.kyte.svs;
 
-import com.badlogic.gdx.ai.steer.Steerable;
-import com.badlogic.gdx.ai.utils.Location;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.maps.objects.TextureMapObject;
-import com.badlogic.gdx.ai.pfa.Connection;
-import com.badlogic.gdx.ai.pfa.DefaultConnection;
-import com.badlogic.gdx.ai.pfa.DefaultGraphPath;
-import com.badlogic.gdx.ai.pfa.GraphPath;
-import com.badlogic.gdx.ai.pfa.Heuristic;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.Array;
 
 import java.util.ArrayList;
 
@@ -22,8 +11,13 @@ import java.util.ArrayList;
  */
 public class Enemy extends Character {
     TiledMapTileLayer _collisionLayer;
+<<<<<<< HEAD
     int _life;
     int speed = 1;
+=======
+    int _currentLife = 100;
+    int _maxLife = 100;
+>>>>>>> origin/master
 
 
     public Enemy() {
@@ -142,11 +136,27 @@ public class Enemy extends Character {
         _collisionLayer = collisionLayer;
     }
 
+<<<<<<< HEAD
     public void setLife(int newLife) {
         _life = newLife;
     }
 
     public int getLife() {
         return _life;
+=======
+    public void setLife(int newLife)
+    {
+        _currentLife = newLife;
+    }
+
+    public int getLife()
+    {
+        return _currentLife;
+    }
+
+    public  int getMaxLife()
+    {
+        return _maxLife;
+>>>>>>> origin/master
     }
 }
