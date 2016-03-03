@@ -100,5 +100,7 @@ public class World {
     public Rectangle getMapRectangle() {
         return _mapRectangle;
     }
+
+
 }
 

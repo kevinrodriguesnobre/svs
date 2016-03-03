@@ -117,6 +117,8 @@ public class Game extends ScreenAdapter {
         _joysticks.renderJoysticks();
     }
 
+
+
     public void update() {
         if (Gdx.input.justTouched()) {
             _camera.unproject(touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0));
@@ -155,7 +157,6 @@ public class Game extends ScreenAdapter {
                 case 0:
                     PistolBullet pBullet = new PistolBullet(_player.getX(), _player.getY(), _player.getRotation(), _joysticks.getRotationVector());
                     _projectileSet.add(pBullet);
-                    System.out.println("Die Größe des Projektilsets ist: " + _projectileSet.size());
                     _world.getPlayerLayer().getObjects().add(pBullet);
                     _effectSounds.getPistolSound().play(80f);
                     _lastShot = System.currentTimeMillis();
@@ -168,10 +169,6 @@ public class Game extends ScreenAdapter {
             }
         }
 
-        for(int i = 0;i < _projectileSet.size();i++)
-        {
-
-        }
 
         Iterator<Projectile> iterator = _projectileSet.iterator();
 
@@ -180,8 +177,15 @@ public class Game extends ScreenAdapter {
         {
             // Nächstes Element in der Liste
             Projectile tmpProjectile = iterator.next();
+
+            // Überprüft ob jeweilige Kugel einen Gegner trifft, entfernt diese falls ja
+            if(checkEnemyBulletCollision(tmpProjectile.getX(),tmpProjectile.getY()))
+            {
+                iterator.remove();
+                _world.getPlayerLayer().getObjects().remove(tmpProjectile);
+            }
             // Wenn die Position des Projektils außerhalb der Kartengröße ist
-            if (!_world.getMapRectangle().contains(tmpProjectile.getX(), tmpProjectile.getY()))
+            else if (!_world.getMapRectangle().contains(tmpProjectile.getX(), tmpProjectile.getY()))
             {
                 // Entferne Projektil aus dem PlayerLayer
                 _world.getPlayerLayer().getObjects().remove(tmpProjectile);
@@ -193,6 +197,31 @@ public class Game extends ScreenAdapter {
                 tmpProjectile.update(delta);
             }
         }
-        System.out.println("Größe der Liste: "+_projectileSet.size());
+    }
+
+    private boolean checkEnemyBulletCollision(float bulletX, float bulletY)
+    {
+        boolean collision = false;
+        Iterator<Enemy> iterator = _enemyList.iterator();
+        while(iterator.hasNext())
+        {
+            Enemy tmpEnemy = iterator.next();
+
+            Rectangle hitbox = new Rectangle(0,0,tmpEnemy.getTextureRegion().getRegionWidth()*16,tmpEnemy.getTextureRegion().getRegionHeight()*16);
+            hitbox.setPosition(tmpEnemy.getX(), tmpEnemy.getY());
+
+            if(hitbox.contains(bulletX,bulletY))
+            {
+                System.out.println("ÜBELST GETROFFEN AMK");
+                tmpEnemy.setLife(tmpEnemy.getLife() - 30);
+                if(tmpEnemy.getLife() <= 0)
+                {
+                    iterator.remove();
+                    _world.getPlayerLayer().getObjects().remove(tmpEnemy);
+                }
+                collision = true;
+            }
+        }
+        return collision;
     }
 }
