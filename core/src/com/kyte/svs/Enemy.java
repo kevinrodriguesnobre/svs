@@ -11,13 +11,9 @@ import java.util.ArrayList;
  */
 public class Enemy extends Character {
     TiledMapTileLayer _collisionLayer;
-<<<<<<< HEAD
-    int _life;
     int speed = 1;
-=======
     int _currentLife = 100;
     int _maxLife = 100;
->>>>>>> origin/master
 
 
     public Enemy() {
@@ -136,14 +132,7 @@ public class Enemy extends Character {
         _collisionLayer = collisionLayer;
     }
 
-<<<<<<< HEAD
-    public void setLife(int newLife) {
-        _life = newLife;
-    }
 
-    public int getLife() {
-        return _life;
-=======
     public void setLife(int newLife)
     {
         _currentLife = newLife;
@@ -157,6 +146,5 @@ public class Enemy extends Character {
     public  int getMaxLife()
     {
         return _maxLife;
->>>>>>> origin/master
     }
 }
