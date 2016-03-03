@@ -11,20 +11,16 @@ import java.util.ArrayList;
  */
 public class Enemy extends Character {
     TiledMapTileLayer _collisionLayer;
-<<<<<<< HEAD
     int _life;
     int speed = 1;
-=======
     int _currentLife = 100;
     int _maxLife = 100;
->>>>>>> origin/master
-
 
     public Enemy() {
         super(new TextureRegion(new Texture("Gegner/Gegner.Alien.png"), 32, 32));
         setOriginY(16);
         setOriginX(16);
-        speed = speed + (int)Math.random();
+        speed = speed + (int) Math.random();
     }
 
     public void move(Player target, ArrayList<Enemy> enemyList) {
@@ -35,10 +31,10 @@ public class Enemy extends Character {
 
         float deltaX = Math.abs(target.getX()) - Math.abs(getX());
         float deltaY = Math.abs(target.getY()) - Math.abs(getY());
-        float sum = Math.abs(deltaX + deltaY);
+        float sum = Math.abs(Math.abs(deltaX) + Math.abs(deltaY));
         float newDeltaX = Math.abs(target.getX()) - Math.abs(getX());
         float newDeltaY = Math.abs(target.getY()) - Math.abs(getY());
-        float newSum = Math.abs(newDeltaX + newDeltaY);
+        float newSum = Math.abs(Math.abs(newDeltaX) + Math.abs(newDeltaY));
 
         //Falls zu nah am Player stopen
         if (sum < 32)
@@ -88,11 +84,17 @@ public class Enemy extends Character {
 
         setRotation(rotation);
 
-        // Wenn die Kachel, auf die der Spieler möchte ein blockiertes Objekt ist
+        // Wenn die Kachel, auf die der Gegner möchte ein blockiertes Objekt ist
+        boolean blocked = false;
         if (newX <= _collisionLayer.getWidth() * 32 && newY <= _collisionLayer.getHeight() * 32) {
-            if (_collisionLayer.getCell((int) newX / _collisionLayer.getWidth(), (int) newY / _collisionLayer.getHeight()).getTile().getProperties().containsKey("blocked")) {
-                differenceX = differenceX * -20;
-                differenceY = differenceY * -5;
+            for (int i = 1; i < 6; i++) {
+                if (_collisionLayer.getCell((int) newX / _collisionLayer.getWidth(), (int) newY / _collisionLayer.getHeight()).getTile().getProperties().containsKey("blocked")) {
+                    blocked = true;
+                }
+                if(blocked){
+                    differenceX = differenceX * -2;
+                    differenceY = differenceY * -0.5f;
+                }
             }
         }
 
@@ -114,18 +116,19 @@ public class Enemy extends Character {
                     //sum > newSum - falls man näher an einen anderen Gegner kommt, direction invertieren
                     if (sum > newSum) {
 
-                        if (sum < 32)
+                        if (sum < 32){
                             return;
+                        }
                         differenceX = differenceX * -0.6f * (float) Math.random();
                         differenceY = differenceY * -0.6f * (float) Math.random();
                     }
                     //return;
                 }
 
-        if (getX() + differenceX < 0 || getY() + differenceY < 0 || getX() + differenceX > _collisionLayer.getTileWidth() * 32 - 32 || getY() + differenceY > _collisionLayer.getTileHeight() * 32 - 32)
+        if (getX() + differenceX < 0 || getY() + differenceY < 0 || getX() + differenceX > _collisionLayer.getTileWidth() * 32 - 32 || getY() + differenceY > _collisionLayer.getTileHeight() * 32 - 32){
+            System.out.println(differenceX + " - BLOCKED - " + differenceY);
             return;
-
-
+        }
 
 
         setX(getX() + differenceX * speed);
@@ -136,27 +139,15 @@ public class Enemy extends Character {
         _collisionLayer = collisionLayer;
     }
 
-<<<<<<< HEAD
     public void setLife(int newLife) {
-        _life = newLife;
-    }
-
-    public int getLife() {
-        return _life;
-=======
-    public void setLife(int newLife)
-    {
         _currentLife = newLife;
     }
 
-    public int getLife()
-    {
+    public int getLife() {
         return _currentLife;
     }
 
-    public  int getMaxLife()
-    {
+    public int getMaxLife() {
         return _maxLife;
->>>>>>> origin/master
     }
 }

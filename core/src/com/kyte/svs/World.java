@@ -97,6 +97,19 @@ public class World {
         }
     }
 
+    public void addEnemy(ArrayList<Enemy> enemyList){
+        // Die Objektebene aus der TiledMap wird der Variable Player Layer zugewiesen
+        _playerLayer = _tiledMap.getLayers().get("PlayerLayer");
+
+        // stellt die Startposition des Players ein und fügt ihn der Objektebene hinzu
+        for (Enemy enemy : enemyList) {
+            enemy.setName("Enemy");
+            enemy.setX(enemy.getX());
+            enemy.setY(enemy.getY());
+            _playerLayer.getObjects().add(enemy);
+        }
+    }
+
     public Rectangle getMapRectangle() {
         return _mapRectangle;
     }

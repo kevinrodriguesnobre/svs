@@ -28,7 +28,7 @@ public class Game extends ScreenAdapter {
     private Player _player;
     private List<Projectile> _projectileSet;
     private ArrayList<Enemy> _enemyList;
-    private int _enemyAmount = 10;
+    private int _enemyAmount = 15;
     private OrthographicCamera _camera;
     private SpriteBatch batch;
     private static final int VIRTUAL_WIDTH = 480;
@@ -68,8 +68,8 @@ public class Game extends ScreenAdapter {
 
         _world = new World(_player, _camera, _enemyList);
         for (Enemy enemy : _enemyList) {
-            enemy.setX(_world.getMapLayer().getTileWidth() * 31 - (float) Math.random() * _world.getMapLayer().getTileWidth() * 32);
-            enemy.setY(_world.getMapLayer().getTileHeight() * 31 - (float) Math.random() * _world.getMapLayer().getTileHeight() * 32);
+            enemy.setX(_world.getMapLayer().getTileWidth() * 31 - (float) Math.random() * _world.getMapLayer().getTileWidth() * 30);
+            enemy.setY(_world.getMapLayer().getTileHeight() * 31 - (float) Math.random() * _world.getMapLayer().getTileHeight() * 30);
             enemy.setCollisionLayer(_world.getCollisonLayer());
         }
         _player.setCollisionLayer(_world.getCollisonLayer());
@@ -87,6 +87,19 @@ public class Game extends ScreenAdapter {
 
     @Override
     public void render(float deltax) {
+        if(_enemyList.size() == 0){
+            for (int i = 0; i < _enemyAmount; i++) {
+                Enemy enemy = new Enemy();
+                _enemyList.add(enemy);
+            }
+            for (Enemy enemy : _enemyList) {
+                enemy.setX(_world.getMapLayer().getTileWidth() * 31 - (float) Math.random() * _world.getMapLayer().getTileWidth() * 30);
+                enemy.setY(_world.getMapLayer().getTileHeight() * 31 - (float) Math.random() * _world.getMapLayer().getTileHeight() * 30);
+                enemy.setCollisionLayer(_world.getCollisonLayer());
+            }
+            _world.addEnemy(_enemyList);
+            System.out.println("KILLED");
+        }
         batch.setProjectionMatrix(_camera.combined);
 
         Gdx.gl.glClearColor(1, 0, 0, 1);
