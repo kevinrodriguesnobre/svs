@@ -6,8 +6,11 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.maps.objects.TextureMapObject;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.kyte.svs.Objects.EffectSounds;
 import com.kyte.svs.Objects.PistolBullet;
 import com.kyte.svs.Objects.Projectile;
@@ -40,6 +43,8 @@ public class Game extends ScreenAdapter {
     private EffectSounds _effectSounds;
     private Projectile _removeP;
 
+    private Button _backButton;
+
     public Game(START game) {
 
         _game = game;
@@ -59,7 +64,7 @@ public class Game extends ScreenAdapter {
         _player.setX(VIRTUAL_WIDTH);
         _player.setY(VIRTUAL_HEIGHT);
 
-        backBounds = new Rectangle(0, VIRTUAL_HEIGHT / 3, 50, 50);
+        backBounds = new Rectangle(0,0, 100, 50);
         touchPoint = new Vector3();
 
         _camera = new OrthographicCamera(VIRTUAL_WIDTH, VIRTUAL_HEIGHT);
@@ -77,6 +82,7 @@ public class Game extends ScreenAdapter {
         batch = new SpriteBatch();
         batch.getProjectionMatrix().setToOrtho2D(0, 0, VIRTUAL_WIDTH, VIRTUAL_HEIGHT);
         _joysticks = new Joysticks();
+
         _lastShot = 0;
     }
 
@@ -112,7 +118,7 @@ public class Game extends ScreenAdapter {
         _player.setOrigin();
 
         shoot(deltax);
-
+        update();
         for (int i = 0; i < _enemyList.size(); i++) {
             _enemyList.get(i).move(_player, _enemyList);
         }
@@ -128,17 +134,21 @@ public class Game extends ScreenAdapter {
         // Zeichnen der grafischen Oberfläche
         _world.renderMap();
         _joysticks.renderJoysticks();
+
+
     }
 
 
 
     public void update() {
         if (Gdx.input.justTouched()) {
-            _camera.unproject(touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0));
+            _joysticks.getStage().getCamera().unproject(touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0));
             if (backBounds.contains(touchPoint.x, touchPoint.y)) {
                 _game.setScreen(new MainMenu(_game));
             }
         }
+
+
     }
 
     public void draw() {
@@ -229,6 +239,15 @@ public class Game extends ScreenAdapter {
                 tmpEnemy.setLife(tmpEnemy.getLife() - 30);
                 if(tmpEnemy.getLife() <= 0)
                 {
+                    // Blutpfütze an Position des toten Gegners
+                    TextureMapObject bloodpoudle = new TextureMapObject(new TextureRegion(new Texture(Gdx.files.internal("Blood.Puddle.png")),32,32));
+                    bloodpoudle.setX(tmpEnemy.getX());
+                    bloodpoudle.setY(tmpEnemy.getY());
+                    bloodpoudle.setRotation(tmpEnemy.getRotation());
+                    bloodpoudle.setOriginX(tmpEnemy.getOriginX());
+                    bloodpoudle.setOriginY(tmpEnemy.getOriginY());
+                    _world.getMapLayer().getObjects().add(bloodpoudle);
+
                     iterator.remove();
                     _world.getPlayerLayer().getObjects().remove(tmpEnemy);
                 }

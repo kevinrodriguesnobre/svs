@@ -116,19 +116,16 @@ public class Enemy extends Character {
                     //sum > newSum - falls man näher an einen anderen Gegner kommt, direction invertieren
                     if (sum > newSum) {
 
-                        if (sum < 32){
+                        if (sum < 32)
                             return;
-                        }
                         differenceX = differenceX * -0.6f * (float) Math.random();
                         differenceY = differenceY * -0.6f * (float) Math.random();
                     }
                     //return;
                 }
 
-        if (getX() + differenceX < 0 || getY() + differenceY < 0 || getX() + differenceX > _collisionLayer.getTileWidth() * 32 - 32 || getY() + differenceY > _collisionLayer.getTileHeight() * 32 - 32){
-            System.out.println(differenceX + " - BLOCKED - " + differenceY);
+        if (getX() + differenceX < 0 || getY() + differenceY < 0 || getX() + differenceX > _collisionLayer.getTileWidth() * 32 - 32 || getY() + differenceY > _collisionLayer.getTileHeight() * 32 - 32)
             return;
-        }
 
 
         setX(getX() + differenceX * speed);
