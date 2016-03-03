@@ -31,9 +31,8 @@ public class World {
     Player _player;
     ArrayList<Enemy> _enemyList;
     Rectangle _mapRectangle;
-    
-    public World(Player player, OrthographicCamera camera, ArrayList<Enemy> enemyList)
-    {
+
+    public World(Player player, OrthographicCamera camera, ArrayList<Enemy> enemyList) {
         _enemyList = enemyList;
         _player = player;
         _camera = camera;
@@ -41,10 +40,7 @@ public class World {
     }
 
 
-
-
-    public void createMap()
-    {
+    public void createMap() {
         // Läd die Tiled Map
         _tiledMap = new TmxMapLoader().load("world1.tmx");
         _tiledMapRenderer = new OrthogonalTiledMapRendererWithSprites(_tiledMap);
@@ -59,14 +55,13 @@ public class World {
         _mapLayer = (TiledMapTileLayer) _tiledMap.getLayers().get("MapLayer");
 
         // Speichert die Map als Rechteck um Positionen abzufragen
-        _mapRectangle = new Rectangle(0,0,_mapLayer.getWidth()*32,_mapLayer.getHeight()*32);
+        _mapRectangle = new Rectangle(0, 0, _mapLayer.getWidth() * 32, _mapLayer.getHeight() * 32);
 
         // stellt die Startposition des Players ein und fügt ihn der Playerebene hinzu
         _playerLayer.getObjects().add(_player);
     }
 
-    public void renderMap()
-    {
+    public void renderMap() {
         Gdx.gl.glClearColor(1, 0, 0, 1);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -76,22 +71,19 @@ public class World {
     }
 
 
-    public TiledMapTileLayer getCollisonLayer()
-    {
+    public TiledMapTileLayer getCollisonLayer() {
         return _mapLayer;
     }
 
-    public TiledMapTileLayer getMapLayer()
-    {
+    public TiledMapTileLayer getMapLayer() {
         return (TiledMapTileLayer) _tiledMap.getLayers().get("MapLayer");
     }
 
-    public MapLayer getPlayerLayer()
-    {
+    public MapLayer getPlayerLayer() {
         return _playerLayer;
     }
 
-    void addEnemy(){
+    void addEnemy() {
 
         // Die Objektebene aus der TiledMap wird der Variable Player Layer zugewiesen
         _playerLayer = _tiledMap.getLayers().get("PlayerLayer");
@@ -105,8 +97,7 @@ public class World {
         }
     }
 
-    public Rectangle getMapRectangle()
-    {
+    public Rectangle getMapRectangle() {
         return _mapRectangle;
     }
 }
