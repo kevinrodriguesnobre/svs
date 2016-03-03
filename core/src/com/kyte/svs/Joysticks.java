@@ -14,6 +14,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
@@ -32,6 +33,7 @@ import sun.rmi.runtime.Log;
  */
 public class Joysticks {
 
+
     private Stage stage;
     private Touchpad touchpad;
     private Touchpad touchpad2;
@@ -39,6 +41,7 @@ public class Joysticks {
     private Skin touchpadSkin;
     private Drawable touchBackground;
     private Drawable touchKnob;
+    private Button _backButton;
 
 
 
@@ -52,6 +55,8 @@ public class Joysticks {
 
         touchpadSkin.add("Zweite", new Texture(Gdx.files.internal("data/touchKnob.png")));
 
+        touchpadSkin.add("Dritte", new Texture(Gdx.files.internal("data/backbutton.png")));
+
         touchpadStyle = new Touchpad.TouchpadStyle();
         touchBackground = touchpadSkin.getDrawable("Erste");
         touchKnob = touchpadSkin.getDrawable("Zweite");
@@ -59,7 +64,7 @@ public class Joysticks {
 
         touchpadStyle.background = touchBackground;
         touchKnob.setMinHeight(touchpadSize / 4);
-        touchKnob.setMinWidth(touchpadSize/4);
+        touchKnob.setMinWidth(touchpadSize / 4);
         touchpadStyle.knob = touchKnob;
 
         touchpad = new Touchpad(0, touchpadStyle);
@@ -67,12 +72,17 @@ public class Joysticks {
 
         touchpad2 = new Touchpad(0, touchpadStyle);
         touchpad2.setBounds(height - 1.2f * touchpadSize, touchpadSize/5, touchpadSize, touchpadSize);
+
+        _backButton = new Button(touchpadSkin.getDrawable("Dritte"));
+        _backButton.setBounds(0,0,100,50);
+
+
         stage = new Stage();
         stage.addActor(touchpad);
         stage.addActor(touchpad2);
+        stage.addActor(_backButton);
 
         Gdx.input.setInputProcessor(stage);
-
     }
 
     /**
@@ -129,5 +139,12 @@ public class Joysticks {
     {
         return touchpad2.isTouched();
     }
+
+    public Stage getStage()
+    {
+        return stage;
+    }
+
+
 
 }
