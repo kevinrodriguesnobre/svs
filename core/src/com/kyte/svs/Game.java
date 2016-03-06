@@ -27,7 +27,9 @@ import java.util.List;
 public class Game extends ScreenAdapter {
 
     private World _world;
-    private Joysticks _joysticks;
+
+    private HUD _hud;
+
     private Player _player;
     private List<Projectile> _projectileSet;
     private ArrayList<Enemy> _enemyList;
@@ -64,7 +66,7 @@ public class Game extends ScreenAdapter {
         _player.setX(VIRTUAL_WIDTH);
         _player.setY(VIRTUAL_HEIGHT);
 
-        backBounds = new Rectangle(0,0, 100, 50);
+
         touchPoint = new Vector3();
 
         _camera = new OrthographicCamera(VIRTUAL_WIDTH, VIRTUAL_HEIGHT);
@@ -81,7 +83,10 @@ public class Game extends ScreenAdapter {
 
         batch = new SpriteBatch();
         batch.getProjectionMatrix().setToOrtho2D(0, 0, VIRTUAL_WIDTH, VIRTUAL_HEIGHT);
-        _joysticks = new Joysticks();
+
+        _hud = new HUD();
+        backBounds = new Rectangle(_hud._width-200,_hud._height-100, 200, 100);
+
 
         _lastShot = 0;
     }
@@ -113,8 +118,8 @@ public class Game extends ScreenAdapter {
 
         // Rotation des Spielers wird aktualisiert
         float tmpRot = _player.getRotation();
-        _player.setRotation(_joysticks.getRotation(tmpRot));
-        _player.move(_joysticks.getPositionVector(), deltax, _world.getMapLayer());
+        _player.setRotation(_hud.getJoysticks().getRotation(tmpRot));
+        _player.move(_hud.getJoysticks().getPositionVector(), deltax, _world.getMapLayer());
         _player.setOrigin();
 
         shoot(deltax);
@@ -133,7 +138,7 @@ public class Game extends ScreenAdapter {
 
         // Zeichnen der grafischen Oberfläche
         _world.renderMap();
-        _joysticks.renderJoysticks();
+        _hud.renderHUD();
 
 
     }
@@ -142,19 +147,14 @@ public class Game extends ScreenAdapter {
 
     public void update() {
         if (Gdx.input.justTouched()) {
-            _joysticks.getStage().getCamera().unproject(touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0));
-            if (backBounds.contains(touchPoint.x, touchPoint.y)) {
+            Vector3 vec = new Vector3(Gdx.input.getX(),Gdx.input.getY(),0);
+            _hud.getStage().getCamera().unproject(vec);
+            if (backBounds.contains(vec.x, vec.y)) {
                 _game.setScreen(new MainMenu(_game));
             }
         }
 
 
-    }
-
-    public void draw() {
-        batch.begin();
-        batch.draw(new Texture(Gdx.files.internal("data/backbutton.png")), 0, VIRTUAL_HEIGHT / 3, 50, 50);
-        batch.end();
     }
 
 
@@ -174,11 +174,11 @@ public class Game extends ScreenAdapter {
     }
 
     private void shoot(float delta) {
-        float xandy = Math.abs(_joysticks.getRotationVector().x) + Math.abs(_joysticks.getRotationVector().y);
-        if (_joysticks.touched() && ((System.currentTimeMillis() - _lastShot) > _player._weapon.getCurrentWeapon().getShootingFrequenz()) && (xandy > 0.999999f)) {
+        float xandy = Math.abs(_hud.getJoysticks().getRotationVector().x) + Math.abs(_hud.getJoysticks().getRotationVector().y);
+        if (_hud.getJoysticks().touched() && ((System.currentTimeMillis() - _lastShot) > _player._weapon.getCurrentWeapon().getShootingFrequenz()) && (xandy > 0.999999f)) {
             switch (_player.getWeapon().getCurrentWeaponID()) {
                 case 0:
-                    PistolBullet pBullet = new PistolBullet(_player.getX(), _player.getY(), _player.getRotation(), _joysticks.getRotationVector());
+                    PistolBullet pBullet = new PistolBullet(_player.getX(), _player.getY(), _player.getRotation(), _hud.getJoysticks().getRotationVector());
                     _projectileSet.add(pBullet);
                     _world.getPlayerLayer().getObjects().add(pBullet);
                     _effectSounds.getPistolSound().play(80f);

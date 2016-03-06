@@ -34,7 +34,7 @@ import sun.rmi.runtime.Log;
 public class Joysticks {
 
 
-    private Stage stage;
+    private Stage _stage;
     private Touchpad touchpad;
     private Touchpad touchpad2;
     private Touchpad.TouchpadStyle touchpadStyle;
@@ -45,11 +45,10 @@ public class Joysticks {
 
 
 
-    public Joysticks()
+    public Joysticks(Stage stage, float width, float height)
     {
-        float width = Gdx.graphics.getHeight();
-        float touchpadSize = width / 3;
-        float height = Gdx.graphics.getWidth();
+
+        float touchpadSize = width / 5;
         touchpadSkin = new Skin();
         touchpadSkin.add("Erste", new Texture(Gdx.files.internal("data/touchBackground.png")));
 
@@ -71,18 +70,18 @@ public class Joysticks {
         touchpad.setBounds(0.2f * touchpadSize, touchpadSize/5, touchpadSize, touchpadSize);
 
         touchpad2 = new Touchpad(0, touchpadStyle);
-        touchpad2.setBounds(height - 1.2f * touchpadSize, touchpadSize/5, touchpadSize, touchpadSize);
+        touchpad2.setBounds(width - 1.2f * touchpadSize, touchpadSize/5, touchpadSize, touchpadSize);
 
         _backButton = new Button(touchpadSkin.getDrawable("Dritte"));
-        _backButton.setBounds(0,0,100,50);
+        _backButton.setBounds(width - 200,height - 100,200,100);
 
 
-        stage = new Stage();
-        stage.addActor(touchpad);
-        stage.addActor(touchpad2);
-        stage.addActor(_backButton);
+        _stage = stage;
+        _stage.addActor(touchpad);
+        _stage.addActor(touchpad2);
+        _stage.addActor(_backButton);
 
-        Gdx.input.setInputProcessor(stage);
+        Gdx.input.setInputProcessor(_stage);
     }
 
     /**
@@ -90,8 +89,8 @@ public class Joysticks {
      */
     public void renderJoysticks()
     {
-        stage.act(Gdx.graphics.getDeltaTime());
-        stage.draw();
+        _stage.act(Gdx.graphics.getDeltaTime());
+        _stage.draw();
     }
 
 
@@ -138,11 +137,6 @@ public class Joysticks {
     public boolean touched()
     {
         return touchpad2.isTouched();
-    }
-
-    public Stage getStage()
-    {
-        return stage;
     }
 
 
