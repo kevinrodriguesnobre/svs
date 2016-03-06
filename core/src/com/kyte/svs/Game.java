@@ -74,9 +74,17 @@ public class Game extends ScreenAdapter {
         _camera.update();
 
         _world = new World(_player, _camera, _enemyList);
+
+        //Enemy spawning mindestens 180Pixel? entfernt vom Spieler
+        float enemyPositionX = 0;
+        float enemyPositionY = 0;
         for (Enemy enemy : _enemyList) {
-            enemy.setX(_world.getMapLayer().getTileWidth() * 31 - (float) Math.random() * _world.getMapLayer().getTileWidth() * 30);
-            enemy.setY(_world.getMapLayer().getTileHeight() * 31 - (float) Math.random() * _world.getMapLayer().getTileHeight() * 30);
+            do{
+                enemyPositionX = _world.getMapLayer().getTileWidth() * 31 - (float) Math.random() * _world.getMapLayer().getTileWidth() * 30;
+                enemyPositionY = _world.getMapLayer().getTileHeight() * 31 - (float) Math.random() * _world.getMapLayer().getTileHeight() * 30;
+            }while(Math.abs(_player.getX() - enemyPositionX) < 180 || Math.abs(_player.getY() - enemyPositionY) < 180);
+            enemy.setX(enemyPositionX);
+            enemy.setY(enemyPositionY);
             enemy.setCollisionLayer(_world.getCollisonLayer());
         }
         _player.setCollisionLayer(_world.getCollisonLayer());

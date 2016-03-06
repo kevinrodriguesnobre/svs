@@ -24,63 +24,60 @@ public class Enemy extends Character {
     }
 
     public void move(Player target, ArrayList<Enemy> enemyList) {
-        float differenceX = 0;
-        float differenceY = 0;
+        float moveX = 0;
+        float moveY = 0;
         float newX = 0;
         float newY = 0;
+        float newDeltaX = 0;
+        float newDeltaY = 0;
+        float newSum = 0;
 
-        float deltaX = Math.abs(target.getX()) - Math.abs(getX());
-        float deltaY = Math.abs(target.getY()) - Math.abs(getY());
-        float sum = Math.abs(Math.abs(deltaX) + Math.abs(deltaY));
-        float newDeltaX = Math.abs(target.getX()) - Math.abs(getX());
-        float newDeltaY = Math.abs(target.getY()) - Math.abs(getY());
-        float newSum = Math.abs(Math.abs(newDeltaX) + Math.abs(newDeltaY));
+        float deltaX = Math.abs(target.getX() - getX());
+        float deltaY = Math.abs(target.getY() - getY());
+        float distance = deltaX + deltaY;
 
         //Falls zu nah am Player stopen
-        if (sum < 32)
+        if (distance < 16)
             return;
 
-        if (getX() < target.getX()) {
-            differenceX = 1;
-        } else {
-            differenceX = -1;
+        if(getX() < target.getX()){
+            moveX = 1;
+        }else if(getX() > target.getX()){
+            moveX = -1;
         }
-        if (getY() < target.getY()) {
-            differenceY = 1;
-        } else {
-            differenceY = -1;
+        if(getY() < target.getY()){
+            moveY = 1;
+        }else if(getY() > target.getY()){
+            moveY = -1;
         }
 
-        if (newDeltaY != 0)
-            if ((newDeltaX / newDeltaY) < 1 && (newDeltaX / newDeltaY) > 0)
-                differenceX = differenceX * (newDeltaX / newDeltaY);
-        if (newDeltaX != 0)
-            if ((newDeltaY / newDeltaX) < 1 && (newDeltaY / newDeltaX) > 0)
-                differenceY = differenceY * (newDeltaY / newDeltaX);
+        if (deltaX != 0)
+            if ((deltaX / deltaY) < 1 && (deltaX / deltaY) > 0)
+                moveX = moveX * (deltaX / deltaY);
+        if (deltaY != 0)
+            if ((deltaY / deltaX) < 1 && (deltaY / deltaX) > 0)
+                moveY = moveY * (deltaY / deltaX);
 
-        newX = getX() + differenceX;
-        newY = getY() + differenceY;
+        newX = getX() + moveX;
+        newY = getY() + moveY;
 
 
         //Rotierung muss am Anfang stehen
         float rotation = getRotation();
-        if (differenceX > 0) {
-            if (differenceY > 0) {
-                rotation = (float) (-Math.atan(differenceX / differenceY) * 180 / Math.PI);
-            } else if (differenceY < 0) {
-                rotation = (float) -(-180 + Math.atan(differenceX / differenceY) * 180 / Math.PI);
+        if (moveX > 0) {
+            if (moveY > 0) {
+                rotation = (float) (-Math.atan(moveX / moveY) * 180 / Math.PI);
+            } else if (moveY < 0) {
+                rotation = (float) -(-180 + Math.atan(moveX / moveY) * 180 / Math.PI);
             }
-        } else if (differenceX < 0) {
-            if (differenceY > 0) {
-                rotation = (float) -(Math.atan(differenceX / differenceY) * 180 / Math.PI);
-            } else if (differenceY < 0) {
-                rotation = (float) -(-180 + Math.atan(differenceX / differenceY) * 180 / Math.PI);
+        } else if (moveX < 0) {
+            if (moveY > 0) {
+                rotation = (float) -(Math.atan(moveX / moveY) * 180 / Math.PI);
+            } else if (moveY < 0) {
+                rotation = (float) -(-180 + Math.atan(moveX / moveY) * 180 / Math.PI);
 
             }
         }
-        /*if (rotation < getRotation() % 320 - getRotation() % 360 / 20 || rotation > getRotation() % 360 + getRotation() % 360 / 20) {
-            rotation = getRotation() + rotation / 20;
-        }*/
 
         setRotation(rotation);
 
@@ -92,8 +89,8 @@ public class Enemy extends Character {
                     blocked = true;
                 }
                 if(blocked){
-                    differenceX = differenceX * -2;
-                    differenceY = differenceY * -0.5f;
+                    moveX = moveX * -0.8f;
+                    moveY = moveY * -0.2f;
                 }
             }
         }
@@ -109,27 +106,27 @@ public class Enemy extends Character {
                     collided = true;
                     deltaX = Math.abs(enemy.getX()) - Math.abs(getX());
                     deltaY = Math.abs(enemy.getY()) - Math.abs(getY());
-                    sum = Math.abs(deltaX + deltaY);
-                    newDeltaX = Math.abs(enemy.getX()) - Math.abs(getX() + differenceX);
-                    newDeltaY = Math.abs(enemy.getY()) - Math.abs(getY() + differenceY);
+                    distance = Math.abs(deltaX + deltaY);
+                    newDeltaX = Math.abs(enemy.getX()) - Math.abs(getX() + moveX);
+                    newDeltaY = Math.abs(enemy.getY()) - Math.abs(getY() + moveY);
                     newSum = Math.abs(newDeltaX + newDeltaY);
                     //sum > newSum - falls man näher an einen anderen Gegner kommt, direction invertieren
-                    if (sum > newSum) {
+                    if (distance > newSum) {
 
-                        if (sum < 32)
+                        if (distance < 32)
                             return;
-                        differenceX = differenceX * -0.6f * (float) Math.random();
-                        differenceY = differenceY * -0.6f * (float) Math.random();
+                        moveX = moveX * -0.6f * (float) Math.random();
+                        moveY = moveY * -0.6f * (float) Math.random();
                     }
                     //return;
                 }
 
-        if (getX() + differenceX < 0 || getY() + differenceY < 0 || getX() + differenceX > _collisionLayer.getTileWidth() * 32 - 32 || getY() + differenceY > _collisionLayer.getTileHeight() * 32 - 32)
+        if (getX() + moveX < 0 || getY() + moveY < 0 || getX() + moveX > _collisionLayer.getTileWidth() * 32 - 32 || getY() + moveY > _collisionLayer.getTileHeight() * 32 - 32)
             return;
 
 
-        setX(getX() + differenceX * speed);
-        setY(getY() + differenceY * speed);
+        setX(getX() + moveX * speed);
+        setY(getY() + moveY * speed);
     }
 
     public void setCollisionLayer(TiledMapTileLayer collisionLayer) {
