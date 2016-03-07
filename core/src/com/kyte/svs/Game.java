@@ -233,7 +233,7 @@ public class Game extends ScreenAdapter {
             Projectile tmpProjectile = iterator.next();
 
             // Überprüft ob jeweilige Kugel einen Gegner trifft, entfernt diese falls ja
-            if(checkEnemyBulletCollision(tmpProjectile.getX(),tmpProjectile.getY()))
+            if(checkEnemyBulletCollision(tmpProjectile))
             {
                 iterator.remove();
                 _world.getPlayerLayer().getObjects().remove(tmpProjectile);
@@ -253,18 +253,23 @@ public class Game extends ScreenAdapter {
         }
     }
 
-    private boolean checkEnemyBulletCollision(float bulletX, float bulletY)
+    private boolean checkEnemyBulletCollision(Projectile projectile)
     {
         boolean collision = false;
+        float bulletX = projectile.getX();
+        float bulletY = projectile.getY();
+
         if(!_enemyList.isEmpty()) {
             Iterator<Enemy> iterator = _enemyList.iterator();
             while (iterator.hasNext()) {
                 Enemy tmpEnemy = iterator.next();
 
-                Rectangle hitbox = new Rectangle(tmpEnemy.getX(), tmpEnemy.getY(), 30, 30);
+                System.out.println("X: " + tmpEnemy.getTextureRegion().getRegionWidth() + "\nY: " + tmpEnemy.getTextureRegion().getRegionHeight());
+
+                Rectangle hitbox = new Rectangle(tmpEnemy.getX(), tmpEnemy.getY(), tmpEnemy.getTextureRegion().getRegionWidth(), tmpEnemy.getTextureRegion().getRegionHeight());
 
                 if (hitbox.contains(bulletX, bulletY)) {
-                    tmpEnemy.setLife(tmpEnemy.getLife() - 30);
+                    tmpEnemy.setLife(tmpEnemy.getLife() - projectile.getDamage());
                     if (tmpEnemy.getLife() <= 0) {
                         // Blutpfütze an Position des toten Gegners
                         TextureMapObject bloodpoudle = new TextureMapObject(new TextureRegion(new Texture(Gdx.files.internal("Blood.Puddle.png")), 32, 32));

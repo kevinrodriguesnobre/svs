@@ -16,5 +16,6 @@ public class PistolBullet extends Projectile
         setX(x);
         setY(y);
         setRotation(rotation);
+        _damage = 25;
     }
 }

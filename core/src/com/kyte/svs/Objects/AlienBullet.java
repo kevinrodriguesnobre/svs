@@ -11,9 +11,10 @@ public class AlienBullet extends Projectile
 {
     public AlienBullet(float x, float y, float rotation,Vector2 directionVector)
     {
-        super(new TextureRegion(new Texture("Projektile/Projektil.Alienwaffe.png"), 5, 10), 100, 400, directionVector);
+        super(new TextureRegion(new Texture("Projektile/Projektil.Alienwaffe.png"), 5, 10), 60, 100, directionVector);
         setX(x);
         setY(y);
         setRotation(rotation);
+        _damage = 50;
     }
 }

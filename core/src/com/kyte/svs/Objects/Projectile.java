@@ -14,6 +14,7 @@ public class Projectile extends TextureMapObject
     int _shootingFrequenz;
     Vector2 _directionVector;
     float _speed;
+    int _damage;
 
     /**
      * Initialisiert Projektile
@@ -28,6 +29,7 @@ public class Projectile extends TextureMapObject
         _directionVector = directionVector;
         _shootingFrequenz = shootingFrequenz;
         _speed = speed;
+
     }
 
     public void update(float delta)
@@ -39,5 +41,10 @@ public class Projectile extends TextureMapObject
 
     public int getShootingFrequenz() {
         return _shootingFrequenz;
+    }
+
+    public int getDamage()
+    {
+        return _damage;
     }
 }
