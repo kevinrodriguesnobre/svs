@@ -12,7 +12,6 @@ import com.badlogic.gdx.maps.objects.TextureMapObject;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.kyte.svs.Objects.AlienBullet;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.kyte.svs.Objects.EffectSounds;
 import com.kyte.svs.Objects.PistolBullet;
 import com.kyte.svs.Objects.Projectile;
@@ -360,7 +359,7 @@ public class Game extends ScreenAdapter {
      */
     private void updatePaused()
     {
-
+        _hud.renderPauseMenu();
     }
 
 
