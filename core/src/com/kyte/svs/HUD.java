@@ -65,9 +65,9 @@ public class HUD {
     private void addLabel(){
         Skin skin = new Skin(Gdx.files.internal("data/uiskin.json"));
         _label = new Label("Round 1", skin);
-        _label.setPosition(Gdx.graphics.getWidth() / 8, Gdx.graphics.getHeight() - Gdx.graphics.getHeight() / 20);
+        _label.setPosition(Gdx.graphics.getWidth() / 6.5f, Gdx.graphics.getHeight() - Gdx.graphics.getHeight() / 10);
         _label.setColor(1.0f, 1.0f, 1.0f, 1.0f);
-        _label.setFontScale(4);
+        _label.setFontScale(_width / 400);
         _stage.addActor(_label);
     }
 
