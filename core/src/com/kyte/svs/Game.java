@@ -168,7 +168,7 @@ public class Game extends ScreenAdapter {
 
     }
     public void update() {
-        if (Gdx.input.justTouched()) {
+        if (Gdx.input.isTouched()) {
             Vector3 vec = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
             _hud.getStage().getCamera().unproject(vec);
             if (_backBoundsRectangle.contains(vec.x, vec.y)) {
@@ -265,7 +265,6 @@ public class Game extends ScreenAdapter {
 
             if(hitbox.contains(bulletX,bulletY))
             {
-                System.out.println("ÜBELST GETROFFEN AMK");
                 tmpEnemy.setLife(tmpEnemy.getLife() - 30);
                 if(tmpEnemy.getLife() <= 0)
                 {
