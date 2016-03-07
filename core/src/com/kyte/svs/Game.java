@@ -47,6 +47,7 @@ public class Game extends ScreenAdapter {
 
     public Game(START game) {
 
+        _hud = new HUD();
         _game = game;
 
         _projectileSet = new LinkedList<Projectile>();
@@ -55,7 +56,7 @@ public class Game extends ScreenAdapter {
 
         _enemyList = new ArrayList<Enemy>();
         for (int i = 0; i < _enemyAmount; i++) {
-            Enemy enemy = new Enemy(_enemyTexture[(int)(Math.random() * 7)]);
+            Enemy enemy = new Enemy(_enemyTexture[(int)(Math.random() * 7)], _hud.getHpBar());
             _enemyList.add(enemy);
         }
 
@@ -85,7 +86,6 @@ public class Game extends ScreenAdapter {
 
         batch = new SpriteBatch();
         batch.getProjectionMatrix().setToOrtho2D(0, 0, VIRTUAL_WIDTH, VIRTUAL_HEIGHT);
-        _hud = new HUD();
 
         _backBoundsRectangle = new Rectangle(0, _hud._height - 100, 200, 100);
         _weaponSwitchRectangle = new Rectangle(_hud._width - 400, _hud._height - 200, 400, 200);
@@ -102,7 +102,7 @@ public class Game extends ScreenAdapter {
     public void render(float deltax) {
         if(_enemyList.size() == 0){
             for (int i = 0; i < _enemyAmount; i++) {
-                Enemy enemy = new Enemy(_enemyTexture[(int)(Math.random() * 7)]);
+                Enemy enemy = new Enemy(_enemyTexture[(int)(Math.random() * 7)], _hud.getHpBar());
                 _enemyList.add(enemy);
             }
             for (Enemy enemy : _enemyList) {

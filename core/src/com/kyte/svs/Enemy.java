@@ -15,9 +15,11 @@ public class Enemy extends Character {
     int _currentLife = 100;
     float _oldMoveX = 0f;
     float _oldMoveY = 0f;
+    HpBar _playerHpBar;
 
-    public Enemy(String texture) {
+    public Enemy(String texture, HpBar bar) {
         super(new TextureRegion(new Texture("Gegner/Gegner." + texture + ".png"), 32, 32));
+        _playerHpBar = bar;
         setOriginY(16);
         setOriginX(16);
         speed = speed + (int) Math.random();
@@ -37,8 +39,11 @@ public class Enemy extends Character {
         float distance = deltaX + deltaY;
 
         //Falls zu nah am Player stopen
-        if (distance < 16)
+        if (distance < 16){
+            System.out.println(distance);
+            _playerHpBar.getDmg(1);
             return;
+        }
 
         if (getX() < target.getX()) {
             moveX = 1;
