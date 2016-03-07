@@ -52,7 +52,7 @@ public class Joysticks {
         touchpad2.setBounds(width - 1.2f * touchpadSize, touchpadSize/5, touchpadSize, touchpadSize);
 
         _backButton = new Button(touchpadSkin.getDrawable("Dritte"));
-        _backButton.setBounds(0, height - 100, 200, 100);
+        _backButton.setBounds(0, height - (height/7), width / 7, height / 7);
 
         _stage = stage;
         _stage.addActor(touchpad);

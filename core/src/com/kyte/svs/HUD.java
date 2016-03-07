@@ -34,7 +34,7 @@ public class HUD {
         _weaponTextureArray[1] = new Texture("Weapons/weapon_alien.png");
 
         _weaponSwitchImage = new Image(_weaponTextureArray[0]);
-        _weaponSwitchImage.setBounds(_width - 400, _height - 200, 400, 200);
+        _weaponSwitchImage.setBounds(_width - (_width / 7), _height - (_height / 7), _width / 7, _height / 7);
 
         _stage.addActor(_weaponSwitchImage);
 
