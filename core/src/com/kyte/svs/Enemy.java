@@ -15,6 +15,8 @@ public class Enemy extends Character {
     int speed = 1;
     int _currentLife = 100;
     int _maxLife = 100;
+    float _oldMoveX = 0f;
+    float _oldMoveY = 0f;
 
     public Enemy() {
         super(new TextureRegion(new Texture("Gegner/Gegner.Alien.png"), 32, 32));
@@ -40,14 +42,14 @@ public class Enemy extends Character {
         if (distance < 16)
             return;
 
-        if(getX() < target.getX()){
+        if (getX() < target.getX()) {
             moveX = 1;
-        }else if(getX() > target.getX()){
+        } else if (getX() > target.getX()) {
             moveX = -1;
         }
-        if(getY() < target.getY()){
+        if (getY() < target.getY()) {
             moveY = 1;
-        }else if(getY() > target.getY()){
+        } else if (getY() > target.getY()) {
             moveY = -1;
         }
 
@@ -83,26 +85,51 @@ public class Enemy extends Character {
 
         // Wenn die Kachel, auf die der Gegner möchte ein blockiertes Objekt ist
         boolean blocked = false;
+        boolean blockedNW = false;
+        boolean blockedSE = false;
+        int cellX = 0;
+        int cellY = 0;
         if (newX <= _collisionLayer.getWidth() * 32 && newY <= _collisionLayer.getHeight() * 32) {
-            for (int i = 1; i < 6; i++) {
-                if (_collisionLayer.getCell((int) newX / _collisionLayer.getWidth(), (int) newY / _collisionLayer.getHeight()).getTile().getProperties().containsKey("blocked")) {
-                    blocked = true;
-                }
-                if(blocked){
-                    moveX = moveX * -0.8f;
-                    moveY = moveY * -0.2f;
-                }
-            }
+            cellX = (int) (newX+32) / _collisionLayer.getWidth();
+            cellY = (int) (newY) / _collisionLayer.getHeight();
+
+            if (Math.abs(moveX) > Math.abs(moveY))
+                    if (_collisionLayer.getCell(cellX , cellY).getTile().getProperties().containsKey("blocked")) {
+                        blocked = true;
+                        moveX = 0;
+                        if (moveY > 0.05f && (_oldMoveY > 0.2 || _oldMoveY == 0)){
+                            moveY = Math.max(moveY, Math.min(2, (moveY + 0.2f * sign(moveX)) * 4));
+                            _oldMoveY = moveY;
+                        }else if (moveY < -0.05f && (_oldMoveX < 0.2 ||_oldMoveX == 0)){
+                            moveY = Math.max(-1, Math.min(moveY, (moveY + 0.2f * sign(moveX)) * 4));
+                            _oldMoveY = moveY;
+                        }else{
+                            moveY = _oldMoveY;
+                        }
+                    }
+            if (Math.abs(moveX) <= Math.abs(moveY) && !blocked)
+                    if (_collisionLayer.getCell(cellX, cellY).getTile().getProperties().containsKey("blocked")) {
+                        blocked = true;
+                        moveY = 0;
+                        System.out.println(" - blocked2");
+                        if (moveX > 0.05f && (_oldMoveX > 0.2 || _oldMoveX == 0)){
+                            moveX = Math.max(moveX, Math.min(2, (moveX + 0.2f * sign(moveX)) * 4));
+                            _oldMoveX = moveX;
+                        }else if (moveX < -0.05f && (_oldMoveX < 0.2 ||_oldMoveX == 0)){
+                            moveX = Math.max(-1, Math.min(moveX, (moveX + 0.2f * sign(moveX)) * 4));
+                            _oldMoveX = moveX;
+                        }else{
+                            moveX = _oldMoveX;
+                        }
+                    }
         }
 
         //Wenn Enemies gegeinander treffen
         boolean collided = false;
         for (Enemy enemy : enemyList)
-            if (enemy != this)
-                if ((Math.round(enemy.getX() + 30) > Math.round(getX()) && Math.round(enemy.getX() - 30) < Math.round(getX())) &&
-                        (Math.round(enemy.getY() + 30) > Math.round(getY()) && Math.round(enemy.getY() - 30) < Math.round(getY()))) {
-                    //differenceX = -differenceX;
-                    //differenceY = -differenceY;
+            if (enemy != this && !blocked)
+                if ((Math.round(enemy.getX() + 16) > Math.round(getX()) && Math.round(enemy.getX() - 16) < Math.round(getX())) &&
+                        (Math.round(enemy.getY() + 16) > Math.round(getY()) && Math.round(enemy.getY() - 16) < Math.round(getY()))) {
                     collided = true;
                     deltaX = Math.abs(enemy.getX()) - Math.abs(getX());
                     deltaY = Math.abs(enemy.getY()) - Math.abs(getY());
@@ -143,5 +170,12 @@ public class Enemy extends Character {
 
     public int getMaxLife() {
         return _maxLife;
+    }
+
+    public int sign(float number){
+        if(number < 0){
+            return -1;
+        }
+        return 1;
     }
 }
