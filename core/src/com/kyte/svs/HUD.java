@@ -6,11 +6,14 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 
 public class HUD {
 
     private Stage _stage;
+    private Label _label;
     private Joysticks _joysticks;
     private HpBar _HpBar;
     public float _width;
@@ -35,6 +38,7 @@ public class HUD {
 
         _stage.addActor(_weaponSwitchImage);
 
+        addLabel();
         Gdx.input.setInputProcessor(_stage);
     }
 
@@ -58,6 +62,18 @@ public class HUD {
         return _stage;
     }
 
+    private void addLabel(){
+        Skin skin = new Skin(Gdx.files.internal("data/uiskin.json"));
+        _label = new Label("Round 1", skin);
+        _label.setPosition(Gdx.graphics.getWidth() / 8, Gdx.graphics.getHeight() - Gdx.graphics.getHeight() / 20);
+        _label.setColor(1.0f, 1.0f, 1.0f, 1.0f);
+        _label.setFontScale(4);
+        _stage.addActor(_label);
+    }
+
+    public void updateLabel(int round){
+        _label.setText("Round " + round);
+    }
 
     public void drawWeaponSwitchMenu(Player player)
     {

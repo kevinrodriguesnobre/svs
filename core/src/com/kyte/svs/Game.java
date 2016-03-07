@@ -2,14 +2,19 @@ package com.kyte.svs;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.objects.TextureMapObject;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.kyte.svs.Objects.AlienBullet;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.kyte.svs.Objects.EffectSounds;
@@ -30,11 +35,11 @@ public class Game extends ScreenAdapter {
     private World _world;
 
     private HUD _hud;
-
     private Player _player;
     private List<Projectile> _projectileSet;
     private ArrayList<Enemy> _enemyList;
-    private int _enemyAmount = 15;
+    private int _enemyAmount = 1;
+    private int _round = 1;
     private OrthographicCamera _camera;
     private SpriteBatch batch;
     private static final int VIRTUAL_WIDTH = 480;
@@ -56,7 +61,7 @@ public class Game extends ScreenAdapter {
 
         _enemyList = new ArrayList<Enemy>();
         for (int i = 0; i < _enemyAmount; i++) {
-            Enemy enemy = new Enemy(_enemyTexture[(int)(Math.random() * 7)], _hud.getHpBar());
+            Enemy enemy = new Enemy(_enemyTexture[(int) (Math.random() * 7)], _hud.getHpBar());
             _enemyList.add(enemy);
         }
 
@@ -74,10 +79,11 @@ public class Game extends ScreenAdapter {
         float enemyPositionX = 0;
         float enemyPositionY = 0;
         for (Enemy enemy : _enemyList) {
-            do{
+            do {
                 enemyPositionX = _world.getMapLayer().getTileWidth() * 31 - (float) Math.random() * _world.getMapLayer().getTileWidth() * 30;
                 enemyPositionY = _world.getMapLayer().getTileHeight() * 31 - (float) Math.random() * _world.getMapLayer().getTileHeight() * 30;
-            }while(Math.abs(_player.getX() - enemyPositionX) < 180 || Math.abs(_player.getY() - enemyPositionY) < 180);
+            }
+            while (Math.abs(_player.getX() - enemyPositionX) < 180 || Math.abs(_player.getY() - enemyPositionY) < 180);
             enemy.setX(enemyPositionX);
             enemy.setY(enemyPositionY);
             enemy.setCollisionLayer(_world.getCollisonLayer());
@@ -100,9 +106,12 @@ public class Game extends ScreenAdapter {
 
     @Override
     public void render(float deltax) {
-        if(_enemyList.size() == 0){
+        if (_enemyList.size() == 0) {
+            _round++;
+            _hud.updateLabel(_round);
+            _enemyAmount++;
             for (int i = 0; i < _enemyAmount; i++) {
-                Enemy enemy = new Enemy(_enemyTexture[(int)(Math.random() * 7)], _hud.getHpBar());
+                Enemy enemy = new Enemy(_enemyTexture[(int) (Math.random() * 7)], _hud.getHpBar());
                 _enemyList.add(enemy);
             }
             for (Enemy enemy : _enemyList) {
@@ -137,39 +146,35 @@ public class Game extends ScreenAdapter {
         if (_player.getY() - VIRTUAL_HEIGHT / 2 >= 0 && _player.getY() + VIRTUAL_HEIGHT / 2 <= _world.getMapLayer().getTileHeight() * 32)
             _camera.position.set(_camera.position.x, _player.getY(), 1);
         _camera.update();
-
         // Zeichnen der grafischen Oberfläche
         _world.renderMap();
         _hud.renderHUD();
     }
 
 
-    private void checkWeaponSwitch()
-    {
+    private void checkWeaponSwitch() {
 
-          int nextWeaponID = _player.getWeapon().getCurrentWeaponID() + 1;
-          if (nextWeaponID > 1)
-          {
-              nextWeaponID = 0;
-          }
+        int nextWeaponID = _player.getWeapon().getCurrentWeaponID() + 1;
+        if (nextWeaponID > 1) {
+            nextWeaponID = 0;
+        }
 
-          _player.setWeapon(nextWeaponID);
-          Texture weaponTexture = new Texture(Gdx.files.internal(_player.getWeapon().getCurrentWeaponPlayerTextureString()));
-          _player.getTextureRegion().getTexture().dispose();
-          _player.getTextureRegion().setTexture(weaponTexture);
+        _player.setWeapon(nextWeaponID);
+        Texture weaponTexture = new Texture(Gdx.files.internal(_player.getWeapon().getCurrentWeaponPlayerTextureString()));
+        _player.getTextureRegion().getTexture().dispose();
+        _player.getTextureRegion().setTexture(weaponTexture);
 
         _hud.drawWeaponSwitchMenu(_player);
 
     }
+
     public void update() {
         if (Gdx.input.isTouched()) {
             Vector3 vec = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
             _hud.getStage().getCamera().unproject(vec);
             if (_backBoundsRectangle.contains(vec.x, vec.y)) {
                 _game.setScreen(new MainMenu(_game));
-            }
-            else if (_weaponSwitchRectangle.contains(vec.x,vec.y))
-            {
+            } else if (_weaponSwitchRectangle.contains(vec.x, vec.y)) {
                 checkWeaponSwitch();
             }
         }
@@ -220,39 +225,34 @@ public class Game extends ScreenAdapter {
         Iterator<Projectile> iterator = _projectileSet.iterator();
 
         // Schleife iteriert über die Liste von Projektilen, bis die Liste kein Element mehr hat
-        while(iterator.hasNext())
-        {
+        while (iterator.hasNext()) {
             // Nächstes Element in der Liste
             Projectile tmpProjectile = iterator.next();
 
             // Überprüft ob jeweilige Kugel einen Gegner trifft, entfernt diese falls ja
-            if(checkEnemyBulletCollision(tmpProjectile))
-            {
+            if (checkEnemyBulletCollision(tmpProjectile)) {
                 iterator.remove();
                 _world.getPlayerLayer().getObjects().remove(tmpProjectile);
             }
             // Wenn die Position des Projektils außerhalb der Kartengröße ist
-            else if (!_world.getMapRectangle().contains(tmpProjectile.getX(), tmpProjectile.getY()))
-            {
+            else if (!_world.getMapRectangle().contains(tmpProjectile.getX(), tmpProjectile.getY())) {
                 // Entferne Projektil aus dem PlayerLayer
                 _world.getPlayerLayer().getObjects().remove(tmpProjectile);
                 // Entferne Projektil aus der Liste
                 iterator.remove();
-            } else
-            {
+            } else {
                 // Aktualisiere Position des Projektils, falls es sich auf der Karte befindet
                 tmpProjectile.update(delta);
             }
         }
     }
 
-    private boolean checkEnemyBulletCollision(Projectile projectile)
-    {
+    private boolean checkEnemyBulletCollision(Projectile projectile) {
         boolean collision = false;
         float bulletX = projectile.getX();
         float bulletY = projectile.getY();
 
-        if(!_enemyList.isEmpty()) {
+        if (!_enemyList.isEmpty()) {
             Iterator<Enemy> iterator = _enemyList.iterator();
             while (iterator.hasNext()) {
                 Enemy tmpEnemy = iterator.next();
