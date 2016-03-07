@@ -274,7 +274,14 @@ public class Game extends ScreenAdapter {
                     tmpEnemy.setLife(tmpEnemy.getLife() - projectile.getDamage());
                     if (tmpEnemy.getLife() <= 0) {
                         // Blutpfütze an Position des toten Gegners
-                        TextureMapObject bloodpoudle = new TextureMapObject(new TextureRegion(new Texture(Gdx.files.internal("Blood.Puddle.png")), 32, 32));
+                        TextureMapObject bloodpoudle;
+                        if(tmpEnemy._name.equals("Roboter") || tmpEnemy._name.equals("Roboter.Boss"))
+                        {
+                            bloodpoudle = new TextureMapObject(new TextureRegion(new Texture(Gdx.files.internal("Mech.Puddle.png")), 32, 32));
+                        }
+                        else {
+                             bloodpoudle = new TextureMapObject(new TextureRegion(new Texture(Gdx.files.internal("Blood.Puddle.png")), 32, 32));
+                        }
                         bloodpoudle.setX(tmpEnemy.getX());
                         bloodpoudle.setY(tmpEnemy.getY());
                         bloodpoudle.setRotation(tmpEnemy.getRotation());

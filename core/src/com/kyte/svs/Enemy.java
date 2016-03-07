@@ -16,9 +16,11 @@ public class Enemy extends Character {
     float _oldMoveX = 0f;
     float _oldMoveY = 0f;
     HpBar _playerHpBar;
+    public String _name;
 
     public Enemy(String texture, HpBar bar) {
         super(new TextureRegion(new Texture("Gegner/Gegner." + texture + ".png"), 32, 32));
+        _name = texture;
         _playerHpBar = bar;
         setOriginY(16);
         setOriginX(16);
