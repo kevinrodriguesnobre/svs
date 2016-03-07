@@ -208,6 +208,7 @@ public class Game extends ScreenAdapter {
                     _world.getPlayerLayer().getObjects().add(pBullet);
                     _effectSounds.getPistolSound().play(80f);
                     _lastShot = System.currentTimeMillis();
+                    _hud.getHpBar().getDmg(1);
                     break;
                 case 1:
                     AlienBullet aBullet = new AlienBullet(_player.getX(), _player.getY(), _player.getRotation(), _hud.getJoysticks().getRotationVector());

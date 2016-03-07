@@ -12,6 +12,7 @@ public class HUD {
 
     private Stage _stage;
     private Joysticks _joysticks;
+    private HpBar _HpBar;
     public float _width;
     public float _height;
     private Image _weaponSwitchImage;
@@ -23,6 +24,7 @@ public class HUD {
         _width = Gdx.graphics.getWidth();
         _height = Gdx.graphics.getHeight();
         _joysticks = new Joysticks(_stage,_width,_height);
+        _HpBar = new HpBar(_stage,_width,_height);
 
         _weaponTextureArray = new Texture[2];
         _weaponTextureArray[0] = new Texture("Weapons/weapon_pistol.png");
@@ -45,6 +47,10 @@ public class HUD {
     public Joysticks getJoysticks()
     {
         return _joysticks;
+    }
+
+    public HpBar getHpBar(){
+        return _HpBar;
     }
 
     public Stage getStage()
