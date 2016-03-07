@@ -10,6 +10,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
+import com.badlogic.gdx.utils.Align;
+import com.kyte.svs.Objects.GameStats;
 
 public class HUD {
 
@@ -21,8 +23,10 @@ public class HUD {
     public float _height;
     private Image _weaponSwitchImage;
     private Texture[] _weaponTextureArray;
+    private GameStats _gameStats;
 
-    public HUD()
+
+    public HUD(GameStats gameStats)
     {
         _stage = new Stage();
         _pauseStage = new Stage();
@@ -30,6 +34,7 @@ public class HUD {
         _height = Gdx.graphics.getHeight();
         _joysticks = new Joysticks(_stage,_width,_height);
         _HpBar = new HpBar(_stage,_width,_height);
+        _gameStats = gameStats;
 
         _weaponTextureArray = new Texture[2];
         _weaponTextureArray[0] = new Texture("Weapons/weapon_pistol.png");
@@ -97,6 +102,8 @@ public class HUD {
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        _pauseLabel.setText("Pausiert\n\n" + "Bisher getoetete Gegner: " + _gameStats.getKillCounter() +"\nBisher verschossene Projektile: " + _gameStats.getRoundsShot());
+
         _stage.act(Gdx.graphics.getDeltaTime());
         _pauseStage.draw();
     }
@@ -104,10 +111,11 @@ public class HUD {
     public void addPauseTitel()
     {
         Skin skin = new Skin(Gdx.files.internal("data/uiskin.json"));
-        _pauseLabel = new Label("Pausiert", skin);
+        _pauseLabel = new Label("Pausiert\n\n" + "Bisher getoetete Gegner: " + _gameStats.getKillCounter() +"\nBisher verschossene Projektile: " + _gameStats.getRoundsShot(), skin);
+        _pauseLabel.setAlignment(Align.center);
         _pauseLabel.setPosition((Gdx.graphics.getWidth() - _pauseLabel.getWidth()) / 2, (Gdx.graphics.getHeight() - _pauseLabel.getHeight()) / 2);
         _pauseLabel.setColor(1.0f, 1.0f, 1.0f, 1.0f);
-        _pauseLabel .setFontScale(_width / 300);
+        _pauseLabel .setFontScale(_width / 500);
         _pauseStage.addActor(_pauseLabel);
     }
 }

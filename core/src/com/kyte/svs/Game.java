@@ -13,6 +13,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.kyte.svs.Objects.AlienBullet;
 import com.kyte.svs.Objects.EffectSounds;
+import com.kyte.svs.Objects.GameStats;
 import com.kyte.svs.Objects.PistolBullet;
 import com.kyte.svs.Objects.Projectile;
 
@@ -46,7 +47,7 @@ public class Game extends ScreenAdapter {
     private long _lastShot, _lastPause, _lastWeaponSwitch;
     private EffectSounds _effectSounds;
     private String[] _enemyTexture = new String[]{"Alien", "Alien2", "Fetti", "Kaeferblob", "Roboter.Boss", "Roboter", "Zombie"};
-
+    private GameStats _gameStats;
 
     private boolean _gameOver;
 
@@ -63,8 +64,10 @@ public class Game extends ScreenAdapter {
 
     public Game(START game) {
 
-        _hud = new HUD();
         STATE = GAME_READY;
+
+        _gameStats = new GameStats(System.currentTimeMillis());
+        _hud = new HUD(_gameStats);
 
         _game = game;
 
@@ -201,7 +204,10 @@ public class Game extends ScreenAdapter {
 
     private void shoot(float delta) {
         float xandy = Math.abs(_hud.getJoysticks().getRotationVector().x) + Math.abs(_hud.getJoysticks().getRotationVector().y);
-        if (_hud.getJoysticks().touched() && ((System.currentTimeMillis() - _lastShot) > _player._weapon.getCurrentWeapon().getShootingFrequenz()) && (xandy > 0.999999f)) {
+        if (_hud.getJoysticks().touched() && ((System.currentTimeMillis() - _lastShot) > _player._weapon.getCurrentWeapon().getShootingFrequenz()) && (xandy > 0.999999f))
+        {
+            // Insgesamt geschossene Projektile um einen erhöhen
+            _gameStats.setRoundsShot(_gameStats.getRoundsShot() + 1);
             switch (_player.getWeapon().getCurrentWeaponID()) {
                 case 0:
                     PistolBullet pBullet = new PistolBullet(_player.getX(), _player.getY(), _player.getRotation(), _hud.getJoysticks().getRotationVector());
@@ -290,6 +296,9 @@ public class Game extends ScreenAdapter {
 
                         iterator.remove();
                         _world.getPlayerLayer().getObjects().remove(tmpEnemy);
+
+                        // KillStats um einen erhöhen
+                        _gameStats.setKillCounter(_gameStats.getKillCounter() + 1);
                     }
                     collision = true;
                 }

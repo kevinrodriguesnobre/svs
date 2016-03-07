@@ -10,9 +10,9 @@ public class START extends Game {
     public SpriteBatch batcher;
     @Override
     public void create () {
-        Music music = Gdx.audio.newMusic(Gdx.files.internal("Sounds/NeverRun.mp3"));
-        music.play();
-        music.setLooping(true);
+        //Music music = Gdx.audio.newMusic(Gdx.files.internal("Sounds/NeverRun.mp3"));
+        //music.play();
+        //music.setLooping(true);
         batcher = new SpriteBatch();
         setScreen(new MainMenu(this));
     }
