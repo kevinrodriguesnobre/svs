@@ -11,6 +11,7 @@ import com.badlogic.gdx.maps.objects.TextureMapObject;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.kyte.svs.Objects.AlienBullet;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.kyte.svs.Objects.EffectSounds;
 import com.kyte.svs.Objects.PistolBullet;
 import com.kyte.svs.Objects.Projectile;
@@ -42,6 +43,7 @@ public class Game extends ScreenAdapter {
     private Rectangle _backBoundsRectangle, _weaponSwitchRectangle;
     private long _lastShot;
     private EffectSounds _effectSounds;
+    private String[] _enemyTexture = new String[]{"Alien", "Alien2", "Fetti", "Kaeferblob", "Roboter.Boss", "Roboter", "Zombie"};
 
     public Game(START game) {
 
@@ -53,7 +55,7 @@ public class Game extends ScreenAdapter {
 
         _enemyList = new ArrayList<Enemy>();
         for (int i = 0; i < _enemyAmount; i++) {
-            Enemy enemy = new Enemy();
+            Enemy enemy = new Enemy(_enemyTexture[(int)(Math.random() * 7)]);
             _enemyList.add(enemy);
         }
 
@@ -100,7 +102,7 @@ public class Game extends ScreenAdapter {
     public void render(float deltax) {
         if(_enemyList.size() == 0){
             for (int i = 0; i < _enemyAmount; i++) {
-                Enemy enemy = new Enemy();
+                Enemy enemy = new Enemy(_enemyTexture[(int)(Math.random() * 7)]);
                 _enemyList.add(enemy);
             }
             for (Enemy enemy : _enemyList) {

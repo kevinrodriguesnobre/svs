@@ -16,8 +16,8 @@ public class Enemy extends Character {
     float _oldMoveX = 0f;
     float _oldMoveY = 0f;
 
-    public Enemy() {
-        super(new TextureRegion(new Texture("Gegner/Gegner.Alien.png"), 32, 32));
+    public Enemy(String texture) {
+        super(new TextureRegion(new Texture("Gegner/Gegner." + texture + ".png"), 32, 32));
         setOriginY(16);
         setOriginX(16);
         speed = speed + (int) Math.random();
