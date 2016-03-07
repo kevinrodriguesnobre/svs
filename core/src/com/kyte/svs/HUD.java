@@ -5,9 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 
 public class HUD {
@@ -16,9 +14,6 @@ public class HUD {
     private Joysticks _joysticks;
     public float _width;
     public float _height;
-    private Button _weaponSwitchButton;
-    private Skin _weaponSwitchSkin;
-    private String[] _playerTextureNames;
     private Image _weaponSwitchImage;
     private Texture[] _weaponTextureArray;
 
