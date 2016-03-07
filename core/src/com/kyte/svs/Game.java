@@ -34,7 +34,7 @@ public class Game extends ScreenAdapter {
     private Player _player;
     private List<Projectile> _projectileSet;
     private ArrayList<Enemy> _enemyList;
-    private int _enemyAmount = 15;
+    private int _enemyAmount = 1;
     private OrthographicCamera _camera;
     private SpriteBatch batch;
     private static final int VIRTUAL_WIDTH = 480;
