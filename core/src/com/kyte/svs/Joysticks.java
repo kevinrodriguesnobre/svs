@@ -57,6 +57,7 @@ public class Joysticks {
         _stage = stage;
         _stage.addActor(touchpad);
         _stage.addActor(touchpad2);
+        _stage.addActor(_backButton);
 
         Gdx.input.setInputProcessor(_stage);
 

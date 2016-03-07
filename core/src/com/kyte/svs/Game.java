@@ -117,7 +117,7 @@ public class Game extends ScreenAdapter {
                 enemy.setCollisionLayer(_world.getCollisonLayer());
             }
             _world.addEnemy(_enemyList);
-            System.out.println("KILLED");
+
         }
         batch.setProjectionMatrix(_camera.combined);
 
@@ -263,8 +263,6 @@ public class Game extends ScreenAdapter {
             Iterator<Enemy> iterator = _enemyList.iterator();
             while (iterator.hasNext()) {
                 Enemy tmpEnemy = iterator.next();
-
-                System.out.println("X: " + tmpEnemy.getTextureRegion().getRegionWidth() + "\nY: " + tmpEnemy.getTextureRegion().getRegionHeight());
 
                 Rectangle hitbox = new Rectangle(tmpEnemy.getX(), tmpEnemy.getY(), tmpEnemy.getTextureRegion().getRegionWidth(), tmpEnemy.getTextureRegion().getRegionHeight());
 

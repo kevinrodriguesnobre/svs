@@ -27,7 +27,6 @@ public class HpBar {
         pixmap.fill();
         _skin.add("white", new Texture(pixmap));
 
-        //_textureBar = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("data/redbar.png"))));
         ProgressBar.ProgressBarStyle barStyle = new ProgressBar.ProgressBarStyle(_skin.newDrawable("white", Color.DARK_GRAY), _skin.newDrawable("white", Color.CYAN));
         barStyle.knobBefore = barStyle.knob;
         _bar = new ProgressBar(0, 100, 0.5f, false, barStyle);
