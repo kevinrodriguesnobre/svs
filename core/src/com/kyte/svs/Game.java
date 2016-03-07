@@ -277,15 +277,23 @@ public class Game extends ScreenAdapter {
                     _effectSounds.get_hitmarkerSound().play(25f);
                     // Leben wird abhängig vom Schaden des jeweiligen Projektils abgezogen
                     tmpEnemy.setLife(tmpEnemy.getLife() - projectile.getDamage());
+
+                    TextureMapObject bloodHit = new TextureMapObject(new TextureRegion(new Texture(Gdx.files.internal("bloodHit01.png")), 16, 15));
+                    bloodHit.setX(tmpEnemy.getX());
+                    bloodHit.setY(tmpEnemy.getY());
+                    bloodHit.setRotation(tmpEnemy.getRotation());
+                    bloodHit.setOriginX(tmpEnemy.getOriginX());
+                    bloodHit.setOriginY(tmpEnemy.getOriginY());
+                    _world.getMapLayer().getObjects().add(bloodHit);
+
                     if (tmpEnemy.getLife() <= 0) {
                         // Blutpfütze an Position des toten Gegners
                         TextureMapObject bloodpoudle;
                         if(tmpEnemy._name.equals("Roboter") || tmpEnemy._name.equals("Roboter.Boss"))
                         {
                             bloodpoudle = new TextureMapObject(new TextureRegion(new Texture(Gdx.files.internal("Mech.Puddle.png")), 32, 32));
-                        }
-                        else {
-                             bloodpoudle = new TextureMapObject(new TextureRegion(new Texture(Gdx.files.internal("Blood.Puddle.png")), 32, 32));
+                        } else {
+                            bloodpoudle = new TextureMapObject(new TextureRegion(new Texture(Gdx.files.internal("Blood.Puddle.png")), 32, 32));
                         }
                         bloodpoudle.setX(tmpEnemy.getX());
                         bloodpoudle.setY(tmpEnemy.getY());
