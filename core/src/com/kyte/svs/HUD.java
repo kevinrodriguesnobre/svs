@@ -29,21 +29,9 @@ public class HUD {
         _height = Gdx.graphics.getHeight();
         _joysticks = new Joysticks(_stage,_width,_height);
 
-        _weaponSwitchSkin = new Skin();
-        // alle verfügbaren Waffen, die beim Waffenwechsel angezeigt werden sollen
-        _weaponSwitchSkin.add("Pistol", new Texture(Gdx.files.internal("Weapons/weapon_pistol.png")));
-        _weaponSwitchSkin.add("Alien", new Texture(Gdx.files.internal("Weapons/weapon_alien.png")));
-
-        _playerTextureNames = new String[2];
-        _playerTextureNames[0] = "Pistol";
-        _playerTextureNames[1] = "Alien";
-
         _weaponTextureArray = new Texture[2];
         _weaponTextureArray[0] = new Texture("Weapons/weapon_pistol.png");
         _weaponTextureArray[1] = new Texture("Weapons/weapon_alien.png");
-
-        //_weaponSwitchButton =  new Button(_weaponSwitchSkin.getDrawable("Pistol"));
-        //_weaponSwitchButton.setBounds(_width - 300, _height - 200, 400, 200);
 
         _weaponSwitchImage = new Image(_weaponTextureArray[0]);
         _weaponSwitchImage.setBounds(_width - 400, _height - 200, 400, 200);
@@ -72,10 +60,6 @@ public class HUD {
 
     public void drawWeaponSwitchMenu(Player player)
     {
-        //_weaponSwitchButton = new Button(_weaponSwitchSkin.getDrawable(_playerTextureNames[player.getWeapon().getCurrentWeaponID()]));
-        //_weaponSwitchButton.setBounds(_width - 300, _height - 200, 400, 200);
-        //System.out.println("Die Textur sollte nun geändert sein :-) COOL!!!!!!!!!" + "\n" + _playerTextureNames[player.getWeapon().getCurrentWeaponID()]);
-
         switch(player.getWeapon().getCurrentWeaponID())
         {
             case 0:
@@ -85,10 +69,5 @@ public class HUD {
                 _weaponSwitchImage.setDrawable(new SpriteDrawable(new Sprite(_weaponTextureArray[1])));
                 break;
         }
-    }
-
-    public Button getWeaponSwitchButton()
-    {
-        return _weaponSwitchButton;
     }
 }
