@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="32" height="32" tilewidth="32" tileheight="32" nextobjectid="3">
+ <tileset firstgid="1" name="tileset" tilewidth="32" tileheight="32" tilecount="256" columns="16">
+  <image source="tileset.png" width="512" height="512"/>
+  <tile id="132">
+   <properties>
+    <property name="blocked" value=""/>
+   </properties>
+  </tile>
+  <tile id="133">
+   <properties>
+    <property name="blocked" value=""/>
+   </properties>
+  </tile>
+  <tile id="201">
+   <properties>
+    <property name="blocked" value=""/>
+   </properties>
+  </tile>
+  <tile id="249">
+   <properties>
+    <property name="blocked" value=""/>
+   </properties>
+  </tile>
+  <tile id="250">
+   <properties>
+    <property name="blocked" value=""/>
+   </properties>
+  </tile>
+  <tile id="251">
+   <properties>
+    <property name="blocked" value=""/>
+   </properties>
+  </tile>
+ </tileset>
+ <tileset firstgid="257" name="tilesheet_by_chimcharsfireworkd" tilewidth="32" tileheight="32" tilecount="3224" columns="62">
+  <image source="../../../tilesheet_by_chimcharsfireworkd.png" width="1991" height="1687"/>
+ </tileset>
+ <tileset firstgid="3481" name="terrain_atlas" tilewidth="32" tileheight="32" tilecount="1024" columns="32">
+  <image source="terrain_atlas.png" width="1024" height="1024"/>
+  <tile id="256">
+   <properties>
+    <property name="blocked" value=""/>
+   </properties>
+  </tile>
+  <tile id="297">
+   <properties>
+    <property name="blocked" value=""/>
+   </properties>
+  </tile>
+  <tile id="329">
+   <properties>
+    <property name="waterSound" value=""/>
+   </properties>
+  </tile>
+  <tile id="431">
+   <properties>
+    <property name="blocked" value=""/>
+   </properties>
+  </tile>
+  <tile id="432">
+   <properties>
+    <property name="blocked" value=""/>
+   </properties>
+  </tile>
+  <tile id="457">
+   <properties>
+    <property name="blocked" value=""/>
+   </properties>
+  </tile>
+  <tile id="463">
+   <properties>
+    <property name="blocked" value=""/>
+   </properties>
+  </tile>
+  <tile id="464">
+   <properties>
+    <property name="blocked" value=""/>
+   </properties>
+  </tile>
+  <tile id="734">
+   <properties>
+    <property name="blocked" value=""/>
+   </properties>
+  </tile>
+  <tile id="831">
+   <properties>
+    <property name="blocked" value=""/>
+   </properties>
+  </tile>
+  <tile id="923">
+   <properties>
+    <property name="pilzSound" value=""/>
+   </properties>
+  </tile>
+  <tile id="990">
+   <properties>
+    <property name="blocked" value=""/>
+   </properties>
+  </tile>
+  <tile id="1022">
+   <properties>
+    <property name="blocked" value=""/>
+   </properties>
+  </tile>
+ </tileset>
+ <layer name="Untergrund" width="32" height="32">
+  <data encoding="base64" compression="zlib">
+   eJzFVtsNwjAM7AQoKwToIDw+YAxadRCKujeJFAtj4tROXPFxUh+xz4+LE++6zitwzEBjD+iV/zhOeL7v6uLI5ZPjAPQrNtgW1kvqh99jLhIOLTi/nqzx5N8p4BxwUfjUgPLRb4+AIWCsyE8SX484fcbmGTAHvIz6kNMQ1m9tH1vWcxqt6a90j3AasMqtVZvaPFr4pLY1td3STwl4btD8KD9+t5p/0rlhBZqTxdzgZoVlnbbCrXIe5yCxs6iHxgfcVQ6VfZXswVI83LncUgcaU8mXdH9Zzhocj/W5vKWu/hHbWt1HZl3U9d59dL3FWTG5X91ALqX7pkVvIveS4QeUdN2ihSlhSLgy66S6pn0p1Y1y53yX7s+SvB+prgOKh9Z0SdxYX1YADorFfedN62Slb+gbgHKDniRzszYmbEfjmcn3WIs3nxXtKA==
+  </data>
+ </layer>
+ <layer name="MapLayer" width="32" height="32">
+  <data encoding="base64" compression="zlib">
+   eJy9lk1OAzEMhXuB0ukRBjo34AL8LMqKETfooEpwAta06hUKbBEL4BhISMAJWHMSHBELK9iJ40RU+tSZTJLnvDieaZvRqM1gxpAzHukyn0maeH1qjGPmx8bWRds6oS83FvvjPPiT+iInOzqNXOYTmHsS13fabfDsADgEjpg5NbH2/v8CtC8T+i3TtgAG4Dyhw8Wiia8jmi0z5hpYAWvSdlewR1wOoe+OM8M6S/tLZy1XqxfWp9G3eOniexzX8UmzTw6pXpToacdavLXO0xvnxrNB60a4vlCf3tO+LwWeautGLcI1cXWjxj6hP/hv3ScLqdpEmTN7lxo/MO+HMCckrOeP1o+cOfBbZY+0PcFcz0E94upFJ+xt6FUsHu69/A7aH0I91BDGJOm/jfXnq1bNCuOpcb5yNLlvt//kKuEH5ozW9/0p38/l9W7zm9c19w9ZNn/zhvosfSun1q/V3jD6DlcLYvol7/ilZ/AcC/04famG0PvYd7rT/STarxEve6ZNs+6F93Ug8eCzLeTaDXA7/TmvNL9K6Yn+wLAh12sf1wNwL/hoBesRQrXdWcN8wzi/Ip5aY6LjwnhWQbvz4ht6FPQs
+  </data>
+ </layer>
+ <objectgroup name="PlayerLayer"/>
+ <layer name="OverlayLayer" width="32" height="32">
+  <data encoding="base64" compression="zlib">
+   eJxjYBgF9AIa/AwMmvwD7YpRMApGwSgYBaNgFIyCUUAsCBcYaBeMAnLBdGDczQDi7wMUh9uB9u4AYnHBgbH/OtTfP0bT8ChAAgD06gbT
+  </data>
+ </layer>
+</map>

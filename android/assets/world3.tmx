@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="32" height="32" tilewidth="32" tileheight="32" nextobjectid="3">
+ <tileset firstgid="1" name="tileset" tilewidth="32" tileheight="32" tilecount="256" columns="16">
+  <image source="tileset.png" width="512" height="512"/>
+  <tile id="132">
+   <properties>
+    <property name="blocked" value=""/>
+   </properties>
+  </tile>
+  <tile id="133">
+   <properties>
+    <property name="blocked" value=""/>
+   </properties>
+  </tile>
+  <tile id="249">
+   <properties>
+    <property name="blocked" value=""/>
+   </properties>
+  </tile>
+  <tile id="250">
+   <properties>
+    <property name="blocked" value=""/>
+   </properties>
+  </tile>
+  <tile id="251">
+   <properties>
+    <property name="blocked" value=""/>
+   </properties>
+  </tile>
+ </tileset>
+ <tileset firstgid="257" name="terrain_atlas" tilewidth="32" tileheight="32" tilecount="1024" columns="32">
+  <image source="terrain_atlas.png" width="1024" height="1024"/>
+  <tile id="294">
+   <properties>
+    <property name="blocked" value=""/>
+   </properties>
+  </tile>
+  <tile id="358">
+   <properties>
+    <property name="blocked" value=""/>
+   </properties>
+  </tile>
+  <tile id="359">
+   <properties>
+    <property name="blocked" value=""/>
+   </properties>
+  </tile>
+  <tile id="360">
+   <properties>
+    <property name="blocked" value=""/>
+   </properties>
+  </tile>
+  <tile id="390">
+   <properties>
+    <property name="blocked" value=""/>
+   </properties>
+  </tile>
+  <tile id="391">
+   <properties>
+    <property name="blocked" value=""/>
+   </properties>
+  </tile>
+  <tile id="392">
+   <properties>
+    <property name="blocked" value=""/>
+   </properties>
+  </tile>
+  <tile id="422">
+   <properties>
+    <property name="blocked" value=""/>
+   </properties>
+  </tile>
+  <tile id="423">
+   <properties>
+    <property name="blocked" value=""/>
+   </properties>
+  </tile>
+  <tile id="424">
+   <properties>
+    <property name="blocked" value=""/>
+   </properties>
+  </tile>
+  <tile id="433">
+   <properties>
+    <property name="blocked" value=""/>
+   </properties>
+  </tile>
+  <tile id="990">
+   <properties>
+    <property name="blocked" value=""/>
+   </properties>
+  </tile>
+  <tile id="1022">
+   <properties>
+    <property name="blocked" value=""/>
+   </properties>
+  </tile>
+ </tileset>
+ <layer name="Untergrund" width="32" height="32">
+  <data encoding="base64" compression="zlib">
+   eJzFVkkSgDAIUx+tvsz6PMeDMw5TWgKhPeTShSUE2mNdlkNBaex9uJx7qJ8PN3DWg3PL863d/69fQX/yTsuGxX6rhkjdUF4ssVlytWpwNmpcejh4sW992x5YuIz2SCRWJD6GLli8St6iM4BdE5QDJi+j6iPP3pX17LcnEican6b/aF9oOs6qHeKj9bZrkLM0QwMenhh/AyQmaz2isPyRJGRss/qUxdEIrjXN9bjraVX2C5rz/35tBjNyzMIM3Xm5kfyUyhozT2329my9+15Njaif5f1FdIjMOQYehtv1KQ==
+  </data>
+ </layer>
+ <layer name="MapLayer" width="32" height="32">
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFQx3cZxk4u/8B7f4Psp914Nww3IA600C7YHgBJSrnj4cDmN9GwcgDo+ltcIJ0YDmdgYQz6VxutwPtOw7EHVDciWY/rdPNciS7sdlPawBq97QPkP2wdg8oDFZA8Uoc9lO7/hkFtAebBkEbDFu6Gcxtw9F0PvQAAE5GFsg=
+  </data>
+ </layer>
+ <objectgroup name="PlayerLayer"/>
+ <layer name="OverlayLayer" width="32" height="32">
+  <data encoding="base64" compression="zlib">
+   eJzt1sENQEAUhOEXuy6oBJWgEqsaBaASVCJKMQlX54k1fzLZ47fHZ/btJm82Y4vn+CvcDdtJ/vG4J8lX6q3MmeVY4Th+CbfCapLfwG2xTv4v/R5uwAaSr+JNd8/90u+elOxH2piwf6BU/F3JLxIw
+  </data>
+ </layer>
+</map>
