@@ -1,6 +1,7 @@
 package com.kyte.svs;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -31,6 +32,7 @@ public class Game extends ScreenAdapter {
 
     private HUD _hud;
 
+    private int _hardwarekeycounter;
     private Player _player;
     private List<Projectile> _projectileSet;
     private ArrayList<Enemy> _enemyList;
@@ -42,18 +44,39 @@ public class Game extends ScreenAdapter {
     private static final int VIRTUAL_HEIGHT = 320;
     private START _game;
     private Rectangle _backBoundsRectangle, _weaponSwitchRectangle;
-    private long _lastShot, _lastWeaponSwitch;
+    private long _lastShot, _lastPause, _lastWeaponSwitch;
     private EffectSounds _effectSounds;
     private String[] _enemyTexture = new String[]{"Alien", "Alien2", "Fetti", "Kaeferblob", "Roboter.Boss", "Roboter", "Zombie"};
+
+
+    private boolean _gameOver;
+
+    public static final int GAME_READY = 0;
+
+    public static final int GAME_RUNNING = 1;
+
+    public static final int GAME_PAUSED = 2;
+
+    public static final int GAME_OVER = 4;
+
+    public static int STATE;
+
 
     public Game(START game) {
 
         _hud = new HUD();
+        STATE = GAME_READY;
+
         _game = game;
+
+        _hardwarekeycounter = 3;
 
         _projectileSet = new LinkedList<Projectile>();
 
         _effectSounds = new EffectSounds();
+
+
+        Gdx.input.setCatchBackKey(true);
 
         _enemyList = new ArrayList<Enemy>();
         for (int i = 0; i < _enemyAmount; i++) {
@@ -101,51 +124,32 @@ public class Game extends ScreenAdapter {
     }
 
     @Override
-    public void render(float deltax) {
-        if (_enemyList.size() == 0) {
-            _round++;
-            _hud.updateLabel(_round);
-            _enemyAmount++;
-            for (int i = 0; i < _enemyAmount; i++) {
-                Enemy enemy = new Enemy(_enemyTexture[(int) (Math.random() * 7)], _hud.getHpBar());
-                _enemyList.add(enemy);
+    public void render(float delta) {
+        // Überprüft ob Pauseknopf gedrückt wurde und ob schon genug Zeit vergangen ist
+        if((System.currentTimeMillis() - _lastPause) > 500) {
+            if (Gdx.input.isKeyJustPressed(Input.Keys.BACK)) {
+                _hardwarekeycounter += 1;
+                _lastPause = System.currentTimeMillis();
             }
-            for (Enemy enemy : _enemyList) {
-                enemy.setX(_world.getMapLayer().getTileWidth() * 31 - (float) Math.random() * _world.getMapLayer().getTileWidth() * 30);
-                enemy.setY(_world.getMapLayer().getTileHeight() * 31 - (float) Math.random() * _world.getMapLayer().getTileHeight() * 30);
-                enemy.setCollisionLayer(_world.getCollisonLayer());
-            }
-            _world.addEnemy(_enemyList);
-
-        }
-        batch.setProjectionMatrix(_camera.combined);
-
-        Gdx.gl.glClearColor(1, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-        // Rotation des Spielers wird aktualisiert
-        float tmpRot = _player.getRotation();
-        _player.setRotation(_hud.getJoysticks().getRotation(tmpRot));
-        _player.move(_hud.getJoysticks().getPositionVector(), deltax, _world.getMapLayer());
-        _player.setOrigin();
-
-        shoot(deltax);
-        update();
-        for (int i = 0; i < _enemyList.size(); i++) {
-            _enemyList.get(i).move(_player, _enemyList);
         }
 
-        //Auslagern
-        if (_player.getX() - VIRTUAL_WIDTH / 2 >= 0 && _player.getX() + VIRTUAL_WIDTH / 2 <= _world.getMapLayer().getTileWidth() * 32) {
-            _camera.position.set(_player.getX(), _camera.position.y, 1);
-        }
-        if (_player.getY() - VIRTUAL_HEIGHT / 2 >= 0 && _player.getY() + VIRTUAL_HEIGHT / 2 <= _world.getMapLayer().getTileHeight() * 32)
-            _camera.position.set(_camera.position.x, _player.getY(), 1);
-        _camera.update();
+        pauseCheck();
 
-        // Zeichnen der grafischen Oberfläche
-        _world.renderMap();
-        _hud.renderHUD();
+        switch (STATE) {
+            case GAME_READY:
+                updateReady();
+                break;
+            case GAME_RUNNING:
+                updateRunning(delta);
+                break;
+            case GAME_PAUSED:
+                updatePaused();
+                break;
+            case GAME_OVER:
+                _gameOver = true;
+                updateGameOver();
+                break;
+        }
     }
 
 
@@ -287,4 +291,92 @@ public class Game extends ScreenAdapter {
         }
         return collision;
     }
+
+    private void updateReady()
+    {
+        if(Gdx.input.justTouched())
+        {
+            STATE = GAME_RUNNING;
+        }
+    }
+
+    private void updateRunning(float deltax)
+    {
+        if (_enemyList.size() == 0) {
+            _round++;
+            _hud.updateLabel(_round);
+            _enemyAmount++;
+            for (int i = 0; i < _enemyAmount; i++) {
+                Enemy enemy = new Enemy(_enemyTexture[(int) (Math.random() * 7)], _hud.getHpBar());
+                _enemyList.add(enemy);
+            }
+            for (Enemy enemy : _enemyList) {
+                enemy.setX(_world.getMapLayer().getTileWidth() * 31 - (float) Math.random() * _world.getMapLayer().getTileWidth() * 30);
+                enemy.setY(_world.getMapLayer().getTileHeight() * 31 - (float) Math.random() * _world.getMapLayer().getTileHeight() * 30);
+                enemy.setCollisionLayer(_world.getCollisonLayer());
+            }
+            _world.addEnemy(_enemyList);
+
+        }
+        batch.setProjectionMatrix(_camera.combined);
+
+        Gdx.gl.glClearColor(1, 0, 0, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        // Rotation des Spielers wird aktualisiert
+        float tmpRot = _player.getRotation();
+        _player.setRotation(_hud.getJoysticks().getRotation(tmpRot));
+        _player.move(_hud.getJoysticks().getPositionVector(), deltax, _world.getMapLayer());
+        _player.setOrigin();
+
+        shoot(deltax);
+        update();
+        for (int i = 0; i < _enemyList.size(); i++) {
+            _enemyList.get(i).move(_player, _enemyList);
+        }
+
+        //Auslagern
+        if (_player.getX() - VIRTUAL_WIDTH / 2 >= 0 && _player.getX() + VIRTUAL_WIDTH / 2 <= _world.getMapLayer().getTileWidth() * 32) {
+            _camera.position.set(_player.getX(), _camera.position.y, 1);
+        }
+        if (_player.getY() - VIRTUAL_HEIGHT / 2 >= 0 && _player.getY() + VIRTUAL_HEIGHT / 2 <= _world.getMapLayer().getTileHeight() * 32)
+            _camera.position.set(_camera.position.x, _player.getY(), 1);
+        _camera.update();
+
+        // Zeichnen der grafischen Oberfläche
+        _world.renderMap();
+        _hud.renderHUD();
+    }
+
+    /**
+     * Wird ausgeführt während das Spiel pausiert ist
+     */
+    private void updatePaused()
+    {
+
+    }
+
+
+    private void updateGameOver()
+    {
+
+    }
+
+    /**
+     * Überprüft, ob das Spiel pausiert werden soll
+     */
+    private void pauseCheck()
+    {
+        if(_hardwarekeycounter%2 == 0)
+        {
+            STATE = GAME_PAUSED;
+        }
+        else
+        {
+            STATE = GAME_RUNNING;
+        }
+    }
+
+
+
 }
