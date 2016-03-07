@@ -111,7 +111,6 @@ public class Enemy extends Character {
                     if (_collisionLayer.getCell(cellX, cellY).getTile().getProperties().containsKey("blocked")) {
                         blocked = true;
                         moveY = 0;
-                        System.out.println(" - blocked2");
                         if (moveX > 0.05f && (_oldMoveX > 0.2 || _oldMoveX == 0)){
                             moveX = Math.max(moveX, Math.min(2, (moveX + 0.2f * sign(moveX)) * 4));
                             _oldMoveX = moveX;
