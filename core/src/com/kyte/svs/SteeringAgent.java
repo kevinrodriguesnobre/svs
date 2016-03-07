@@ -3,12 +3,9 @@ package com.kyte.svs;
 import com.badlogic.gdx.ai.steer.Steerable;
 import com.badlogic.gdx.ai.steer.SteeringAcceleration;
 import com.badlogic.gdx.ai.steer.SteeringBehavior;
-import com.badlogic.gdx.ai.utils.Location;
 import com.badlogic.gdx.math.Vector2;
 
-/**
- * Created by 4krodrig on 02.03.2016.
- */
+
 public class SteeringAgent extends SteeringBehavior {
     private static final SteeringAcceleration<Vector2> steeringOutput =
             new SteeringAcceleration<Vector2>(new Vector2());

@@ -4,8 +4,6 @@ import com.kyte.svs.Objects.AlienBullet;
 import com.kyte.svs.Objects.PistolBullet;
 import com.kyte.svs.Objects.Projectile;
 
-import java.util.Objects;
-
 /**
  * Hält die Texturen für die verschiedenen Waffen des Spielers
  */

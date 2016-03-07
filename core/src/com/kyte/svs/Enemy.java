@@ -11,10 +11,8 @@ import java.util.ArrayList;
  */
 public class Enemy extends Character {
     TiledMapTileLayer _collisionLayer;
-    int _life;
     int speed = 1;
     int _currentLife = 100;
-    int _maxLife = 100;
     float _oldMoveX = 0f;
     float _oldMoveY = 0f;
 
@@ -165,10 +163,6 @@ public class Enemy extends Character {
 
     public int getLife() {
         return _currentLife;
-    }
-
-    public int getMaxLife() {
-        return _maxLife;
     }
 
     public int sign(float number){

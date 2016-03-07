@@ -64,16 +64,6 @@ public class Joysticks {
     }
 
     /**
-     * Zeichnet die beiden Joysticks
-     */
-    public void renderJoysticks()
-    {
-        _stage.act(Gdx.graphics.getDeltaTime());
-        _stage.draw();
-    }
-
-
-    /**
      * Gibt die neue Rotation zurück
      * @param rot   aktuelle Rotation
      * @return  neue Rotation

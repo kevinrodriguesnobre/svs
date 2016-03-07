@@ -24,10 +24,8 @@ public class World {
     TiledMap _tiledMap;
     OrthographicCamera _camera;
     TiledMapRenderer _tiledMapRenderer;
-    Texture _texture;
     MapLayer _playerLayer;
     TiledMapTileLayer _mapLayer;
-    TextureRegion textureRegion;
     Player _player;
     ArrayList<Enemy> _enemyList;
     Rectangle _mapRectangle;

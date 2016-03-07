@@ -11,7 +11,6 @@ import com.badlogic.gdx.maps.objects.TextureMapObject;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.kyte.svs.Objects.AlienBullet;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.kyte.svs.Objects.EffectSounds;
 import com.kyte.svs.Objects.PistolBullet;
 import com.kyte.svs.Objects.Projectile;
@@ -41,12 +40,8 @@ public class Game extends ScreenAdapter {
     private static final int VIRTUAL_HEIGHT = 320;
     private START _game;
     private Rectangle _backBoundsRectangle, _weaponSwitchRectangle;
-    private Vector3 touchPoint;
     private long _lastShot;
     private EffectSounds _effectSounds;
-    private Projectile _removeP;
-
-    private Button _backButton;
 
     public Game(START game) {
 
@@ -65,9 +60,6 @@ public class Game extends ScreenAdapter {
         _player = new Player();
         _player.setX(VIRTUAL_WIDTH);
         _player.setY(VIRTUAL_HEIGHT);
-
-
-        touchPoint = new Vector3();
 
         _camera = new OrthographicCamera(VIRTUAL_WIDTH, VIRTUAL_HEIGHT);
         _camera.position.set(_player.getX() + VIRTUAL_WIDTH / 2, _player.getY() + VIRTUAL_HEIGHT / 2, 1);
@@ -267,6 +259,9 @@ public class Game extends ScreenAdapter {
                 Rectangle hitbox = new Rectangle(tmpEnemy.getX(), tmpEnemy.getY(), tmpEnemy.getTextureRegion().getRegionWidth(), tmpEnemy.getTextureRegion().getRegionHeight());
 
                 if (hitbox.contains(bulletX, bulletY)) {
+                    // Treffersound
+                    _effectSounds.get_hitmarkerSound().play(25f);
+                    // Leben wird abhängig vom Schaden des jeweiligen Projektils abgezogen
                     tmpEnemy.setLife(tmpEnemy.getLife() - projectile.getDamage());
                     if (tmpEnemy.getLife() <= 0) {
                         // Blutpfütze an Position des toten Gegners
