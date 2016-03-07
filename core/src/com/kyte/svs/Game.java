@@ -83,7 +83,7 @@ public class Game extends ScreenAdapter {
                 enemyPositionX = _world.getMapLayer().getTileWidth() * 31 - (float) Math.random() * _world.getMapLayer().getTileWidth() * 30;
                 enemyPositionY = _world.getMapLayer().getTileHeight() * 31 - (float) Math.random() * _world.getMapLayer().getTileHeight() * 30;
             }
-            while (Math.abs(_player.getX() - enemyPositionX) < 180 || Math.abs(_player.getY() - enemyPositionY) < 180);
+            while (Math.abs(_player.getX() - enemyPositionX) < Gdx.graphics.getHeight()/3f || Math.abs(_player.getY() - enemyPositionY) < Gdx.graphics.getHeight()/3f);
             enemy.setX(enemyPositionX);
             enemy.setY(enemyPositionY);
             enemy.setCollisionLayer(_world.getCollisonLayer());
