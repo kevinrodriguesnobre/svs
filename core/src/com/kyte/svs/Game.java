@@ -255,32 +255,30 @@ public class Game extends ScreenAdapter {
     private boolean checkEnemyBulletCollision(float bulletX, float bulletY)
     {
         boolean collision = false;
-        Iterator<Enemy> iterator = _enemyList.iterator();
-        while(iterator.hasNext())
-        {
-            Enemy tmpEnemy = iterator.next();
+        if(!_enemyList.isEmpty()) {
+            Iterator<Enemy> iterator = _enemyList.iterator();
+            while (iterator.hasNext()) {
+                Enemy tmpEnemy = iterator.next();
 
-            Rectangle hitbox = new Rectangle(0,0,tmpEnemy.getTextureRegion().getRegionWidth()*16,tmpEnemy.getTextureRegion().getRegionHeight()*16);
-            hitbox.setPosition(tmpEnemy.getX(), tmpEnemy.getY());
+                Rectangle hitbox = new Rectangle(tmpEnemy.getX(), tmpEnemy.getY(), 30, 30);
 
-            if(hitbox.contains(bulletX,bulletY))
-            {
-                tmpEnemy.setLife(tmpEnemy.getLife() - 30);
-                if(tmpEnemy.getLife() <= 0)
-                {
-                    // Blutpfütze an Position des toten Gegners
-                    TextureMapObject bloodpoudle = new TextureMapObject(new TextureRegion(new Texture(Gdx.files.internal("Blood.Puddle.png")),32,32));
-                    bloodpoudle.setX(tmpEnemy.getX());
-                    bloodpoudle.setY(tmpEnemy.getY());
-                    bloodpoudle.setRotation(tmpEnemy.getRotation());
-                    bloodpoudle.setOriginX(tmpEnemy.getOriginX());
-                    bloodpoudle.setOriginY(tmpEnemy.getOriginY());
-                    _world.getMapLayer().getObjects().add(bloodpoudle);
+                if (hitbox.contains(bulletX, bulletY)) {
+                    tmpEnemy.setLife(tmpEnemy.getLife() - 30);
+                    if (tmpEnemy.getLife() <= 0) {
+                        // Blutpfütze an Position des toten Gegners
+                        TextureMapObject bloodpoudle = new TextureMapObject(new TextureRegion(new Texture(Gdx.files.internal("Blood.Puddle.png")), 32, 32));
+                        bloodpoudle.setX(tmpEnemy.getX());
+                        bloodpoudle.setY(tmpEnemy.getY());
+                        bloodpoudle.setRotation(tmpEnemy.getRotation());
+                        bloodpoudle.setOriginX(tmpEnemy.getOriginX());
+                        bloodpoudle.setOriginY(tmpEnemy.getOriginY());
+                        _world.getMapLayer().getObjects().add(bloodpoudle);
 
-                    iterator.remove();
-                    _world.getPlayerLayer().getObjects().remove(tmpEnemy);
+                        iterator.remove();
+                        _world.getPlayerLayer().getObjects().remove(tmpEnemy);
+                    }
+                    collision = true;
                 }
-                collision = true;
             }
         }
         return collision;
