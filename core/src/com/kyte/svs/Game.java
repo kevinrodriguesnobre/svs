@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.objects.TextureMapObject;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
+import com.kyte.svs.Objects.AlienBullet;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.kyte.svs.Objects.EffectSounds;
 import com.kyte.svs.Objects.PistolBullet;
@@ -39,7 +40,7 @@ public class Game extends ScreenAdapter {
     private static final int VIRTUAL_WIDTH = 480;
     private static final int VIRTUAL_HEIGHT = 320;
     private START _game;
-    private Rectangle backBounds;
+    private Rectangle _backBoundsRectangle, _weaponSwitchRectangle;
     private Vector3 touchPoint;
     private long _lastShot;
     private EffectSounds _effectSounds;
@@ -52,7 +53,6 @@ public class Game extends ScreenAdapter {
         _game = game;
 
         _projectileSet = new LinkedList<Projectile>();
-
 
         _effectSounds = new EffectSounds();
 
@@ -91,10 +91,10 @@ public class Game extends ScreenAdapter {
 
         batch = new SpriteBatch();
         batch.getProjectionMatrix().setToOrtho2D(0, 0, VIRTUAL_WIDTH, VIRTUAL_HEIGHT);
-
         _hud = new HUD();
-        backBounds = new Rectangle(_hud._width-200,_hud._height-100, 200, 100);
 
+        _backBoundsRectangle = new Rectangle(0, _hud._height - 100, 200, 100);
+        _weaponSwitchRectangle = new Rectangle(_hud._width - 400, _hud._height - 200, 400, 200);
 
         _lastShot = 0;
     }
@@ -147,24 +147,41 @@ public class Game extends ScreenAdapter {
         // Zeichnen der grafischen Oberfläche
         _world.renderMap();
         _hud.renderHUD();
-
-
     }
 
 
+    private void checkWeaponSwitch()
+    {
 
+          int nextWeaponID = _player.getWeapon().getCurrentWeaponID() + 1;
+          if (nextWeaponID > 1)
+          {
+              nextWeaponID = 0;
+          }
+
+          _player.setWeapon(nextWeaponID);
+          Texture weaponTexture = new Texture(Gdx.files.internal(_player.getWeapon().getCurrentWeaponPlayerTextureString()));
+          _player.getTextureRegion().getTexture().dispose();
+          _player.getTextureRegion().setTexture(weaponTexture);
+
+        _hud.drawWeaponSwitchMenu(_player);
+
+    }
     public void update() {
         if (Gdx.input.justTouched()) {
-            Vector3 vec = new Vector3(Gdx.input.getX(),Gdx.input.getY(),0);
+            Vector3 vec = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
             _hud.getStage().getCamera().unproject(vec);
-            if (backBounds.contains(vec.x, vec.y)) {
+            if (_backBoundsRectangle.contains(vec.x, vec.y)) {
                 _game.setScreen(new MainMenu(_game));
             }
+            else if (_weaponSwitchRectangle.contains(vec.x,vec.y))
+            {
+                checkWeaponSwitch();
+            }
         }
-
+        _hud.drawWeaponSwitchMenu(_player);
 
     }
-
 
     @Override
     public void pause() {
@@ -193,6 +210,11 @@ public class Game extends ScreenAdapter {
                     _lastShot = System.currentTimeMillis();
                     break;
                 case 1:
+                    AlienBullet aBullet = new AlienBullet(_player.getX(), _player.getY(), _player.getRotation(), _hud.getJoysticks().getRotationVector());
+                    _projectileSet.add(aBullet);
+                    _world.getPlayerLayer().getObjects().add(aBullet);
+                    _effectSounds.getAlienSound().play(80f);
+                    _lastShot = System.currentTimeMillis();
                     break;
                 default:
                     break;

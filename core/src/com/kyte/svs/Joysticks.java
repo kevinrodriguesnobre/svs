@@ -1,32 +1,13 @@
 package com.kyte.svs;
 
-import com.badlogic.gdx.*;
-import com.badlogic.gdx.ApplicationListener;
-import com.badlogic.gdx.graphics.Camera;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Mesh;
-import com.badlogic.gdx.graphics.GL20;
-
-import com.badlogic.gdx.graphics.PerspectiveCamera;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
-import com.badlogic.gdx.utils.Scaling;
-import com.badlogic.gdx.utils.viewport.ExtendViewport;
-import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.ScalingViewport;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
-
-import sun.rmi.runtime.Log;
 
 /**
  * Created by Yanneck dem Chef 24.02.2016 17:17 Uhr
@@ -47,7 +28,6 @@ public class Joysticks {
 
     public Joysticks(Stage stage, float width, float height)
     {
-
         float touchpadSize = width / 5;
         touchpadSkin = new Skin();
         touchpadSkin.add("Erste", new Texture(Gdx.files.internal("data/touchBackground.png")));
@@ -59,7 +39,6 @@ public class Joysticks {
         touchpadStyle = new Touchpad.TouchpadStyle();
         touchBackground = touchpadSkin.getDrawable("Erste");
         touchKnob = touchpadSkin.getDrawable("Zweite");
-
 
         touchpadStyle.background = touchBackground;
         touchKnob.setMinHeight(touchpadSize / 4);
@@ -73,15 +52,14 @@ public class Joysticks {
         touchpad2.setBounds(width - 1.2f * touchpadSize, touchpadSize/5, touchpadSize, touchpadSize);
 
         _backButton = new Button(touchpadSkin.getDrawable("Dritte"));
-        _backButton.setBounds(width - 200,height - 100,200,100);
-
+        _backButton.setBounds(0, height - 100, 200, 100);
 
         _stage = stage;
         _stage.addActor(touchpad);
         _stage.addActor(touchpad2);
-        _stage.addActor(_backButton);
 
         Gdx.input.setInputProcessor(_stage);
+
     }
 
     /**
