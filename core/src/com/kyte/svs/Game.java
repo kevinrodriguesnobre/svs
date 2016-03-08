@@ -130,6 +130,7 @@ public class Game extends ScreenAdapter {
 
     @Override
     public void render(float delta) {
+
         // Überprüft ob Pauseknopf gedrückt wurde und ob schon genug Zeit vergangen ist
         if((System.currentTimeMillis() - _lastPause) > 500) {
             if (Gdx.input.isKeyJustPressed(Input.Keys.BACK)) {
