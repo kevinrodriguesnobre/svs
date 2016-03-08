@@ -34,7 +34,8 @@ public class Game extends ScreenAdapter {
 
     private int _hardwarekeycounter;
     private Player _player;
-    private List<Projectile> _projectileSet;
+    private List<Projectile> _projectileList;
+    private List<TextureMapObject> _bloodObjectList;
     private ArrayList<Enemy> _enemyList;
     private int _enemyAmount = 1;
     private int _round = 1;
@@ -44,7 +45,7 @@ public class Game extends ScreenAdapter {
     private static final int VIRTUAL_HEIGHT = 320;
     private START _game;
     private Rectangle _backBoundsRectangle, _weaponSwitchRectangle;
-    private long _lastShot, _lastPause, _lastWeaponSwitch;
+    private long _lastShot, _lastPause, _lastWeaponSwitch, _lastBloodOptimize;
     private EffectSounds _effectSounds;
     private String[] _enemyTexture = new String[]{"Alien", "Alien2", "Fetti", "Kaeferblob", "Roboter.Boss", "Roboter", "Zombie"};
     private GameStats _gameStats;
@@ -73,7 +74,9 @@ public class Game extends ScreenAdapter {
 
         _hardwarekeycounter = 3;
 
-        _projectileSet = new LinkedList<Projectile>();
+        _projectileList = new LinkedList<Projectile>();
+
+        _bloodObjectList = new LinkedList<TextureMapObject>();
 
         _effectSounds = new EffectSounds();
 
@@ -118,6 +121,7 @@ public class Game extends ScreenAdapter {
 
         _lastShot = 0;
         _lastWeaponSwitch = 0;
+        _lastBloodOptimize = 0;
     }
 
     @Override
@@ -211,14 +215,14 @@ public class Game extends ScreenAdapter {
             switch (_player.getWeapon().getCurrentWeaponID()) {
                 case 0:
                     PistolBullet pBullet = new PistolBullet(_player.getX(), _player.getY(), _player.getRotation(), _hud.getJoysticks().getRotationVector());
-                    _projectileSet.add(pBullet);
+                    _projectileList.add(pBullet);
                     _world.getPlayerLayer().getObjects().add(pBullet);
                     _effectSounds.getPistolSound().play(80f);
                     _lastShot = System.currentTimeMillis();
                     break;
                 case 1:
                     AlienBullet aBullet = new AlienBullet(_player.getX(), _player.getY(), _player.getRotation(), _hud.getJoysticks().getRotationVector());
-                    _projectileSet.add(aBullet);
+                    _projectileList.add(aBullet);
                     _world.getPlayerLayer().getObjects().add(aBullet);
                     _effectSounds.getAlienSound().play(80f);
                     _lastShot = System.currentTimeMillis();
@@ -230,7 +234,7 @@ public class Game extends ScreenAdapter {
         }
 
 
-        Iterator<Projectile> iterator = _projectileSet.iterator();
+        Iterator<Projectile> iterator = _projectileList.iterator();
 
         // Schleife iteriert über die Liste von Projektilen, bis die Liste kein Element mehr hat
         while(iterator.hasNext())
@@ -285,6 +289,7 @@ public class Game extends ScreenAdapter {
                     bloodHit.setOriginX(tmpEnemy.getOriginX());
                     bloodHit.setOriginY(tmpEnemy.getOriginY());
                     _world.getMapLayer().getObjects().add(bloodHit);
+                    _bloodObjectList.add(bloodHit);
 
                     if (tmpEnemy.getLife() <= 0) {
                         // Blutpfütze an Position des toten Gegners
@@ -301,6 +306,7 @@ public class Game extends ScreenAdapter {
                         bloodpoudle.setOriginX(tmpEnemy.getOriginX());
                         bloodpoudle.setOriginY(tmpEnemy.getOriginY());
                         _world.getMapLayer().getObjects().add(bloodpoudle);
+                        _bloodObjectList.add(bloodpoudle);
 
                         iterator.remove();
                         _world.getPlayerLayer().getObjects().remove(tmpEnemy);
@@ -315,6 +321,24 @@ public class Game extends ScreenAdapter {
         return collision;
     }
 
+    /**
+     * Optimiert die Blutverteilung auf dem Maplayer
+     */
+    private void optimizeBlood()
+    {
+        if((System.currentTimeMillis() - _lastBloodOptimize > 500) && _bloodObjectList.size() > 130)
+        {
+            for(int i = 0;i < 4; ++i) {
+                _world.getMapLayer().getObjects().remove(i);
+                _bloodObjectList.remove(i);
+            }
+            _lastBloodOptimize = System.currentTimeMillis();
+        }
+
+        System.out.println(_bloodObjectList.size());
+
+    }
+
     private void updateReady()
     {
         if(Gdx.input.justTouched())
@@ -323,7 +347,11 @@ public class Game extends ScreenAdapter {
         }
     }
 
-    private void updateRunning(float deltax)
+    /**
+     * Rendert das Spiel, wenn es am Laufen ist bzw. sich im Zustand RUNNING befindet
+     * @param delta
+     */
+    private void updateRunning(float delta)
     {
         if (_enemyList.size() == 0) {
             _round++;
@@ -349,10 +377,10 @@ public class Game extends ScreenAdapter {
         // Rotation des Spielers wird aktualisiert
         float tmpRot = _player.getRotation();
         _player.setRotation(_hud.getJoysticks().getRotation(tmpRot));
-        _player.move(_hud.getJoysticks().getPositionVector(), deltax, _world.getMapLayer());
+        _player.move(_hud.getJoysticks().getPositionVector(), delta, _world.getMapLayer());
         _player.setOrigin();
 
-        shoot(deltax);
+        shoot(delta);
         update();
         for (int i = 0; i < _enemyList.size(); i++) {
             _enemyList.get(i).move(_player, _enemyList);
@@ -365,6 +393,8 @@ public class Game extends ScreenAdapter {
         if (_player.getY() - VIRTUAL_HEIGHT / 2 >= 0 && _player.getY() + VIRTUAL_HEIGHT / 2 <= _world.getMapLayer().getTileHeight() * 32)
             _camera.position.set(_camera.position.x, _player.getY(), 1);
         _camera.update();
+
+        optimizeBlood();
 
         // Zeichnen der grafischen Oberfläche
         _world.renderMap();
@@ -399,7 +429,4 @@ public class Game extends ScreenAdapter {
             STATE = GAME_RUNNING;
         }
     }
-
-
-
 }
