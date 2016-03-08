@@ -45,12 +45,10 @@ public class Game extends ScreenAdapter {
     private static final int VIRTUAL_HEIGHT = 320;
     private START _game;
     private Rectangle _backBoundsRectangle, _weaponSwitchRectangle;
-    private long _lastShot, _lastPause, _lastWeaponSwitch, _lastBloodOptimize;
+    private long _lastShot, _lastPause, _lastWeaponSwitch, _lastBloodOptimize, _deathTime;
     private EffectSounds _effectSounds;
     private String[] _enemyTexture = new String[]{"Alien", "Alien2", "Fetti", "Kaeferblob", "Roboter.Boss", "Roboter", "Zombie"};
     private GameStats _gameStats;
-
-    private boolean _gameOver;
 
     public static final int GAME_READY = 0;
 
@@ -122,6 +120,7 @@ public class Game extends ScreenAdapter {
         _lastShot = 0;
         _lastWeaponSwitch = 0;
         _lastBloodOptimize = 0;
+        _deathTime = 0;
     }
 
     @Override
@@ -139,7 +138,9 @@ public class Game extends ScreenAdapter {
             }
         }
 
-        pauseCheck();
+        if(!(STATE == GAME_OVER)) {
+            pauseCheck();
+        }
 
         switch (STATE) {
             case GAME_READY:
@@ -152,7 +153,6 @@ public class Game extends ScreenAdapter {
                 updatePaused();
                 break;
             case GAME_OVER:
-                _gameOver = true;
                 updateGameOver();
                 break;
         }
@@ -412,6 +412,21 @@ public class Game extends ScreenAdapter {
 
     private void updateGameOver()
     {
+        if(_deathTime == 0)
+        {
+            _player.getTextureRegion().setTexture(new Texture(Gdx.files.internal("Player/Player_DeathState.png")));
+            _effectSounds.getDeathSound().play(90f);
+            _deathTime = System.currentTimeMillis();
+        }
+        else if((_deathTime != 0) && (System.currentTimeMillis() - _deathTime) < 3000)
+        {
+            _world.renderMap();
+            _hud.renderHUD();
+        }
+        else if(System.currentTimeMillis() -_deathTime > 3000)
+        {
+            _hud.renderDeathScreen();
+        }
 
     }
 

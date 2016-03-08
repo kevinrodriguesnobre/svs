@@ -40,10 +40,15 @@ public class Enemy extends Character {
         float deltaY = Math.abs(target.getY() - getY());
         float distance = deltaX + deltaY;
 
-        //Falls zu nah am Player stopen
+        //Falls zu nah am Player, stoppen
         if (distance < 16){
             System.out.println(distance);
             _playerHpBar.getDmg(1);
+            if(_playerHpBar.getBar().getPercent() == 0)
+            {
+                // Spiel wird bei 0% der HP-Leiste auf Game Over Zustand gesetzt
+                Game.STATE = Game.GAME_OVER;
+            }
             return;
         }
 

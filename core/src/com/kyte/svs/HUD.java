@@ -9,14 +9,15 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.kyte.svs.Objects.GameStats;
 
 public class HUD {
 
-    private Stage _stage, _pauseStage;
-    private Label _label,_pauseLabel;
+    private Stage _stage, _pauseStage, _deathStage;
+    private Label _label,_pauseLabel, _deathLabel;
     private Joysticks _joysticks;
     private HpBar _HpBar;
     public float _width;
@@ -24,12 +25,15 @@ public class HUD {
     private Image _weaponSwitchImage;
     private Texture[] _weaponTextureArray;
     private GameStats _gameStats;
+    private TextField _textField;
 
 
     public HUD(GameStats gameStats)
     {
         _stage = new Stage();
         _pauseStage = new Stage();
+        _pauseStage = new Stage();
+        _deathStage = new Stage();
         _width = Gdx.graphics.getWidth();
         _height = Gdx.graphics.getHeight();
         _joysticks = new Joysticks(_stage,_width,_height);
@@ -47,6 +51,7 @@ public class HUD {
 
         addLabel();
         addPauseTitel();
+        addDeathScreenElements();
         Gdx.input.setInputProcessor(_stage);
     }
 
@@ -102,13 +107,13 @@ public class HUD {
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        _pauseLabel.setText("Pausiert\n\n" + "Bisher getoetete Gegner: " + _gameStats.getKillCounter() +"\nBisher verschossene Projektile: " + _gameStats.getRoundsShot());
+        _pauseLabel.setText("Pausiert\n\n" + "Bisher getoetete Gegner: " + _gameStats.getKillCounter() + "\nBisher verschossene Projektile: " + _gameStats.getRoundsShot());
 
         _stage.act(Gdx.graphics.getDeltaTime());
         _pauseStage.draw();
     }
 
-    public void addPauseTitel()
+    private void addPauseTitel()
     {
         Skin skin = new Skin(Gdx.files.internal("data/uiskin.json"));
         _pauseLabel = new Label("Pausiert\n\n" + "Bisher getoetete Gegner: " + _gameStats.getKillCounter() +"\nBisher verschossene Projektile: " + _gameStats.getRoundsShot(), skin);
@@ -117,5 +122,40 @@ public class HUD {
         _pauseLabel.setColor(1.0f, 1.0f, 1.0f, 1.0f);
         _pauseLabel .setFontScale(_width / 500);
         _pauseStage.addActor(_pauseLabel);
+    }
+
+    private void addDeathScreenElements()
+    {
+        Skin skin = new Skin(Gdx.files.internal("data/uiskin.json"));
+        _deathLabel = new Label("Du bist tot",skin);
+        _deathLabel.setAlignment(Align.center);
+        _deathLabel.setPosition((Gdx.graphics.getWidth() - _deathLabel.getWidth()) / 2, (Gdx.graphics.getHeight() - _deathLabel.getHeight()) / 2);
+        _deathLabel.setColor(1.0f, 1.0f, 1.0f, 1.0f);
+        _deathLabel .setFontScale(_width / 500);
+
+        _textField = new TextField("",skin);
+        _textField.setText("Bitte Namen eingeben");
+        _textField.setPosition((Gdx.graphics.getWidth() - _textField.getWidth()) / 2, (Gdx.graphics.getHeight() - _textField.getHeight()) / 2);
+        _textField.setAlignment(Align.center);
+        _deathLabel .setFontScale(_width / 500);
+
+        _textField.setTextFieldListener(new TextField.TextFieldListener() {
+            public void keyTyped(TextField textField, char key) {
+                if (key == '\n') textField.getOnscreenKeyboard().show(false);
+            }
+        });
+
+        _deathStage.addActor(_deathLabel);
+        _deathStage.addActor(_textField);
+    }
+
+    public void renderDeathScreen()
+    {
+        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        _deathStage.act(Gdx.graphics.getDeltaTime());
+        _deathStage.draw();
     }
 }
