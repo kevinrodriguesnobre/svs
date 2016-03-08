@@ -10,6 +10,7 @@ import java.sql.*;
 public class START extends Game {
     // used by all screens
     public SpriteBatch batcher;
+    public Music music;
     @Override
     public void create () {
 
@@ -38,9 +39,9 @@ public class START extends Game {
             System.out.println("error - " + e.getMessage());
         }
 
-        //Music music = Gdx.audio.newMusic(Gdx.files.internal("Sounds/NeverRun.mp3"));
-        //music.play();
-        //music.setLooping(true);
+        music = Gdx.audio.newMusic(Gdx.files.internal("Sounds/NeverRun.mp3"));
+        music.play();
+        music.setLooping(true);
         batcher = new SpriteBatch();
         setScreen(new MainMenu(this));
     }

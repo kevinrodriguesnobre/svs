@@ -1,55 +1,50 @@
 package com.kyte.svs;
 
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 
-public class MainMenu extends ScreenAdapter {
+/**
+ * Created by X303 on 08.03.2016.
+ */
+public class Options extends ScreenAdapter {
 
     START game;
     OrthographicCamera guiCam;
-    Rectangle playBounds, optionBounds;
-    Rectangle highscoresBounds, closeBounds;
+    Rectangle soundBounds;
     Vector3 touchPoint;
     long time;
-    public MainMenu (START game) {
+
+
+    public Options (START game)
+    {
         this.game = game;
         guiCam = new OrthographicCamera(1080, 1920);
         guiCam.position.set(1080 / 2,  1920 / 2, 0);
-        playBounds = new Rectangle(250, 1400, 579, 300);
-        highscoresBounds = new Rectangle(77, 489, 925, 479);
-        optionBounds = new Rectangle(250, 600, 579, 300);
-        closeBounds = new Rectangle(250, 200, 579, 300);
+        soundBounds = new Rectangle(250, 1400, 579, 300);
         touchPoint = new Vector3();
         time = System.currentTimeMillis();
     }
+
     public void update () {
         if (Gdx.input.justTouched()) {
             guiCam.unproject(touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0));
             time = System.currentTimeMillis();
-            if (optionBounds.contains(touchPoint.x, touchPoint.y)) {
-                System.out.println("pushed");
-                game.setScreen(new Options(game));
-                return;
-            }
-            if (playBounds.contains(touchPoint.x, touchPoint.y)) {
-                game.setScreen(new Game(game));
-                return;
-            }
-            if (highscoresBounds.contains(touchPoint.x, touchPoint.y)) {
-              //  Assets.playSound(Assets.clickSound);
-               // game.setScreen(new HighscoresScreen(game));
-                return;
-            }
-            if (closeBounds.contains(touchPoint.x, touchPoint.y)) {
-             //   Assets.playSound(Assets.clickSound);
-             //   game.setScreen(new HelpScreen(game));
-                Gdx.app.exit();
+            if (soundBounds.contains(touchPoint.x, touchPoint.y)) {
+                if(game.music.isPlaying()) {
+
+                    game.music.stop();
+                }else
+                {
+                    game.music.play();
+
+                }
+                game.setScreen(new MainMenu(game));
                 return;
             }
         }
@@ -64,17 +59,14 @@ public class MainMenu extends ScreenAdapter {
         game.batcher.enableBlending();
         game.batcher.begin();
         game.batcher.draw(new Texture(Gdx.files.internal("data/background1.png")), 0, 0, 1080, 1920);
-        game.batcher.draw(new Texture(Gdx.files.internal("data/playbutton.png")), 250, 1400, 579, 300);
-        game.batcher.draw(new Texture(Gdx.files.internal("data/scorebutton.png")), 250, 1000, 579, 300);
-        game.batcher.draw(new Texture(Gdx.files.internal("data/optionbutton.png")), 250, 600, 579, 300);
-        game.batcher.draw(new Texture(Gdx.files.internal("data/closebutton.png")), 250, 200, 579, 300);
+        game.batcher.draw(new Texture(Gdx.files.internal("data/musicbutton.png")), 250, 1400, 579, 300);
         explosion();
         //game.batcher.draw(Settings.soundEnabled ? Assets.soundOn : Assets.soundOff, 0, 0, 64, 64);
         game.batcher.end();
     }
 
     public void explosion(){
-        if((System.currentTimeMillis() - time) < 300){
+        if((System.currentTimeMillis() - time) < 500){
             game.batcher.draw(new Texture(Gdx.files.internal("data/hand.png")),touchPoint.x - 100 ,touchPoint.y - 100,200,200);
         }
     }
@@ -87,6 +79,4 @@ public class MainMenu extends ScreenAdapter {
     public void pause () {
         //Settings.save();
     }
-
-
 }
