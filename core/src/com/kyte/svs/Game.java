@@ -31,7 +31,7 @@ public class Game extends ScreenAdapter {
     private World _world;
 
     private HUD _hud;
-
+    public static String _username = "Username";
     private int _hardwarekeycounter;
     private Player _player;
     private List<Projectile> _projectileList;
@@ -178,6 +178,10 @@ public class Game extends ScreenAdapter {
         }
 
     }
+
+    /**
+     * Fragt ab, ob eines der Menüknöpfe gedrückt wurde
+     */
     public void update() {
         if (Gdx.input.isTouched()) {
             Vector3 vec = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
@@ -427,6 +431,18 @@ public class Game extends ScreenAdapter {
         else if(System.currentTimeMillis() -_deathTime > 3000)
         {
             _hud.renderDeathScreen();
+
+            if (Gdx.input.isTouched()) {
+                Vector3 vec = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
+                _hud.getStage().getCamera().unproject(vec);
+                if (_hud.getMenuButtonRectangle().contains(vec.x, vec.y)) {
+                    HUD.insertIntoDb(HUD._usernameLabel.getText().toString(), _gameStats.getKillCounter());
+                    _game.setScreen(new MainMenu(_game));
+                } else if (_hud.getRestartButtonRectangle().contains(vec.x, vec.y)) {
+                    HUD.insertIntoDb(HUD._usernameLabel.getText().toString(), _gameStats.getKillCounter());
+                    _game.setScreen(new Game(_game));
+                }
+            }
         }
 
     }
