@@ -17,6 +17,51 @@
     <property name="waterSound" value=""/>
    </properties>
   </tile>
+  <tile id="361">
+   <properties>
+    <property name="blocked" value=""/>
+   </properties>
+  </tile>
+  <tile id="362">
+   <properties>
+    <property name="blocked" value=""/>
+   </properties>
+  </tile>
+  <tile id="363">
+   <properties>
+    <property name="blocked" value=""/>
+   </properties>
+  </tile>
+  <tile id="393">
+   <properties>
+    <property name="blocked" value=""/>
+   </properties>
+  </tile>
+  <tile id="394">
+   <properties>
+    <property name="blocked" value=""/>
+   </properties>
+  </tile>
+  <tile id="395">
+   <properties>
+    <property name="blocked" value=""/>
+   </properties>
+  </tile>
+  <tile id="425">
+   <properties>
+    <property name="blocked" value=""/>
+   </properties>
+  </tile>
+  <tile id="426">
+   <properties>
+    <property name="blocked" value=""/>
+   </properties>
+  </tile>
+  <tile id="427">
+   <properties>
+    <property name="blocked" value=""/>
+   </properties>
+  </tile>
   <tile id="431">
    <properties>
     <property name="blocked" value=""/>
@@ -75,7 +120,7 @@
  </layer>
  <layer name="MapLayer" width="32" height="32">
   <data encoding="base64" compression="zlib">
-   eJy9VktOAzEMnQ8rxKJwDCQk4ASsudlA5wZcgM+irBj1Bg2qBCdgTateAXBErFrBzseJqPTUNmPnPTu2J0PXNEMG5gxy/BFj5jOJE3+/KHXMnW8oLro2CracL9rjPviRbBHPjE0NLFrYuw3zW+7Be3YPeAA8MnumaJ3c9xtwv0f4B2ZtBTCA1wgPpyVF30g4B8bnE7ABbMlay8SRCq6GMO8WS0WcpfZSr+VyTUJ8KfyaXFp9M0FjaR9JcUjzooQv1VeTW+0+k3Jv7A06N/z4fH76n9qeFvRZ6tyoBT8mbm7UOCfMD35rz0mD2GyiWDA1HfM3wnmn9Ie2/+j8yNkD7yq3ZO0Y/E+8Pbh5MQpn6+cqpId7L1+A/WXBHPI1SfznTXp/1ZpZvp4a/ZXDyd3d/hMfkXxgzaTm/a7n7Wxd33T7uq55foh197duaJ6lu3Is/lTuHcNvMWvC/CXv+LWDcXgS7Dh+aYbQ/6F7uuW96vfcZ70c28SspcS9cnk1RA8++wK+b0Bz8NuvtL5KMRF+w2BHfm+driPQcijUvxY4jxCU2/Ya1hvqvA7cbbSaqJ+vZ+Ot21z8AKUhRyM=
+   eJy1VktOw0AMzYcVYlE4BhIScALWHKVwkbTJDbgAbRftiogbNFUlOAFrWvUKgEeMVWtqzzdZPCWZGc979tjOVEWWVQGoGYTYI5rAOYkT398iddTa1uYXHWuEtZwtrrfFrmbmVpkfRyiWOeyd2/kVd2XMvQJmgDmzp4/WVj8/gPvTwV8xY2tAB9g4eDgtPvoawlkxNt+AHWBPxnLGD19wOYRxV3iP8DN1vVRroVyt4J8Pf0wslb6RoDG1jiQ/pH6RwudrGxPb2H3ayL2xNsbwfAI856f+mfz0m669TqizCdhOlX3CHikxnQHvHLAYoFfQZ+w5xcDVmyiWTE677DshVj71EVt/tH+E7IF3lSkZuwT7K2MPrl80wtmasbLp4f7Ld7D+PqEPmZok/tvM/7/cV88y9XD/5SEw1H0sFF8e2mh9ueL+UvLrVF5PimNe93l+iG1xmjfoi+2+2cfZKO4Dw68wcuR1Si5sNTqNhbCOy2uph9BvW9wU70N55L4pZd9aZszH77WOa0f04NwP8P0CsrN/v2h+paIl/B2DA3nfa10XoOVcyP9Y4LkhKLeqNcwn1PlouRfEaqJ2pp6dMa5i8Qdth025
   </data>
  </layer>
  <objectgroup name="PlayerLayer"/>
