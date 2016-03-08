@@ -32,7 +32,7 @@ public class HpBar {
         _bar = new ProgressBar(0, 100, 0.5f, false, barStyle);
         _bar.setPosition(width / 3, height - 50);
         _bar.setSize(width / 3, _bar.getPrefHeight());
-        _bar.setAnimateDuration(2);
+        _bar.setAnimateDuration(0.5f);
         _bar.setValue(100);
         _stage.addActor(_bar);
     }
