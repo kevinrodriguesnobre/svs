@@ -15,18 +15,19 @@ public class MainMenu extends ScreenAdapter {
     OrthographicCamera guiCam;
     Rectangle soundBounds;
     Rectangle playBounds;
-    Rectangle highscoresBounds;
+    Rectangle highscoresBounds, closeBounds;
     Rectangle helpBounds;
     Vector3 touchPoint;
     long time;
     public MainMenu (START game) {
         this.game = game;
-        guiCam = new OrthographicCamera(320, 480);
-        guiCam.position.set(320 / 2, 480 / 2, 0);
+        guiCam = new OrthographicCamera(1080, 1920);
+        guiCam.position.set(1080 / 2,  1920 / 2, 0);
         soundBounds = new Rectangle(0, 0, 64, 64);
-        playBounds = new Rectangle(23, 328, 274, 142);
-        highscoresBounds = new Rectangle(160 - 150, 200 - 18, 300, 36);
+        playBounds = new Rectangle(250, 1400, 579, 300);
+        highscoresBounds = new Rectangle(77, 489, 925, 479);
         helpBounds = new Rectangle(160 - 150, 200 - 18 - 36, 300, 36);
+        closeBounds = new Rectangle(250, 200, 579, 300);
         touchPoint = new Vector3();
         time = System.currentTimeMillis();
     }
@@ -43,9 +44,10 @@ public class MainMenu extends ScreenAdapter {
                // game.setScreen(new HighscoresScreen(game));
                 return;
             }
-            if (helpBounds.contains(touchPoint.x, touchPoint.y)) {
+            if (closeBounds.contains(touchPoint.x, touchPoint.y)) {
              //   Assets.playSound(Assets.clickSound);
              //   game.setScreen(new HelpScreen(game));
+                Gdx.app.exit();
                 return;
             }
             if (soundBounds.contains(touchPoint.x, touchPoint.y)) {
@@ -65,13 +67,13 @@ public class MainMenu extends ScreenAdapter {
         guiCam.update();
         game.batcher.setProjectionMatrix(guiCam.combined);
         game.batcher.disableBlending();
-        game.batcher.begin();
-        //game.batcher.draw(Assets.backgroundRegion, 0, 0, 320, 480);
-        game.batcher.end();
         game.batcher.enableBlending();
         game.batcher.begin();
-        game.batcher.draw(new Texture(Gdx.files.internal("data/playbutton.png")), 23, 328, 274, 142);
-        game.batcher.draw(new Texture(Gdx.files.internal("data/scorebutton.png")), 23, 145, 274, 142);
+        game.batcher.draw(new Texture(Gdx.files.internal("data/background1.png")), 0, 0, 1080, 1920);
+        game.batcher.draw(new Texture(Gdx.files.internal("data/playbutton.png")), 250, 1400, 579, 300);
+        game.batcher.draw(new Texture(Gdx.files.internal("data/scorebutton.png")), 250, 1000, 579, 300);
+        game.batcher.draw(new Texture(Gdx.files.internal("data/optionbutton.png")), 250, 600, 579, 300);
+        game.batcher.draw(new Texture(Gdx.files.internal("data/closebutton.png")), 250, 200, 579, 300);
         explosion();
         //game.batcher.draw(Settings.soundEnabled ? Assets.soundOn : Assets.soundOff, 0, 0, 64, 64);
         game.batcher.end();
@@ -79,7 +81,7 @@ public class MainMenu extends ScreenAdapter {
 
     public void explosion(){
         if((System.currentTimeMillis() - time) < 500){
-            game.batcher.draw(new Texture(Gdx.files.internal("data/explosion.png")),touchPoint.x - 20 ,touchPoint.y - 20,50,50 );
+            game.batcher.draw(new Texture(Gdx.files.internal("data/hand.png")),touchPoint.x - 100 ,touchPoint.y - 100,200,200);
         }
     }
     @Override
