@@ -181,6 +181,7 @@ public class HUD {
         try {
             Class.forName("com.mysql.jdbc.Driver");
         } catch (Exception e) {
+            e.printStackTrace();
             System.out.println(e.getMessage());
         }
         String url = "jdbc:mysql://vsisls4.informatik.uni-hamburg.de/mc05?useUnicode=true&characterEncoding=UTF8";
