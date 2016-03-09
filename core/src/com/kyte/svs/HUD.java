@@ -198,7 +198,10 @@ public class HUD {
         Connection con;
         try {
             con = DriverManager.getConnection(url, username, password);
-            String sql = "INSERT INTO user VALUES" + "("+name+"," + points + ")";
+            String sql =
+                    "INSERT INTO user (points, username)" +
+                    "VALUES" + "('" + points + "', '" + name + "')";
+            System.out.println(sql);
             Statement st = con.createStatement();
             st.executeUpdate(sql);
             /*while(rs.next()){
@@ -209,7 +212,7 @@ public class HUD {
             }*/
             con.close();
         } catch (Exception e) {
-            System.out.println("error - " + e.getMessage());
+            System.out.println("ALARM! Error: " + e.getMessage());
         }
     }
 }
