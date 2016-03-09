@@ -144,15 +144,6 @@ public class HUD {
         _restartButtonImage = new Image(new Texture(Gdx.files.internal("data/restartbutton.png")));
         _restartButtonImage.setBounds(_width - 1.2f * imageSize, imageSize * 0.5f, imageSize, imageSize / 2.15f);
 
-
-        _pauseLabel = new Label("Bisher getoetete Gegner: " + _gameStats.getKillCounter() + "\nBisher verschossene Projektile: " + _gameStats.getRoundsShot(), skin);
-        _pauseLabel.setAlignment(Align.center);
-        _pauseLabel.setPosition((Gdx.graphics.getWidth() - _pauseLabel.getWidth()) / 2, (Gdx.graphics.getHeight() - _pauseLabel.getHeight()) / 2);
-        _pauseLabel.setColor(1.0f, 1.0f, 1.0f, 1.0f);
-        _pauseLabel.setFontScale(_width / 500);
-        _pauseStage.addActor(_pauseLabel);
-
-
         _deathStage.addActor(_deathLabel);
         _deathStage.addActor(_usernameLabel);
         _deathStage.addActor(_menuButtonImage);
