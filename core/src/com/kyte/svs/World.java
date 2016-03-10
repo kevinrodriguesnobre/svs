@@ -40,7 +40,7 @@ public class World {
 
     public void createMap() {
         // Läd die Tiled Map
-        _tiledMap = new TmxMapLoader().load("world1.tmx");
+        _tiledMap = new TmxMapLoader().load("world2.tmx");
         _tiledMapRenderer = new OrthogonalTiledMapRendererWithSprites(_tiledMap);
 
         addEnemy();

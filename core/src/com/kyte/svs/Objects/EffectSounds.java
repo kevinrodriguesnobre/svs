@@ -5,7 +5,7 @@ import com.badlogic.gdx.audio.Sound;
 
 public class EffectSounds
 {
-    Sound _pistolSound, _alienSound, _hitmarkerSound, _deathSound;
+    Sound _pistolSound, _alienSound, _hitmarkerSound, _deathSound, _shotgunSound;
 
     public EffectSounds()
     {
@@ -13,6 +13,7 @@ public class EffectSounds
         _alienSound = Gdx.audio.newSound(Gdx.files.internal("Sounds/Alienwaffe_Single.mp3"));
         _hitmarkerSound = Gdx.audio.newSound(Gdx.files.internal("Sounds/Hitmarker_Sound.mp3"));
         _deathSound = Gdx.audio.newSound(Gdx.files.internal("Sounds/death_sound.mp3"));
+        _shotgunSound = Gdx.audio.newSound(Gdx.files.internal("Sounds/shotgun_sound.mp3"));
     }
 
 
@@ -30,5 +31,9 @@ public class EffectSounds
     public Sound getDeathSound()
     {
         return _deathSound;
+    }
+    public Sound getShotgunSound()
+    {
+        return _shotgunSound;
     }
 }

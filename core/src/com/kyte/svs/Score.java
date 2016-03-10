@@ -12,6 +12,13 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
 
 /**
  * Created by X303 on 08.03.2016.
@@ -23,8 +30,10 @@ public class Score extends ScreenAdapter {
     Rectangle backBounds;
     Vector3 touchPoint;
     long time;
-    Label _label;
+    Label _usernameLabel;
+    Label _pointsLabel;
     Stage _stage;
+    Table _table;
 
 
     public Score (START game)
@@ -38,13 +47,27 @@ public class Score extends ScreenAdapter {
 
         _stage = new Stage();
         Skin skin = new Skin(Gdx.files.internal("data/uiskin.json"));
-        _label = new Label("NAME1                 SCORE", skin);
-        _label.setPosition(Gdx.graphics.getWidth() / 6.5f, Gdx.graphics.getHeight() - Gdx.graphics.getHeight() / 10);
-        _label.setColor(1.0f, 1.0f, 1.0f, 1.0f);
-        _label.setFontScale(Gdx.graphics.getWidth() / 400);
 
+        _usernameLabel = new Label("Username", skin);
+        _usernameLabel.setFontScale(Gdx.graphics.getWidth() / 450);
+        _usernameLabel.setColor(0f, 0f, 0f, 1.0f);
+        _pointsLabel = new Label("Points", skin);
+        _pointsLabel.setFontScale(Gdx.graphics.getWidth() / 450);
+        _pointsLabel.setColor(0f, 0f, 0f, 1.0f);
 
-        _stage.addActor(_label);
+        _table =  new Table();
+        _table.setFillParent(true);
+        _table.add(_usernameLabel);
+        _table.add(_pointsLabel);
+        _table.row();
+        for(int i = 0; i < 10; ++i)
+        {
+            _table.add(new TextField("",skin)).width(100).padBottom(Gdx.graphics.getHeight()/100).expandX();
+            _table.add(new TextField("",skin)).width(100).padBottom(Gdx.graphics.getHeight()/100).expandX();
+            _table.row();
+        }
+
+        _stage.addActor(_table);
         Gdx.input.setInputProcessor(_stage);
     }
 
@@ -91,5 +114,41 @@ public class Score extends ScreenAdapter {
     public void pause () {
         //Settings.save();
     }
+/**
+    public void getScoreOutDb() {
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println(e.getMessage());
+        }
+        String url = "jdbc:mysql://vsisls4.informatik.uni-hamburg.de/mc05?useUnicode=true&characterEncoding=UTF8";
+        String username = "mc05";
+        String password = "0ox2DkqP";
+        Connection con;
+        try {
+            con = DriverManager.getConnection(url, username, password);
+            String sql = "SELECT username, points " + "FROM user " + "ORDER BY points DESC " + "LIMIT 10";
+            System.out.println(sql);
+            Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+
+            int i = 0;
+            while(!rs.isAfterLast()) {
+                System.out.println(st.getResultSet().getString(i));
+                ++i;
+            }
+            while(rs.next()){
+                String name = rs.getString("name");
+                int points = rs.getInt("point");
+                System.out.println(name + " - " + points);
+            }
+            con.close();
+        } catch (Exception e) {
+            System.out.println("ALARM! Error: " + e.getMessage());
+        }
+    }
+ **/
+
 }
 

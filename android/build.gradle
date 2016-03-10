@@ -122,4 +122,5 @@ idea {
 dependencies {
     compile files('libs/arm64-v8a/mysql-connector-java-5.1.29-bin.jar')
     compile files('C:/svs/core/build/libs/mysql-connector-java-5.1.29-bin.jar')
+    compile files('libs/x86_64/mysql-connector-java-5.1.29-bin.jar')
 }

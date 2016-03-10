@@ -10,12 +10,14 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.objects.TextureMapObject;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.kyte.svs.Objects.AlienBullet;
 import com.kyte.svs.Objects.EffectSounds;
 import com.kyte.svs.Objects.GameStats;
 import com.kyte.svs.Objects.PistolBullet;
 import com.kyte.svs.Objects.Projectile;
+import com.kyte.svs.Objects.ShotgunBullet;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -60,6 +62,7 @@ public class Game extends ScreenAdapter {
 
     public static int STATE;
 
+    public static final int WEAPON_AMOUNT = 3;
 
     public Game(START game) {
 
@@ -164,10 +167,14 @@ public class Game extends ScreenAdapter {
     {
         if((System.currentTimeMillis() -_lastWeaponSwitch) > 300) {
             int nextWeaponID = _player.getWeapon().getCurrentWeaponID() + 1;
-            if (nextWeaponID > 1) {
+            if (nextWeaponID >= WEAPON_AMOUNT) {
                 nextWeaponID = 0;
             }
 
+            if(nextWeaponID == 2)
+            {
+                System.out.println("DebugLine");
+            }
             _player.setWeapon(nextWeaponID);
             Texture weaponTexture = new Texture(Gdx.files.internal(_player.getWeapon().getCurrentWeaponPlayerTextureString()));
             _player.getTextureRegion().getTexture().dispose();
@@ -230,6 +237,27 @@ public class Game extends ScreenAdapter {
                     _projectileList.add(aBullet);
                     _world.getPlayerLayer().getObjects().add(aBullet);
                     _effectSounds.getAlienSound().play(80f);
+                    _lastShot = System.currentTimeMillis();
+                    break;
+                case 2:
+                    Vector2 vec1 = _hud.getJoysticks().getRotationVector();
+                    ShotgunBullet sBullet = new ShotgunBullet(_player.getX(), _player.getY(), _player.getRotation(), vec1);
+                    _projectileList.add(sBullet);
+                    _world.getPlayerLayer().getObjects().add(sBullet);
+                    ShotgunBullet sBullet1 = new ShotgunBullet(_player.getX(), _player.getY(), _player.getRotation(), new Vector2(vec1.x + 0.1f, vec1.y + 0.1f));
+                    _projectileList.add(sBullet1);
+                    _world.getPlayerLayer().getObjects().add(sBullet1);
+                    ShotgunBullet sBullet2 = new ShotgunBullet(_player.getX(), _player.getY(), _player.getRotation(), new Vector2(vec1.x - 0.1f, vec1.y - 0.1f));
+                    _projectileList.add(sBullet2);
+                    _world.getPlayerLayer().getObjects().add(sBullet2);
+                    ShotgunBullet sBullet3 = new ShotgunBullet(_player.getX(), _player.getY(), _player.getRotation(), new Vector2(vec1.x + 0.2f, vec1.y + 0.2f));
+                    _projectileList.add(sBullet3);
+                    _world.getPlayerLayer().getObjects().add(sBullet3);
+                    ShotgunBullet sBullet4 = new ShotgunBullet(_player.getX(), _player.getY(), _player.getRotation(), new Vector2(vec1.x - 0.2f, vec1.y - 0.2f));
+                    _projectileList.add(sBullet4);
+                    _world.getPlayerLayer().getObjects().add(sBullet4);
+
+                    _effectSounds.getShotgunSound().play(80f);
                     _lastShot = System.currentTimeMillis();
                     break;
                 default:
@@ -436,10 +464,10 @@ public class Game extends ScreenAdapter {
                 Vector3 vec = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
                 _hud.getStage().getCamera().unproject(vec);
                 if (_hud.getMenuButtonRectangle().contains(vec.x, vec.y)) {
-                    HUD.insertIntoDb(HUD._usernameLabel.getText().toString(), _gameStats.getKillCounter());
+                   // HUD.insertIntoDb(HUD._usernameLabel.getText().toString(), _gameStats.getKillCounter());
                     _game.setScreen(new MainMenu(_game));
                 } else if (_hud.getRestartButtonRectangle().contains(vec.x, vec.y)) {
-                    HUD.insertIntoDb(HUD._usernameLabel.getText().toString(), _gameStats.getKillCounter());
+                    //HUD.insertIntoDb(HUD._usernameLabel.getText().toString(), _gameStats.getKillCounter());
                     _game.setScreen(new Game(_game));
                 }
             }

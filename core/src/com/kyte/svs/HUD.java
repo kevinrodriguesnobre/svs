@@ -16,7 +16,6 @@ import com.kyte.svs.Objects.GameStats;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.Statement;
 
 
@@ -46,9 +45,10 @@ public class HUD {
         _HpBar = new HpBar(_stage, _width, _height);
         _gameStats = gameStats;
 
-        _weaponTextureArray = new Texture[2];
+        _weaponTextureArray = new Texture[3];
         _weaponTextureArray[0] = new Texture("Weapons/weapon_pistol.png");
         _weaponTextureArray[1] = new Texture("Weapons/weapon_alien.png");
+        _weaponTextureArray[2] = new Texture("Weapons/weapon_schrotflinte.png");
 
         _weaponSwitchImage = new Image(_weaponTextureArray[0]);
         _weaponSwitchImage.setBounds(_width - (_width / 7), _height - (_height / 7), _width / 7, _height / 7);
@@ -98,6 +98,9 @@ public class HUD {
                 break;
             case 1:
                 _weaponSwitchImage.setDrawable(new SpriteDrawable(new Sprite(_weaponTextureArray[1])));
+                break;
+            case 2:
+                _weaponSwitchImage.setDrawable(new SpriteDrawable(new Sprite(_weaponTextureArray[2])));
                 break;
         }
     }
